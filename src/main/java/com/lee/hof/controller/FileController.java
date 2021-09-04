@@ -20,7 +20,7 @@ import java.net.URLEncoder;
  * @date 2021/9/3
  */
 
-@RequestMapping("file")
+@RequestMapping("/file")
 public class FileController {
 
     @Autowired
