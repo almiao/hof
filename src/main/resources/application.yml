@@ -2,15 +2,15 @@ spring:
   # 环境 dev|test|prod quart定时任务
   profiles:
     active: dev
-#  #文件上传设置
-#  servlet:
-#    multipart:
-#      max-file-size: 40MB
-#      max-request-size: 40MB
-#      enabled: true
-#  jackson:
-#    date-format: yyyy-MM-dd HH:mm:ss
-#    time-zone: GMT+8
+  #文件上传设置
+  servlet:
+    multipart:
+      max-file-size: 40MB
+      max-request-size: 40MB
+      enabled: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 #
 ## mybaits-plus配置
 #mybatis-plus:
@@ -26,5 +26,3 @@ spring:
 #      field-strategy: NOT_NULL
 #      # 默认数据库表下划线命名
 #      table-underline: true
-server:
-  port: 8090
