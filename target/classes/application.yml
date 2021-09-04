@@ -26,5 +26,3 @@ spring:
 #      field-strategy: NOT_NULL
 #      # 默认数据库表下划线命名
 #      table-underline: true
-server:
-  port: 8090
