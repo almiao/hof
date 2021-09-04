@@ -1,6 +1,7 @@
 package com.lee.hof.controller;
 
 
+import com.lee.hof.bean.vo.DishVO;
 import com.lee.hof.bean.vo.MenuVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,12 @@ public class MenuController {
         MenuVO menuVO = new MenuVO();
 
         if(userId == 1){
-            menuVO.setDishes(Arrays.asList("红烧鸡翅","回锅肉","面包"));
+
+            DishVO vo1 = new DishVO(1,1,"红烧鸡块");
+            DishVO vo2 = new DishVO(2,3,"回锅肉");
+            DishVO vo3 = new DishVO(3,3,"面包");
+
+            menuVO.setDishes(Arrays.asList(vo1,vo2,vo3));
         }
 
         return menuVO;
