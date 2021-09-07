@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.hof.dao.DishMapper">
+    <resultMap id="BaseResultMap" type="com.lee.hof.bean.model.Dish">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="step" jdbcType="TINYINT" property="step" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+        <result column="created_time" jdbcType="DATETIME" property="createdTime" />
+        <result column="updated_time" jdbcType="DATETIME" property="up" />
+    </resultMap>
+
+    <select id="getById" resultMap="BasicResultMap">
+        select * from dish where id=#{id}
+    </select>
+
+</mapper>

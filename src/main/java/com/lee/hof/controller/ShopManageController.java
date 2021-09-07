@@ -16,8 +16,6 @@ public class ShopManageController {
     public void addShop(){
 
 
-
-
     }
 
 

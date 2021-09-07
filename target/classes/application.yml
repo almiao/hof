@@ -11,11 +11,11 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-#
-## mybaits-plus配置
-#mybatis-plus:
-#  # MyBatis Mapper所对应的XML文件位置
-#  mapper-locations: classpath*:/mapper/*Mapper.xml
+
+# mybaits-plus配置
+mybatis-plus:
+  # MyBatis Mapper所对应的XML文件位置
+  mapper-locations: classpath*:/mapper/*Mapper.xml
 #  global-config:
 #    # 关闭MP3.0自带的banner
 #    banner: false
