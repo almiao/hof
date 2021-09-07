@@ -6,3 +6,25 @@ server:
     key-store-type: PKCS12
     enabled: true
 
+spring:
+  # 配置数据源
+  datasource:
+    url: jdbc:mysql://39.101.188.252:3306/hof?userSSL=false
+    username: root
+    password: 597130788
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select '1'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+
