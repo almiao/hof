@@ -34,7 +34,7 @@ public class ShopDishDailyController extends BaseController {
        return shopDishDailyService.getById(id);
     }
 
-
+    public
 
 }
 
