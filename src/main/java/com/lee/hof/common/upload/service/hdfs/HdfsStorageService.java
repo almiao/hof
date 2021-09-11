@@ -1,6 +1,6 @@
 package com.lee.hof.common.upload.service.hdfs;
 
-import com.zhinantech.common.upload.*;
+import com.lee.hof.common.upload.*;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 

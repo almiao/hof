@@ -17,4 +17,4 @@ public class IngredientVO {
     public String brand;
 
     public String source;
-}+
+}

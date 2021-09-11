@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.hof.sys.mapper.FileManagerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lee.hof.sys.entity.FileManager">
+        <id column="id" property="id" />
+        <result column="file_id" property="fileId" />
+        <result column="name" property="name" />
+        <result column="full_path" property="fullPath" />
+        <result column="size" property="size" />
+        <result column="extension" property="extension" />
+        <result column="provider" property="provider" />
+        <result column="type" property="type" />
+        <result column="upload_id" property="uploadId" />
+        <result column="part_e_tag" property="partETag" />
+        <result column="status_id" property="statusId" />
+    </resultMap>
+
+</mapper>

@@ -1,7 +1,7 @@
 package com.lee.hof.sys.controller;
 
 import com.lee.hof.sys.bean.model.Dish;
-import com.lee.hof.sys.service.impl.DishService;
+import com.lee.hof.sys.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,7 @@ public class DishController {
 
     @GetMapping("/view")
     public Dish viewShop(@RequestParam("id") Long id){
-        return dishService.getDishById(id);
+        return dishService.getById( id);
     }
 
 

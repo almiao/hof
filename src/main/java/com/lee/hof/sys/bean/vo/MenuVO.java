@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 public class MenuVO {
 
-    List<DishVO> dishes;
+    List<DishSimpleVO> dishes;
 
 }

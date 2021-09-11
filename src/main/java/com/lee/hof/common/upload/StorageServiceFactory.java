@@ -1,8 +1,8 @@
 package com.lee.hof.common.upload;
 
-import com.zhinantech.common.upload.service.aliyun.AliyunStorageService;
-import com.zhinantech.common.upload.service.hdfs.HdfsStorageService;
-import com.zhinantech.common.upload.service.local.LocalStorageService;
+import com.lee.hof.common.upload.service.aliyun.AliyunStorageService;
+import com.lee.hof.common.upload.service.hdfs.HdfsStorageService;
+import com.lee.hof.common.upload.service.local.LocalStorageService;
 
 import java.util.Properties;
 

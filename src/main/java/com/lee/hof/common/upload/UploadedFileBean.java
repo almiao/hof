@@ -5,7 +5,7 @@ public class UploadedFileBean {
 
     private String name;
 
-    private String fullpath;
+    private String fullPath;
 
     private long size;
 
@@ -24,12 +24,12 @@ public class UploadedFileBean {
         this.provider = provider;
     }
 
-    public String getFullpath() {
-        return fullpath;
+    public String getFullPath() {
+        return fullPath;
     }
 
-    public void setFullpath(String fullpath) {
-        this.fullpath = fullpath;
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
     }
 
     public String getFileId() {

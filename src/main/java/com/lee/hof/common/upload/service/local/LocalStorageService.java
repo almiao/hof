@@ -1,6 +1,7 @@
 package com.lee.hof.common.upload.service.local;
 
-import com.zhinantech.common.upload.*;
+import com.lee.hof.common.upload.*;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -10,10 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class LocalStorageService extends StorageService {
     private static final String LOCAL_PROVIDER_NAME = "local";
@@ -62,7 +60,7 @@ public class LocalStorageService extends StorageService {
         uploadedFileBean.setSize(fileInfo.getSize());
         uploadedFileBean.setType(fileInfo.getContentType());
         uploadedFileBean.setExtension(FilenameUtils.getExtension(fileInfo.getName()));
-        uploadedFileBean.setFullpath(targetFilename);
+        uploadedFileBean.setFullPath(targetFilename);
 
         return uploadedFileBean;
     }
@@ -112,7 +110,7 @@ public class LocalStorageService extends StorageService {
         List<UploadedFileBean> uploadedFileBeans = new ArrayList<UploadedFileBean>();
 
         String localFilePath = localStoragePath + "/" + prefix;
-        for (File file : new File(localFilePath).listFiles()) {
+        for (File file : Objects.requireNonNull(new File(localFilePath).listFiles())) {
             uploadedFileBeans.add(new UploadedFileBean(file.getAbsolutePath().substring(localStoragePath.length()), LOCAL_PROVIDER_NAME));
         }
 

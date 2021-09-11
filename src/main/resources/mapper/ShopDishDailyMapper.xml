@@ -16,9 +16,6 @@
         <result column="usage_amount" property="usageAmount" />
     </resultMap>
 
-    <select id="getById" resultMap="BaseResultMap">
-        select * from dish where id=#{id}
-    </select>
 
 
 </mapper>

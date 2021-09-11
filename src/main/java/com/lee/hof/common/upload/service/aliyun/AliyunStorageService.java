@@ -5,9 +5,8 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.auth.CredentialsProvider;
 import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.aliyun.oss.model.*;
-import com.zhinantech.common.upload.*;
-import com.zhinantech.common.util.MockMultipartFile;
-import com.zhinantech.common.web.RestException;
+import com.lee.hof.common.exception.HofException;
+import com.lee.hof.common.upload.*;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.zhinantech.common.context.SpringContext._T;
 
 public class AliyunStorageService extends StorageService {
     private final static Logger logger = LoggerFactory.getLogger(AliyunStorageService.class);
@@ -114,7 +112,7 @@ public class AliyunStorageService extends StorageService {
             return upresult.getUploadId();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RestException(_T("获取文件主id信息失败！"));
+            throw new HofException("获取上传id错误");
         }
     }
 
@@ -146,7 +144,7 @@ public class AliyunStorageService extends StorageService {
             return uploadedFileBean;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RestException(_T("上传分块文件异常， 请联系技术支持！"));
+            throw new HofException("分块上传文件错误");
         }
     }
 
@@ -155,9 +153,7 @@ public class AliyunStorageService extends StorageService {
         try {
             List<String> partUniqs = mergePartFileBean.getPartUniqs();
             List<PartETag> partETags = new ArrayList<>();
-            partUniqs.forEach(partUniq -> {
-                partETags.add(JSONObject.parseObject(partUniq, PartETag.class));
-            });
+            partUniqs.forEach(partUniq -> partETags.add(JSONObject.parseObject(partUniq, PartETag.class)));
 
             // 创建CompleteMultipartUploadRequest对象。
             //  在执行完成分片上传操作时，需要提供所有有效的partETags。OSS收到提交的partETags后，会逐一验证每个分片的有效性。当所有的数据分片验证通过后，OSS将把这些分片组合成一个完整的文件。
@@ -173,8 +169,9 @@ public class AliyunStorageService extends StorageService {
             return uploadedFileBean;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RestException(_T("合并文件异常，请重试或联系技术支持！"));
+            throw new HofException("文件上传合并错误");
         }
+
     }
 
     @Override

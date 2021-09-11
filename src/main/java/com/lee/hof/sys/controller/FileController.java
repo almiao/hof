@@ -39,10 +39,10 @@ public class FileController {
     @SneakyThrows
     @GetMapping("/download")
     @ResponseBody
-    public void downloadFile(@RequestParam String fileName, HttpServletResponse response) throws IOException{
+    public void downloadFile(@RequestParam String fileId, HttpServletResponse response) throws IOException{
 
         System.out.println("下载文件");
-        String path = System.getProperty("user.dir")+ File.separator+fileName;
+        String path = System.getProperty("user.dir")+ File.separator+fileId;
         File tempFile = new File(path);
         InputStream stream = new FileInputStream(tempFile);
         String encodedFilename = URLEncoder.encode(tempFile.getName(), "UTF-8");

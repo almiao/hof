@@ -1,11 +1,6 @@
 package com.lee.hof.common.upload;
 
-/**
- * @ClassName : MergePartFileBean
- * @Description :
- * @Author : zfs
- * @Date : 2020-11-17
- */
+
 
 import lombok.Getter;
 import lombok.Setter;

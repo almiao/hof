@@ -14,9 +14,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 
-@MapperScan("com.lee.hof.sys.dao")
+@MapperScan("com.lee.hof.sys.mapper")
 @SpringBootApplication
-@ServletComponentScan
 public class HofApplication extends SpringBootServletInitializer{
 
     public static void main(String[] args) {

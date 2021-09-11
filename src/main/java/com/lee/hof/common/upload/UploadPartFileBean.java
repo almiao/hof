@@ -7,7 +7,7 @@ package com.lee.hof.common.upload;
  * @Date : 2020-11-17
  */
 
-import com.zhinantech.common.util.MockMultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 
