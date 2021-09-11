@@ -17,4 +17,11 @@
         <result column="status_id" property="statusId" />
     </resultMap>
 
+    <select id="getByFileId"
+            resultType="com.lee.hof.sys.bean.model.FileManager">
+
+        select * from file_manager where file_id = #{fileId} limit 1
+
+    </select>
+
 </mapper>

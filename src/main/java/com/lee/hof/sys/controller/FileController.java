@@ -1,5 +1,7 @@
 package com.lee.hof.sys.controller;
 
+import com.lee.hof.sys.bean.model.FileManager;
+import com.lee.hof.sys.service.FileManagerService;
 import com.lee.hof.sys.service.impl.FileService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
@@ -25,13 +27,13 @@ import java.net.URLEncoder;
 public class FileController {
 
     @Autowired
-    FileService fileService;
+    FileManagerService fileService;
 
 
     @PostMapping("/upload")
-    public void uploadFile(MultipartFile file) throws Exception {
+    public String uploadFile(MultipartFile file) throws Exception {
 
-        fileService.uploadFile(file);
+       return fileService.uploadFile(file);
 
     }
 
