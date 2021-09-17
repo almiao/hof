@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author tangle
- * @since 2021-09-11
+ * @since 2021-09-12
  */
 public interface FileManagerService extends IService<FileManager> {
 

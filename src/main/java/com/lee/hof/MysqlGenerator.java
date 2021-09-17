@@ -40,8 +40,7 @@ public class MysqlGenerator {
 
         // 3、包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName("sys");
-        pc.setParent("com.lee.hof");
+        pc.setParent("com.lee.hof.sys");
         mpg.setPackageInfo(pc);
 
         // 4、策略配置
@@ -52,7 +51,7 @@ public class MysqlGenerator {
         strategy.setSuperEntityClass("com.lee.hof.sys.bean.model.BaseEntity");
         // strategy.setTablePrefix("t_"); // 表名前缀
         strategy.setEntityLombokModel(true); //使用lombok
-        strategy.setInclude("file_manager","dish","dish_step","ingredient");  // 逆向工程使用的表   如果要生成多个,这里可以传入String[]
+        strategy.setInclude("catetory");  // 逆向工程使用的表   如果要生成多个,这里可以传入String[]
         mpg.setStrategy(strategy);
 
         //5、执行

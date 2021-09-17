@@ -1,7 +1,7 @@
 package com.lee.hof.sys.mapper;
 
-import com.lee.hof.sys.entity.Dish;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.lee.hof.sys.bean.model.Catetory;
 
 /**
  * <p>
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author tangle
- * @since 2021-09-11
+ * @since 2021-09-12
  */
-public interface DishMapper extends BaseMapper<Dish> {
+public interface CatetoryMapper extends BaseMapper<Catetory> {
 
 }

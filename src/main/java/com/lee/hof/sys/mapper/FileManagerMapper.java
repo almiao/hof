@@ -13,6 +13,6 @@ import com.lee.hof.sys.bean.model.FileManager;
  */
 public interface FileManagerMapper extends BaseMapper<FileManager> {
 
-    FileManager getByFileId(String fileId);
+    FileManager getByUuid(String uuid);
 
 }

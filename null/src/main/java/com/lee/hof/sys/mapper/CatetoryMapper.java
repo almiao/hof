@@ -1,6 +1,6 @@
 package com.lee.hof.sys.mapper;
 
-import com.lee.hof.sys.entity.DishStep;
+import com.lee.hof.sys.entity.Catetory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author tangle
- * @since 2021-09-11
+ * @since 2021-09-12
  */
-public interface DishStepMapper extends BaseMapper<DishStep> {
+public interface CatetoryMapper extends BaseMapper<Catetory> {
 
 }

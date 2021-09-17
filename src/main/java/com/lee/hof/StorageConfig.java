@@ -12,7 +12,7 @@ import java.util.Properties;
 @Configuration
 public class StorageConfig {
 
-    @Value("local.storage.path")
+    @Value("${local.storage.path}")
     private String localStoragePath;
 
 

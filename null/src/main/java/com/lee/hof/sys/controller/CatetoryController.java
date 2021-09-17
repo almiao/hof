@@ -12,11 +12,11 @@ import com.lee.hof.sys.controller.BaseController;
  * </p>
  *
  * @author tangle
- * @since 2021-09-11
+ * @since 2021-09-12
  */
 @Controller
-@RequestMapping("/sys/dish")
-public class DishController extends BaseController {
+@RequestMapping("/catetory")
+public class CatetoryController extends BaseController {
 
 }
 

@@ -1,7 +1,7 @@
 package com.lee.hof.sys.service;
 
-import com.lee.hof.sys.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lee.hof.sys.bean.model.Catetory;
 
 /**
  * <p>
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author tangle
- * @since 2021-09-11
+ * @since 2021-09-12
  */
-public interface DishService extends IService<Dish> {
+public interface CatetoryService extends IService<Catetory> {
 
 }

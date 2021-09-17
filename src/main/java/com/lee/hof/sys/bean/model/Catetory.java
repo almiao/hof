@@ -1,4 +1,4 @@
-package com.lee.hof.sys.entity;
+package com.lee.hof.sys.bean.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.lee.hof.sys.bean.model.BaseEntity;
@@ -12,30 +12,26 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author tangle
- * @since 2021-09-11
+ * @since 2021-09-12
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Ingredient extends BaseEntity {
+public class Catetory extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private Integer dishId;
+    private Integer parentId;
 
-    private String fileId;
+    private String name;
 
-    private String ingredientName;
-
-    private String use;
-
-    private String brand;
-
-    private String source;
+    private String description;
 
     private Integer isDel;
+
+    private String fileId;
 
 
 }

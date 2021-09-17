@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.hof.sys.bean.model.FileManager;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+
 /**
  * <p>
  *  服务类
@@ -14,4 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FileManagerService extends IService<FileManager> {
     public String uploadFile(MultipartFile file) throws Exception;
+
+    void download(String fileId, HttpServletResponse response) throws FileNotFoundException;
 }

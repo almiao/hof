@@ -19,8 +19,6 @@ public class DishDaliyController {
     public void viewShop(@RequestParam("id") Long id){
 
         System.out.println("abcdefdddddddddddddddddddddddddd");
-
-
     }
 
 

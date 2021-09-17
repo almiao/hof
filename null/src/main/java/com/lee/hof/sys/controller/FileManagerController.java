@@ -12,10 +12,10 @@ import com.lee.hof.sys.controller.BaseController;
  * </p>
  *
  * @author tangle
- * @since 2021-09-11
+ * @since 2021-09-12
  */
 @Controller
-@RequestMapping("/sys/fileManager")
+@RequestMapping("/fileManager")
 public class FileManagerController extends BaseController {
 
 }

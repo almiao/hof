@@ -1,9 +1,9 @@
-GET  https://127.0.0.1:9200/menu/list/my?userId=1
+GET  http://127.0.0.1:9200/menu/list/my?userId=1
 ###
 
-GET  https://127.0.0.1:9200/dish/view?id=1
+GET  http://127.0.0.1:9200/dish/view?id=1
 ###
 
 
-GET  https://127.0.0.1:9200/shopDishDaily/view?id=1
+GET  http://127.0.0.1:9200/shopDishDaily/view?id=1
 ###

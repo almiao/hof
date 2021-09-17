@@ -1,8 +1,6 @@
 package com.lee.hof.sys.controller;
 
-import com.lee.hof.sys.bean.model.FileManager;
 import com.lee.hof.sys.service.FileManagerService;
-import com.lee.hof.sys.service.impl.FileService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +35,11 @@ public class FileController {
 
     }
 
-
-    @SneakyThrows
     @GetMapping("/download")
     @ResponseBody
     public void downloadFile(@RequestParam String fileId, HttpServletResponse response) throws IOException{
 
-        System.out.println("下载文件");
-        String path = System.getProperty("user.dir")+ File.separator+fileId;
-        File tempFile = new File(path);
-        InputStream stream = new FileInputStream(tempFile);
-        String encodedFilename = URLEncoder.encode(tempFile.getName(), "UTF-8");
-        response.setHeader("Content-disposition", String.format("attachment;filename=%s;filename*=UTF-8''%s", encodedFilename, encodedFilename));
-        response.setContentType("image/png");
-        IOUtils.copy(stream, response.getOutputStream());
+        fileService.download(fileId,response);
     }
 
 

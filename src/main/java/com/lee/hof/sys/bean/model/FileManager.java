@@ -1,6 +1,9 @@
 package com.lee.hof.sys.bean.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author tangle
@@ -9,9 +12,15 @@ import lombok.Data;
  */
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class FileManager {
 
+        private static final long serialVersionUID = 1L;
+
+        @TableId(value = "id", type = IdType.AUTO)
         private Integer id;
+
+        private String uuid;
 
         private String fileId;
 
@@ -19,7 +28,7 @@ public class FileManager {
 
         private String fullPath;
 
-        private long size;
+        private Integer size;
 
         private String extension;
 
@@ -32,5 +41,6 @@ public class FileManager {
         private String partETag;
 
         private Integer statusId;
+
 
 }

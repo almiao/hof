@@ -45,22 +45,23 @@ public class LocalStorageService extends StorageService {
 
         targetFilename = targetFilename.replaceAll("^[\\/\\\\]+", "");
 
-        String localFilename = localStoragePath + "/" + targetFilename;
-        FileUtils.forceMkdir(new File(localFilename).getParentFile());
-
-        return uploadFile(uploadedFile.getInputStream(), new FileInfo(uploadedFile), localFilename);
+        return uploadFile(uploadedFile.getInputStream(), new FileInfo(uploadedFile), targetFilename);
     }
 
     @Override
     public UploadedFileBean uploadFile(InputStream inputStream, FileInfo fileInfo, String targetFilename) throws IOException {
-        org.apache.commons.io.IOUtils.copy(inputStream, new FileOutputStream(targetFilename));
+        String localFilename = localStoragePath + "/" + targetFilename;
+        FileUtils.forceMkdir(new File(localFilename).getParentFile());
+
+
+        org.apache.commons.io.IOUtils.copy(inputStream, new FileOutputStream(localFilename));
 
         UploadedFileBean uploadedFileBean = new UploadedFileBean(targetFilename, LOCAL_PROVIDER_NAME);
         uploadedFileBean.setName(fileInfo.getName());
         uploadedFileBean.setSize(fileInfo.getSize());
         uploadedFileBean.setType(fileInfo.getContentType());
         uploadedFileBean.setExtension(FilenameUtils.getExtension(fileInfo.getName()));
-        uploadedFileBean.setFullPath(targetFilename);
+        uploadedFileBean.setFullPath(localFilename);
 
         return uploadedFileBean;
     }

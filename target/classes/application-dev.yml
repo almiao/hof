@@ -1,10 +1,10 @@
 server:
   port: 9200
-  ssl:
-    key-store: classpath:www-tangle-ink-0901133425.pfx
-    key-store-password: dHzfY90f
-    key-store-type: PKCS12
-    enabled: true
+#  ssl:
+#    key-store: classpath:www-tangle-ink-0901133425.pfx
+#    key-store-password: dHzfY90f
+#    key-store-type: PKCS12
+#    enabled: true
 
 spring:
   # 配置数据源
@@ -28,3 +28,6 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
 
+local:
+  storage:
+    path: ''
