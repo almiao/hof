@@ -5,8 +5,8 @@ spring:
   #文件上传设置
   servlet:
     multipart:
-      max-file-size: 40MB
-      max-request-size: 40MB
+      max-file-size: 200MB
+      max-request-size: 200MB
       enabled: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
