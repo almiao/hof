@@ -23,14 +23,14 @@ public class Dish implements Serializable {
      * 运费模板id
      */
     @TableId
-    @ApiModelProperty(value = "运费模板id",required=true)
+    @ApiModelProperty(value = "id",required=true)
     private Long id;
 
     /**
      * 运费模板名称
      */
 
-    @ApiModelProperty(value = "运费模板名称",required=true)
+    @ApiModelProperty(value = "商家id",required=true)
     private Long shopId;
 
     /**
@@ -48,7 +48,7 @@ public class Dish implements Serializable {
 
     /**
      */
-    @ApiModelProperty(value = "是否包邮 0:不包邮 1:包邮",required=true)
+    @ApiModelProperty(value = "名称",required=true)
     private String name;
 
     /**
@@ -59,7 +59,7 @@ public class Dish implements Serializable {
 
     /**
      */
-    @ApiModelProperty(value = "是否含有包邮条件",required=true)
+    @ApiModelProperty(value = "主成品图id",required=true)
     private String fileName;
 
     /**

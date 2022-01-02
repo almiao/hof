@@ -28,13 +28,5 @@ public class DishController {
         return dishService.getById( id);
     }
 
-//    @GetMapping("/add")
-//    public DishVO addDish(@RequestParam("id") ){
-//        return dishService.getById( id);
-//    }
-
-
-
-
 
 }

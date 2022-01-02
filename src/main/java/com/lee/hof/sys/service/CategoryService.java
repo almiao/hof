@@ -11,6 +11,6 @@ import com.lee.hof.sys.bean.model.Catetory;
  * @author tangle
  * @since 2021-09-12
  */
-public interface CatetoryService extends IService<Catetory> {
+public interface CategoryService extends IService<Catetory> {
 
 }
