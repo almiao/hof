@@ -226,28 +226,16 @@
 
     <repositories>
         <repository>
-            <id>aliyun</id>
-            <name>aliyun</name>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <id>spring</id>
+            <url>https://maven.aliyun.com/repository/spring</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
-        </repository>
-
-        <repository>
-            <id>central</id>
-            <url>http://host:port/content/groups/public</url>
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <url>http://host:port/content/groups/public</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>
