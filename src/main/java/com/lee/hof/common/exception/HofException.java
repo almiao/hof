@@ -2,7 +2,6 @@ package com.lee.hof.common.exception;
 
 
 import com.lee.hof.common.constant.HofStatus;
-import org.springframework.http.HttpStatus;
 
 public class HofException extends RuntimeException {
 
