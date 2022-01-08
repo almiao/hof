@@ -1,6 +1,6 @@
 package com.lee.hof.sys.bean.model;
 
-public class CourtDanceSpot {
+public class CourtDanceSpot extends BaseCourtDanceSpot{
 
     //舞点名称
     private String danceSpotName;

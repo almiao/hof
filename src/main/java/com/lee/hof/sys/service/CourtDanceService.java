@@ -9,4 +9,7 @@ public interface CourtDanceService {
 
 
     List<CourtDanceSpot> getDanceSpots(@Param("userId") String userId, @Param("address") String address);
+
+    CourtDanceSpot addDanceSpot();
+
 }

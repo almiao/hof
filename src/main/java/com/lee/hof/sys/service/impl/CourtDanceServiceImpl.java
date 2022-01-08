@@ -37,4 +37,10 @@ public class CourtDanceServiceImpl implements CourtDanceService {
 
         return Arrays.asList(spot1,spot2,spot3);
     }
+
+    @Override
+    public CourtDanceSpot addDanceSpot() {
+
+        return null;
+    }
 }

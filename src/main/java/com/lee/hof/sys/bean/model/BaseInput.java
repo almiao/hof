@@ -8,9 +8,14 @@ import com.lee.hof.sys.bean.dto.User;
  * @date 2021/9/7
  */
 
-public class BaseEntity {
+public class BaseInput {
 
     private String userId;
 
     private User user;
+
+    private String ip;
+
+    private String endInfo;
+
 }
