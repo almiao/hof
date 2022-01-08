@@ -1,9 +1,11 @@
 package com.lee.hof.sys.service.impl;
 
+import com.lee.hof.sys.bean.model.CourtDanceGroup;
 import com.lee.hof.sys.bean.model.CourtDanceSpot;
 import com.lee.hof.sys.service.CourtDanceService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,5 +38,18 @@ public class CourtDanceServiceImpl implements CourtDanceService {
         spot3.setPositionDesc("小区内");
 
         return Arrays.asList(spot1,spot2,spot3);
+    }
+
+    @Override
+    public List<CourtDanceGroup> getDanceGroups(String userId, String address) {
+
+        List<CourtDanceGroup> result = new ArrayList<>();
+
+
+
+        
+
+
+        return null;
     }
 }

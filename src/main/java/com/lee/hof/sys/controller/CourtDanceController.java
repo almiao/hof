@@ -1,6 +1,7 @@
 package com.lee.hof.sys.controller;
 
 
+import com.lee.hof.sys.bean.model.CourtDanceGroup;
 import com.lee.hof.sys.bean.model.CourtDanceSpot;
 import com.lee.hof.sys.service.CourtDanceService;
 import org.apache.ibatis.annotations.Param;
@@ -23,6 +24,12 @@ public class CourtDanceController {
     @GetMapping("/spot/list")
     public ResponseEntity<List<CourtDanceSpot>> getDanceSpots(@Param("userId") String userId, @Param("address") String address){
         return ResponseEntity.ok(courtDanceService.getDanceSpots(userId,address));
+    }
+
+
+    @GetMapping("/group/list")
+    public ResponseEntity<List<CourtDanceGroup>> getDanceGroups(@Param("userId") String userId, @Param("address") String address){
+        return ResponseEntity.ok(courtDanceService.getDanceGroups(userId,address));
     }
 
 }
