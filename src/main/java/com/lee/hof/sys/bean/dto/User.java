@@ -5,13 +5,14 @@ import lombok.Data;
 @Data
 public class User {
 
-    private String uuid;
-
-    private Integer id;
+    private Long id;
 
     private String phone;
 
     private String bankCard;
+
+    private String name;
+
 
 
 

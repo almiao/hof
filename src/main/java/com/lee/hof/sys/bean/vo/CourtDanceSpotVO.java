@@ -1,15 +1,14 @@
-package com.lee.hof.sys.bean.model;
+package com.lee.hof.sys.bean.vo;
 
+
+import com.lee.hof.sys.bean.model.BaseOutput;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 
-
 @Data
-public class CourtDanceSpot {
-
-    private Long id;
+public class CourtDanceSpotVO extends BaseOutput {
     /*
     跳舞点名称
      */
@@ -30,8 +29,6 @@ public class CourtDanceSpot {
      */
     private String attentionDesc;
 
-
-
     private String createByUserName;
 
     private String danceTypes;
@@ -39,6 +36,8 @@ public class CourtDanceSpot {
     private Timestamp createTime;
 
     private Timestamp updateTime;
+
+
 
 
 }

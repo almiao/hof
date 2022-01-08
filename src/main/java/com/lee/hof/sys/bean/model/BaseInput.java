@@ -14,8 +14,50 @@ public class BaseInput {
 
     private User user;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getEndInfo() {
+        return endInfo;
+    }
+
+    public void setEndInfo(String endInfo) {
+        this.endInfo = endInfo;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     private String ip;
 
     private String endInfo;
+
+    private String location;
 
 }
