@@ -14,4 +14,7 @@ public interface CourtDanceService {
 
     List<CourtDanceGroup> getDanceGroups(@Param("userId") String userId, @Param("address") String address);
 
+    CourtDanceSpot addDanceSpot();
+
+
 }

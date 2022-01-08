@@ -49,6 +49,8 @@ public class CourtDanceServiceImpl implements CourtDanceService {
 
         
 
+    public CourtDanceSpot addDanceSpot() {
+
 
         return null;
     }
