@@ -1,7 +1,7 @@
 package com.lee.hof.sys.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lee.hof.sys.bean.model.Catetory;
+import com.lee.hof.sys.bean.model.CourtDanceGroup;
 
 /**
  * <p>
@@ -9,8 +9,10 @@ import com.lee.hof.sys.bean.model.Catetory;
  * </p>
  *
  * @author tangle
- * @since 2021-09-12
+ * @since 2021-09-07
  */
-public interface CatetoryMapper extends BaseMapper<Catetory> {
+public interface CourtDanceGroupMapper extends BaseMapper<CourtDanceGroup> {
+
+
 
 }

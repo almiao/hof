@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Catetory extends BaseEntity {
+public class Category extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

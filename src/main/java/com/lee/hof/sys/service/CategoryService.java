@@ -1,7 +1,7 @@
 package com.lee.hof.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lee.hof.sys.bean.model.Catetory;
+import com.lee.hof.sys.bean.model.Category;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.lee.hof.sys.bean.model.Catetory;
  * @author tangle
  * @since 2021-09-12
  */
-public interface CategoryService extends IService<Catetory> {
+public interface CategoryService extends IService<Category> {
 
 }

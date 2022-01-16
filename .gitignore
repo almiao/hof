@@ -24,3 +24,6 @@ target
 hs_err_pid*
 
 .idea
+/hof.iml
+/hof.ipr
+/hof.iws

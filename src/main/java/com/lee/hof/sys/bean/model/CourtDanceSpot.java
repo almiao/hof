@@ -30,9 +30,23 @@ public class CourtDanceSpot {
      */
     private String attentionDesc;
 
+    /*
+        经度
+     */
+    private Double longitude;
 
+    /*
+    纬度
+     */
+    private Double latitude;
 
     private String createByUserName;
+
+    private Long belongToSpot;
+
+    private Long createBy;
+
+    private Long updateBy;
 
     private String danceTypes;
 

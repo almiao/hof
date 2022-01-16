@@ -6,14 +6,19 @@ import lombok.Data;
 
 
 @Data
-public class CourtDanceSpotAddDto extends BaseInput {
+public class CourtDanceGroupAddDto extends BaseInput {
 
 
+    /*
+    跳舞组名称
+     */
+    private String name;
 
     /*
     跳舞点名称
      */
-    private String name;
+    private Long courtDanceSpotId;
+
 
     /*
     舞点基本信息描述
@@ -31,16 +36,6 @@ public class CourtDanceSpotAddDto extends BaseInput {
     private String logoImgId;
 
     private String danceTypes;
-
-    /*
-    经度
-    */
-    private Double longitude;
-
-    /*
-    纬度
-     */
-    private Double latitude;
 
 
 

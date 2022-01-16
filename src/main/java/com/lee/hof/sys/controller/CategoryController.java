@@ -3,7 +3,7 @@ package com.lee.hof.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lee.hof.sys.bean.model.Catetory;
+import com.lee.hof.sys.bean.model.Category;
 import com.lee.hof.sys.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,32 +26,32 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @RequestMapping("/category")
-public class CatetoryController extends BaseController {
+public class CategoryController extends BaseController {
 
     @Autowired
     CategoryService categoryService;
 
 
     @PostMapping("/add")
-    public ResponseEntity<Boolean> add(@RequestBody Catetory catetory) {
+    public ResponseEntity<Boolean> add(@RequestBody Category catetory) {
        return ResponseEntity.ok(categoryService.save(catetory)) ;
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Boolean> update(@RequestBody Catetory catetory) {
+    public ResponseEntity<Boolean> update(@RequestBody Category catetory) {
         return ResponseEntity.ok(categoryService.updateById(catetory)) ;
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Boolean> remove(@RequestBody Catetory catetory) {
+    public ResponseEntity<Boolean> remove(@RequestBody Category catetory) {
         return ResponseEntity.ok(categoryService.removeById(catetory.getId())) ;
     }
 
     @PostMapping("/list")
-    public ResponseEntity<IPage<Catetory>> list(String name,Integer parentId,Integer pageNo, Integer pageSize) {
+    public ResponseEntity<IPage<Category>> list(String name,Integer parentId,Integer pageNo, Integer pageSize) {
 
-        Page<Catetory> page = new Page<>(pageNo,pageSize);
-        QueryWrapper<Catetory> wrapper = new QueryWrapper<>();
+        Page<Category> page = new Page<>(pageNo,pageSize);
+        QueryWrapper<Category> wrapper = new QueryWrapper<>();
         if(!StringUtils.isEmpty(name)){
             wrapper.like("name",name);
         }
@@ -62,7 +62,7 @@ public class CatetoryController extends BaseController {
         }
 
 
-        IPage<Catetory> result  = categoryService.page(page,wrapper);
+        IPage<Category> result  = categoryService.page(page,wrapper);
 
         return ResponseEntity.ok(result) ;
     }
