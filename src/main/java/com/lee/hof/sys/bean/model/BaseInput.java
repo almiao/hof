@@ -1,7 +1,5 @@
 package com.lee.hof.sys.bean.model;
 
-import com.lee.hof.sys.bean.dto.User;
-
 import javax.validation.constraints.NotNull;
 
 /**

@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 
 @Data
-public class CourtDanceSpot {
+public class CourtDanceSpot extends BaseEntity{
 
     private Long id;
     /*
