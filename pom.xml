@@ -72,13 +72,7 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.4.3.4</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>mybatis-plus-extension</artifactId>
-                        <groupId>com.baomidou</groupId>
-                    </exclusion>
-                </exclusions>
+                <version>3.4.2</version>
             </dependency>
 
             <dependency>
@@ -191,11 +185,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>1.2.8</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-extension</artifactId>
-                <version>3.4.3.4</version>
             </dependency>
         </dependencies>
 <!--    </dependencyManagement>-->
