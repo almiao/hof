@@ -1,9 +1,11 @@
 package com.lee.hof.sys.controller;
 
+import com.lee.hof.sys.bean.vo.FileUploadBean;
 import com.lee.hof.sys.service.FileManagerService;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,9 +31,9 @@ public class FileController {
 
 
     @PostMapping("/upload")
-    public String uploadFile(MultipartFile file) throws Exception {
+    public ResponseEntity<FileUploadBean> uploadFile(MultipartFile file) throws Exception {
 
-       return fileService.uploadFile(file);
+       return ResponseEntity.ok(fileService.uploadFile(file));
 
     }
 

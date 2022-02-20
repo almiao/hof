@@ -32,8 +32,8 @@ public class CourtDanceSpotSearchDto extends BaseInput {
     private Double radius;
 
 
-    private Integer pageNo;
+    private int pageNo;
 
-    private Integer pageSize;
+    private int pageSize = 20;
 
 }

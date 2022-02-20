@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 
 @Data
 public class CourtDanceSpotVO extends BaseOutput {
+
+    private Long id;
     /*
     跳舞点名称
      */
@@ -37,6 +39,12 @@ public class CourtDanceSpotVO extends BaseOutput {
 
     private Timestamp updateTime;
 
+
+    private int teamCount;
+
+    private int memberCount;
+
+    private String distance;
 
 
 

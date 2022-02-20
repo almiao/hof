@@ -2,6 +2,7 @@ package com.lee.hof.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.common.util.Utils;
 import com.lee.hof.sys.bean.dto.CourtDanceGroupAddDto;
 import com.lee.hof.sys.bean.dto.CourtDanceGroupUpdateDto;
@@ -11,7 +12,6 @@ import com.lee.hof.sys.service.CourtDanceGroupService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -24,14 +24,14 @@ public class CourtDanceGroupServiceImpl extends ServiceImpl<CourtDanceGroupMappe
 
 
     @Override
-    public Page<CourtDanceGroup> searchDanceGroups(String desc,
+    public Page<CourtDanceGroup> searchDanceGroups(String name,
                                                    String danceType,
                                                    Long danceSpotId,
                                                    int pageNo,
                                                    int pageSize) {
 
         QueryWrapper<CourtDanceGroup> conditions = new QueryWrapper<CourtDanceGroup>()
-                .like(StringUtils.isNoneBlank(desc),"name", desc)
+                .like(StringUtils.isNoneBlank(name),"name", name)
                 .like(StringUtils.isNotBlank(danceType),"danceTypes",danceType);
 
         return  mapper.selectPage(new Page<>(pageNo, pageSize), conditions);

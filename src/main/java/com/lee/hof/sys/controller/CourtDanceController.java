@@ -2,12 +2,14 @@ package com.lee.hof.sys.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lee.hof.sys.bean.PageVO;
 import com.lee.hof.sys.bean.dto.*;
 import com.lee.hof.sys.bean.vo.CourtDanceGroupVO;
 import com.lee.hof.sys.bean.vo.CourtDanceSpotVO;
 import com.lee.hof.sys.service.CourtDanceSpotService;
 import com.lee.hof.sys.service.biz.CourtDanceBiz;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,7 @@ public class CourtDanceController {
     @Autowired
     CourtDanceBiz courtDanceBiz;
 
-    @GetMapping("/spot/list")
+    @PostMapping("/spot/list")
     public ResponseEntity<List<CourtDanceSpotVO>> getDanceSpots(CourtDanceSpotSearchDto dto){
         return ResponseEntity.ok(courtDanceBiz.getDanceSpots(dto));
     }
@@ -37,13 +39,13 @@ public class CourtDanceController {
         return ResponseEntity.ok(courtDanceBiz.updateCourtDanceSpot(updateDto));
     }
 
-    @GetMapping("/group/list")
-    public ResponseEntity<IPage<CourtDanceGroupVO>> getDanceGroups(@RequestBody CourtDanceGroupSearchDto dto) {
+    @PostMapping("/group/list")
+    public ResponseEntity<PageVO<CourtDanceGroupVO>> getDanceGroups(@RequestBody CourtDanceGroupSearchDto dto) {
         return ResponseEntity.ok(courtDanceBiz.getDanceGroups(dto));
     }
 
-    @GetMapping("/group/add")
-    public ResponseEntity<CourtDanceGroupVO> getDanceGroups(@RequestBody CourtDanceGroupAddDto dto) {
+    @PostMapping("/group/add")
+    public ResponseEntity<CourtDanceGroupVO> createDanceGroup(@RequestBody CourtDanceGroupAddDto dto) {
         return ResponseEntity.ok(courtDanceBiz.addCourtDanceGroup(dto));
     }
 

@@ -5,6 +5,7 @@ import com.lee.hof.common.exception.HofException;
 import com.lee.hof.common.upload.UploadedFileBean;
 import com.lee.hof.common.upload.service.local.LocalStorageService;
 import com.lee.hof.sys.bean.model.FileManager;
+import com.lee.hof.sys.bean.vo.FileUploadBean;
 import com.lee.hof.sys.mapper.FileManagerMapper;
 import com.lee.hof.sys.service.FileManagerService;
 import org.apache.commons.io.IOUtils;
@@ -37,7 +38,7 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
     LocalStorageService localStorageService;
 
 
-    public String uploadFile(MultipartFile file) throws Exception {
+    public FileUploadBean uploadFile(MultipartFile file) throws Exception {
         System.out.println("上传文件:" + file.getOriginalFilename());
         // 参数列表
         UploadedFileBean uploadedFileBean = localStorageService.uploadFile(file);
@@ -52,8 +53,14 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
 
         this.baseMapper.insert(fileManager);
 
+        FileUploadBean fileBean = new FileUploadBean();
+
+        fileBean.setId(fileManager.getUuid());
+        fileBean.setName(fileManager.getName());
+        fileBean.setUrl(fileManager.getFullPath());
+
         //请求接口
-        return uuid;
+        return fileBean;
     }
 
 

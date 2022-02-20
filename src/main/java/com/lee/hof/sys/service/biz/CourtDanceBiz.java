@@ -2,6 +2,7 @@ package com.lee.hof.sys.service.biz;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lee.hof.sys.bean.PageVO;
 import com.lee.hof.sys.bean.dto.*;
 import com.lee.hof.sys.bean.model.CourtDanceGroup;
 import com.lee.hof.sys.bean.model.CourtDanceSpot;
@@ -106,17 +107,18 @@ public class CourtDanceBiz {
     }
 
 
-    public IPage<CourtDanceGroupVO> getDanceGroups(CourtDanceGroupSearchDto dto) {
+    public PageVO<CourtDanceGroupVO> getDanceGroups(CourtDanceGroupSearchDto dto) {
 
         Page<CourtDanceGroup> groups =
-                courtDanceGroupService.searchDanceGroups(dto.getDetailDesc(),
+                courtDanceGroupService.searchDanceGroups(dto.getName(),
                         dto.getDanceType(),dto.getCourtDanceSpotId(),
                         dto.getPageNum(),dto.getPageSize());
-
-        return groups.convert(courtDanceSpot -> {
+        IPage<CourtDanceGroupVO> groupPage = groups.convert(courtDanceSpot -> {
             CourtDanceGroupVO vo = new CourtDanceGroupVO();
             BeanUtils.copyProperties(courtDanceSpot,vo);
             return vo;
         });
+
+        return new PageVO<>(groupPage);
     }
 }

@@ -21,6 +21,8 @@ public class CourtDanceGroupSearchDto extends BaseInput {
 
     private String danceType;
 
+    private String name;
+
 
     private int pageNum = 0;
 
