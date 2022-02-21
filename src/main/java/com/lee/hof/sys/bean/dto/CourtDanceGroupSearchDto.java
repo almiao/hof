@@ -28,4 +28,6 @@ public class CourtDanceGroupSearchDto extends BaseInput {
 
     private int pageSize = 99;
 
+    private String sortBy;
+
 }
