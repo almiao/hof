@@ -33,7 +33,7 @@ public class CourtDanceGroupServiceImpl extends ServiceImpl<CourtDanceGroupMappe
         QueryWrapper<CourtDanceGroup> conditions = new QueryWrapper<CourtDanceGroup>()
                 .like(StringUtils.isNoneBlank(name),"name", name)
                 .like(StringUtils.isNotBlank(danceType),"danceTypes",danceType)
-                .orderByDesc("id","createTime");
+                .orderByDesc("id","create_time");
 
         return  mapper.selectPage(new Page<>(pageNo, pageSize), conditions);
     }
