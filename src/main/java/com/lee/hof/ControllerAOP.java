@@ -82,6 +82,7 @@ public class ControllerAOP {
             String declaringTypeName = pjp.getSignature().getDeclaringTypeName();
             String methodName = pjp.getSignature().getName();
             logger.info("方法：" + declaringTypeName + "."+ methodName +"，耗时：" + (System.currentTimeMillis() - startTime));
+            logger.info(JSONObject.toJSONString(result));
         }catch (Throwable throwable){
             throwable.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("内部错误");

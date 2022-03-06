@@ -42,11 +42,11 @@ public class CourtDanceGroupServiceImpl extends ServiceImpl<CourtDanceGroupMappe
         CourtDanceGroup.setId(Utils.generateId());
         CourtDanceGroup.setName(dto.getName());
         CourtDanceGroup.setLogoImgId(dto.getLogoImgId());
-        CourtDanceGroup.setAttentionDesc(dto.getAttentionDesc());
+        CourtDanceGroup.setAttentionDesc(dto.getAttentionDesc() == null ? "":dto.getAttentionDesc().trim());
         CourtDanceGroup.setCreateByUserName(dto.getUser().getName());
         CourtDanceGroup.setCreateTime(new Timestamp(System.currentTimeMillis()));
         CourtDanceGroup.setDanceTypes(dto.getDanceTypes());
-        CourtDanceGroup.setDetailDesc(dto.getDetailDesc());
+        CourtDanceGroup.setDetailDesc(dto.getDetailDesc() == null ? "":dto.getDetailDesc().trim());
         CourtDanceGroup.setCreateBy(dto.getUser().getId());
         CourtDanceGroup.setUpdateBy(dto.getUser().getId());
         mapper.insert(CourtDanceGroup);
