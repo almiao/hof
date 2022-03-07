@@ -1,6 +1,7 @@
 package com.lee.hof;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lee.hof.common.exception.HofException;
 import com.lee.hof.sys.bean.model.BaseInput;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.mapper.UserMapper;
@@ -83,7 +84,9 @@ public class ControllerAOP {
             String methodName = pjp.getSignature().getName();
             logger.info("方法：" + declaringTypeName + "."+ methodName +"，耗时：" + (System.currentTimeMillis() - startTime));
             logger.info(JSONObject.toJSONString(result));
-        }catch (Throwable throwable){
+        }catch (HofException throwable){
+           return ResponseEntity.badRequest().body(throwable.getMsg())
+        } catch (Throwable throwable){
             throwable.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("内部错误");
         }

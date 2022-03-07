@@ -3,6 +3,7 @@ package com.lee.hof.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lee.hof.common.exception.HofException;
 import com.lee.hof.common.util.Utils;
 import com.lee.hof.sys.bean.dto.CourtDanceGroupAddDto;
 import com.lee.hof.sys.bean.dto.CourtDanceGroupUpdateDto;
@@ -39,6 +40,9 @@ public class CourtDanceGroupServiceImpl extends ServiceImpl<CourtDanceGroupMappe
     }
 
     public CourtDanceGroup addDanceGroup(CourtDanceGroupAddDto dto) {
+
+        valid(dto);
+
         CourtDanceGroup CourtDanceGroup = new CourtDanceGroup();
         CourtDanceGroup.setId(Utils.generateId());
         CourtDanceGroup.setName(dto.getName());
@@ -63,6 +67,20 @@ public class CourtDanceGroupServiceImpl extends ServiceImpl<CourtDanceGroupMappe
         return group;
     }
 
+
+    private void valid(CourtDanceGroupAddDto addDto){
+
+        if(StringUtils.isEmpty(addDto.getName())){
+            throw new HofException("名称不能为空");
+        }
+
+
+        if(StringUtils.isEmpty(addDto.getLogoImgId())){
+            throw new HofException("图片不能为空");
+        }]
+
+
+    }
 
 
 }
