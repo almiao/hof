@@ -20,6 +20,7 @@ public class HofException extends RuntimeException {
 
     public HofException(String msg){
         super(msg);
+        this.msg = msg;
         this.code = HofStatus.CONTINUE.getCode();
     }
 
