@@ -77,8 +77,7 @@ public class CourtDanceGroupServiceImpl extends ServiceImpl<CourtDanceGroupMappe
 
         if(StringUtils.isEmpty(addDto.getLogoImgId())){
             throw new HofException("图片不能为空");
-        }]
-
+        }
 
     }
 

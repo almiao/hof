@@ -85,7 +85,7 @@ public class ControllerAOP {
             logger.info("方法：" + declaringTypeName + "."+ methodName +"，耗时：" + (System.currentTimeMillis() - startTime));
             logger.info(JSONObject.toJSONString(result));
         }catch (HofException throwable){
-           return ResponseEntity.badRequest().body(throwable.getMsg())
+           return ResponseEntity.badRequest().body(throwable.getMsg());
         } catch (Throwable throwable){
             throwable.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("内部错误");
