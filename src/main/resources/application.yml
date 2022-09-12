@@ -11,7 +11,16 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
+  jpa:
+    #开启SQL语句执行日志信息
+    show-sql: true
+    hibernate:
+      #配置为自动创建
+      ddl-auto: update
+  http:
+    multipart:
+      maxFileSize: 100Mb
+      maxRequestSize: 100Mb
 # mybaits-plus配置
 #mybatis-plus:
 #  # MyBatis Mapper所对应的XML文件位置

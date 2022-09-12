@@ -9,7 +9,7 @@ server:
 spring:
   # 配置数据源
   datasource:
-    url: jdbc:mysql://39.101.188.252:3306/hof?userSSL=false
+    url: jdbc:mysql://localhost:3306/hof?userSSL=false
 #    url: jdbc:mysql://localhost:3306/hof?userSSL=false
     username: root
     password: 597130788

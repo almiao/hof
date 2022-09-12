@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+seller -> platform: 提交车辆信息
+platform -> platform: 权属信息认证
+
+alt SUCCESS
+    seller -> platform: 请求检车服务
+else FAIL
+    platform -> platform: 记录验证失败信息
+end
+
+platform -> platform: 车辆信息发布
+
+buyer -> seller: 线上基本沟通
+buyer -> seller: 线下见面,达成交易
+
+
+
+
+@enduml

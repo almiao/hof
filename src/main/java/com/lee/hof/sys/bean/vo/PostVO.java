@@ -1,22 +1,18 @@
 package com.lee.hof.sys.bean.vo;
 
-import com.lee.hof.sys.bean.model.BaseOutput;
+import com.lee.hof.sys.bean.model.Post;
 import lombok.Data;
-
-import java.util.List;
 
 
 @Data
-public class PostVO extends BaseOutput {
+public class PostVO extends Post {
 
-    public String name;
+    private boolean like;
 
-    public String contentHtml;
+    private boolean notLike;
 
-    public List<Long> topics;
+    private String likeId;
 
-    public String headText;
-
-    public List<String> contentPics;
+    private String notLikeId;
 
 }

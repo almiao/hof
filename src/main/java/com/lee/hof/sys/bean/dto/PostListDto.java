@@ -22,7 +22,7 @@ public class PostListDto extends BaseInput {
 
     private int pageNum = 0;
 
-    private int pageSize = 99;
+    private int pageSize = 10;
 
     private String sortBy;
 }

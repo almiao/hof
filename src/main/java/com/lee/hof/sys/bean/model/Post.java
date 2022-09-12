@@ -1,17 +1,15 @@
 package com.lee.hof.sys.bean.model;
 
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
-import jodd.util.StringUtil;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.sql.Timestamp;
 
 /**
  * @author tangle
@@ -21,55 +19,142 @@ import java.util.List;
 
 @Data
 @TableName("post")
-public class Post extends BaseEntity implements Serializable {
+@Entity
+@Table(name="post")
+public class Post implements Serializable {
     private static final long serialVersionUID = 1876655654053364580L;
+
+    private Long createBy;
+
+    private Long updateBy;
+
+    @TableField(fill = FieldFill.INSERT)
+    private Timestamp createTime;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Timestamp updateTime;
+
+    private Integer status;
+
+    @Id
+    private String id;
+    private String channelName;
+    private String channelNamePrefixed;
+    private String channelIconUrl;
     /**
-     * 运费模板id
+     * 作者名
      */
-    @TableId
-    @ApiModelProperty(value = "id",required=true)
-    private Long id;
-
-
-    private String uuid;
-
-
-    private String name;
+    private String author;
     /**
-     * 运费模板名称
+     * 作者名简写
      */
-    @ApiModelProperty(value = "html格式内容",required=true)
-    private String contentHtml;
+    private String authorNamePrefixed;
+    /**
+     * 作者头像url
+     */
+    private String authorIconUrl;
+    /**
+     * 作者资质
+     */
+    private String authorFlair;
+    /**
+     * 标题
+     */
+    private String title;
+    /**
+     * 文本
+     */
+    private String selfText;
+    /**
+     * 无图片文本
+     */
+    private String selfTextPlain;
+    /**
+     * 文本剪切
+     */
+    private String selfTextPlainTrimmed;
+    /**
+     * 地址
+     */
+    private String url;
+    /**
+     * 视频地址
+     */
+    private String videoUrl;
+    /**
+     * 视频下载地址
+     */
+    private String videoDownloadUrl;
+    /***
+     * 动态图id
+     */
+    private String gfycatId;
+    private String streamableShortCode;
+
+    private boolean isImgur;
+    private boolean isGfycat;
+    private boolean isStreamable;
+    /**
+     * 永久链接
+     */
+    private String permalink;
+    private int likeCnt;
+    private int notLikeCnt;
+
+
+    private long postTimeMillis;
+
+    private String postTime;
+    /**
+     * 得分
+     */
+    private String score;
+    /**
+     * 类型
+     */
+    private String postType;
+    /**
+     * 投票类型
+     */
+    private int voteType;
+    /**
+     * 评论数
+     */
+    private int commentCnt;
+    /**
+     *
+     */
+    private int upvoteRatio;
 
     /**
-     * 店铺id
+     * 是否隐藏
      */
-    @ApiModelProperty(value = "",required=true)
-    private String headText;
-
-
-    private String contentPics;
-
-    public String getContentPics() {
-        return contentPics;
-    }
-
-    public void setContentPics(String contentPics) {
-        this.contentPics = contentPics;
-        this.contentPicList = contentPics == null ? new ArrayList<>() : Arrays.asList(StringUtil.split(contentPics, ","));
-    }
-
-
-    public List<String> getContentPicList() {
-        return contentPicList;
-    }
-
-    public void setContentPicList(List<String> contentPicList) {
-        this.contentPicList = contentPicList;
-        this.contentPics = CollectionUtils.isEmpty(contentPicList) ? "": StringUtils.join(contentPicList,",");
-    }
-
-    private List<String> contentPicList;
+    private boolean hidden;
+    private boolean spoiler;
+    /**
+     * 浏览等级
+     */
+    private boolean nsfw;
+    /**
+     *
+     */
+    private boolean stickied;
+    /**
+     * 是否已收藏
+     */
+    private boolean archived;
+    private boolean locked;
+    private boolean saved;
+    private boolean isCrosspost;
+    /**
+     * 是否已读
+     */
+    private boolean isRead;
+    private boolean isHiddenInRecyclerView = false;
+    /**
+     * 用户设置为隐藏
+     */
+    private boolean isHiddenManuallyByUser = false;
 
 }
 

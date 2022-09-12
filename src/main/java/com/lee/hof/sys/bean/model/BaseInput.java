@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
  * @date 2021/9/7
  */
 
-public class BaseInput {
+public class BaseInput{
 
     public Long getUserId() {
         return userId;
@@ -61,5 +61,7 @@ public class BaseInput {
     private String endInfo;
 
     private String location;
+
+
 
 }

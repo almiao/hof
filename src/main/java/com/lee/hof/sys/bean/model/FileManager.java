@@ -5,18 +5,22 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * @author tangle
  * @description 文件
  * @date 2021/9/3
  */
 
+@Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class FileManager {
 
         private static final long serialVersionUID = 1L;
-
+        @Id
         @TableId(value = "id", type = IdType.AUTO)
         private Integer id;
 

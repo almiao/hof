@@ -16,9 +16,9 @@ import java.sql.Timestamp;
 public class BaseEntity {
 
 
-    private long createBy;
+    private Long createBy;
 
-    private long updateBy;
+    private Long updateBy;
 
     @TableField(fill = FieldFill.INSERT)
     private Timestamp createTime;

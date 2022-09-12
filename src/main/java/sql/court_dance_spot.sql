@@ -35,8 +35,8 @@ INDEX `id`(`id`) USING BTREE
 
 
 
-DROP TABLE IF EXISTS `USERS`;
-CREATE TABLE `USERS` (
+DROP TABLE IF EXISTS `USER`;
+CREATE TABLE `USER` (
                                     `id` int(11) NOT NULL AUTO_INCREMENT,
                                     `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
                                     `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
