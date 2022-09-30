@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
-import com.lee.hof.sys.controller.BaseController;
-
 /**
  * <p>
  *  前端控制器
@@ -34,7 +31,6 @@ public class ShopDishDailyController extends BaseController {
 
        return ResponseEntity.ok(dishDaily);
     }
-
 
 }
 

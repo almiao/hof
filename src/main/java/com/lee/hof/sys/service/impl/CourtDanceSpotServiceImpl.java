@@ -50,7 +50,7 @@ public class CourtDanceSpotServiceImpl extends ServiceImpl<CourtDanceSpotMapper,
         courtDanceSpot.setName(dto.getName());
         courtDanceSpot.setLogoImgId(dto.getLogoImgId());
         courtDanceSpot.setAttentionDesc(dto.getAttentionDesc());
-        courtDanceSpot.setCreateByUserName(dto.getUser().getName());
+        courtDanceSpot.setCreateByUserName(dto.getUser().getUsername());
         courtDanceSpot.setCreateTime(new Timestamp(System.currentTimeMillis()));
         courtDanceSpot.setDanceTypes(dto.getDanceTypes());
         courtDanceSpot.setDetailDesc(dto.getDetailDesc());

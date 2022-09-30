@@ -1,31 +1,49 @@
 package com.lee.hof.sys.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lee.hof.auth.JwtUtil;
 import com.lee.hof.sys.bean.BaseResponse;
-import com.lee.hof.sys.service.UserComponentService;
+import com.lee.hof.sys.bean.model.User;
+import com.lee.hof.sys.mapper.UserMapper;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+
     @Resource
-    UserComponentService postService;
+    UserMapper userMapper;
 
-    @PostMapping("/component/add")
-    public BaseResponse<String> addComponent(@RequestParam("file") MultipartFile file,
-                                             @RequestParam("componentId") String componentId) throws IOException {
-        return BaseResponse.success(postService.addComponent(file,componentId));
+
+    @PostMapping(value = "/login")
+    public BaseResponse<String> login(@RequestBody User user, HttpServletResponse response){
+        Map<String, Object> map = new HashMap<>();
+        String username = user.getUsername();
+        String password = user.getPassword();
+        User databaseUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", username).eq("password", password));
+        if(databaseUser == null){
+            return BaseResponse.badrequest();
+        }
+
+
+        // 省略 账号密码验证
+        // 验证成功后发送token
+        String token = JwtUtil.sign(username,password);
+        if (token != null){
+            response.addHeader("set-token", token);
+            BaseResponse.success(token);
+        }
+        return BaseResponse.badrequest();
     }
-
-
-
 
 }

@@ -31,7 +31,7 @@ public class User extends BaseEntity {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String name;
+    private String username;
 
     private String phone;
 

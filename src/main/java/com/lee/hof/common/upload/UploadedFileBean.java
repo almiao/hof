@@ -95,4 +95,8 @@ public class UploadedFileBean {
     public void setPartEtag(String partEtag) {
         this.partEtag = partEtag;
     }
+
+
+    public UploadedFileBean() {
+    }
 }

@@ -48,7 +48,7 @@ public class CourtDanceGroupServiceImpl extends ServiceImpl<CourtDanceGroupMappe
         CourtDanceGroup.setName(dto.getName());
         CourtDanceGroup.setLogoImgId(dto.getLogoImgId());
         CourtDanceGroup.setAttentionDesc(dto.getAttentionDesc() == null ? "":dto.getAttentionDesc().trim());
-        CourtDanceGroup.setCreateByUserName(dto.getUser().getName());
+        CourtDanceGroup.setCreateByUserName(dto.getUser().getUsername());
         CourtDanceGroup.setCreateTime(new Timestamp(System.currentTimeMillis()));
         CourtDanceGroup.setDanceTypes(dto.getDanceTypes());
         CourtDanceGroup.setDetailDesc(dto.getDetailDesc() == null ? "":dto.getDetailDesc().trim());
