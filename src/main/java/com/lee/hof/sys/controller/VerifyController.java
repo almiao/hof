@@ -12,10 +12,13 @@ import com.lee.hof.sys.bean.model.VerifyComponentResponse;
 import com.lee.hof.sys.bean.model.VerifyItem;
 import com.lee.hof.sys.bean.vo.BrandResponse;
 import com.lee.hof.sys.service.VerifyItemService;
+import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -43,9 +46,12 @@ public class VerifyController {
 
     @GetMapping("/component/brand/list")
     public GuaziResponse<BrandResponse> listBrand() throws IOException {
+        ClassPathResource resource = new ClassPathResource("response.txt");
+        InputStream inputStream = resource.getInputStream();
+        File tempFile = File.createTempFile("temp", ".txt");
+        FileUtils.copyInputStreamToFile(inputStream, tempFile);
 
-        File respone = new File("src/main/resources/response.txt");
-        String text = readTxt(respone);
+        String text = FileUtils.readFileToString(tempFile, StandardCharsets.UTF_8);
 
         GuaziResponse<BrandResponse> responseBaseResponse = JSONObject.parseObject(text,new TypeReference<GuaziResponse<BrandResponse>>(){});
 
