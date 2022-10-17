@@ -12,7 +12,7 @@ public class BaseResponse<T> {
 
     private static final int CODE_FAIL = 500;
 
-    private static final int CODE_ERROR = 500;
+    private static final int CODE_ERROR = 1000;
 
     private static final int CODE_NO_LOGIN = 300;
 

@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author tangle
@@ -38,6 +41,15 @@ public class FileController {
         fileService.download(fileId,response);
     }
 
-
+    @PostMapping("/upload/multi")
+    @ResponseBody
+    public BaseResponse<String> pic(MultipartFile[] files, HttpSession session) throws Exception {
+        List<String> result = new LinkedList<>();
+        for(MultipartFile file:files){
+            FileUploadBean fileUploadBean =   fileService.uploadFile(file);
+            result.add(fileUploadBean.getId());
+        }
+        return BaseResponse.success(String.join(",",result));
+    }
 
 }

@@ -1,20 +1,18 @@
-package com.lee.hof;
+package com.lee.hof.common;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lee.hof.common.exception.HofException;
+import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.model.BaseInput;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.mapper.UserMapper;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -85,10 +83,11 @@ public class ControllerAOP {
             logger.info("方法：" + declaringTypeName + "."+ methodName +"，耗时：" + (System.currentTimeMillis() - startTime));
             logger.info(JSONObject.toJSONString(result));
         }catch (HofException throwable){
-           return ResponseEntity.badRequest().body(throwable.getMsg());
+            logger.error("报错："+throwable.getMsg());
+           return BaseResponse.error(throwable.getMessage());
         } catch (Throwable throwable){
             throwable.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("内部错误");
+            return  BaseResponse.error("内部错误");
         }
 
         return result;

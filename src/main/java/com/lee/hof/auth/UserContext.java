@@ -5,7 +5,7 @@ import io.netty.util.concurrent.FastThreadLocal;
 
 public class UserContext {
     /**FastThreadLocal快，稳，没内存泄露问题*/
-    private static FastThreadLocal<User> userHolder = new FastThreadLocal();
+    private static FastThreadLocal<User> userHolder = new FastThreadLocal<>();
     /**
      *设置用户到 FastThreadLocal
      */
@@ -17,6 +17,10 @@ public class UserContext {
      */
     public static User getUser() {
         return userHolder.get();
+    }
+
+    public static Long getUserId() {
+        return userHolder.get().getId();
     }
     /**
      *清除FastThreadLocal，反之内存泄露

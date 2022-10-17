@@ -79,7 +79,7 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
 
         FileManager fileManager = this.baseMapper.getByUuid(uuid);
 
-        if(fileManager==null){
+        if(fileManager==null || fileManager.getContent() == null){
             throw new HofException("未找到文件");
         }
         System.out.println("下载文件文件:" + fileManager.getName());
