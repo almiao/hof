@@ -41,7 +41,7 @@ public class UserController {
         String token = JwtUtil.sign(username,password);
         if (token != null){
             UserToken userToken = new UserToken();
-            userToken.setId(user.getId().toString());
+            userToken.setId(databaseUser.getId().toString());
             userToken.setToken(token);
             userToken.setUsername(databaseUser.getUsername());
             response.addHeader("set-token", token);
