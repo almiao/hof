@@ -10,14 +10,6 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-/**
- * Created with IntelliJ IDEA.
- * @ Auther: 马超伟
- * @ Date: 2020/06/16/14:35
- * @ Description:
- * @ ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
- * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端
- */
 @Component
 @Slf4j
 @Service
