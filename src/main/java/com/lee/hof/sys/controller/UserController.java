@@ -45,7 +45,7 @@ public class UserController {
             userToken.setToken(token);
             userToken.setUsername(databaseUser.getUsername());
             response.addHeader("set-token", token);
-            BaseResponse.success(token);
+            BaseResponse.success(userToken);
         }
         return BaseResponse.badrequest();
     }
