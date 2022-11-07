@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @author tangle
@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 @TableName("post")
 @Entity
 @Table(name="post")
-public class Post implements Serializable {
+public class Post implements Serializable{
     private static final long serialVersionUID = 1876655654053364580L;
 
     private Long createBy;
@@ -29,10 +29,10 @@ public class Post implements Serializable {
     private Long updateBy;
 
     @TableField(fill = FieldFill.INSERT)
-    private Timestamp createTime;
+    private LocalDateTime createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Timestamp updateTime;
+    private LocalDateTime updateTime;
 
     private Integer status;
 
@@ -61,6 +61,9 @@ public class Post implements Serializable {
      * 标题
      */
     private String title;
+
+
+    private String images;
     /**
      * 文本
      */
@@ -155,6 +158,8 @@ public class Post implements Serializable {
      * 用户设置为隐藏
      */
     private boolean isHiddenManuallyByUser = false;
+
+
 
 }
 

@@ -8,7 +8,6 @@ import com.lee.hof.sys.bean.dto.PostListDto;
 import com.lee.hof.sys.bean.dto.PostUpdateDto;
 import com.lee.hof.sys.bean.model.Post;
 import com.lee.hof.sys.bean.model.User;
-import com.lee.hof.sys.bean.vo.PostDetailVo;
 import com.lee.hof.sys.bean.vo.PostVO;
 
 /**
@@ -31,5 +30,5 @@ public interface PostService extends IService<Post> {
 
     Boolean updatePost(PostUpdateDto postUpdateDto);
 
-    PostDetailVo getDetail(User user,String postId);
+    PostVO getDetail(String postId);
 }

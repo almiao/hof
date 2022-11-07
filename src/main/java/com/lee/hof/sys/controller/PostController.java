@@ -7,8 +7,6 @@ import com.lee.hof.sys.bean.dto.PostAddDto;
 import com.lee.hof.sys.bean.dto.PostDelDto;
 import com.lee.hof.sys.bean.dto.PostListDto;
 import com.lee.hof.sys.bean.dto.PostUpdateDto;
-import com.lee.hof.sys.bean.model.User;
-import com.lee.hof.sys.bean.vo.PostDetailVo;
 import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.service.PostService;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +48,9 @@ public class PostController {
         return ResponseEntity.ok(postService.updatePost(dto));
     }
 
-    @PostMapping("/detail/{postId}")
-    public ResponseEntity<PostDetailVo> getPostDetail(@PathVariable(value = "postId") String postId){
-        return ResponseEntity.ok(postService.getDetail(new User(),postId));
+    @PostMapping("/detail")
+    public BaseResponse<PostVO> getPostDetail(@RequestParam(value = "id") String id){
+        return BaseResponse.success(postService.getDetail(id));
     }
 
 }

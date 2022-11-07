@@ -11,7 +11,6 @@ import com.lee.hof.sys.bean.dto.PostUpdateDto;
 import com.lee.hof.sys.bean.model.Like;
 import com.lee.hof.sys.bean.model.Post;
 import com.lee.hof.sys.bean.model.User;
-import com.lee.hof.sys.bean.vo.PostDetailVo;
 import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
@@ -72,6 +71,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if(dto.getUser()!= null && dto.getUserId()!=null){
             conditions.eq("create_by", dto.getUserId());
         }
+        conditions.orderByDesc("update_time");
         Page<Post> result = postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
 
         List<String> postId = result.getRecords().stream().map(Post::getId).collect(Collectors.toList());
@@ -135,11 +135,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    public PostDetailVo getDetail(User user, String postId) {
-        QueryWrapper<Post> conditions = new QueryWrapper<Post>().eq("createBy", user.getId()).eq("uuid", postId);
-
-        Post post= postMapper.selectOne(conditions);
-        PostDetailVo postDetailVo = new PostDetailVo();
+    public PostVO getDetail(String postId) {
+        Post post= postMapper.selectById(postId);
+        PostVO postDetailVo = new PostVO();
         if(Objects.nonNull(post)){
             BeanUtils.copyProperties(post,postDetailVo);
         }

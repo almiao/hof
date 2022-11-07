@@ -7,10 +7,7 @@ import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.model.UserToken;
 import com.lee.hof.sys.mapper.UserMapper;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +32,6 @@ public class UserController {
         if(databaseUser == null){
             return BaseResponse.badrequest();
         }
-
         // 省略 账号密码验证
         // 验证成功后发送token
         String token = JwtUtil.sign(username,password);
@@ -45,9 +41,19 @@ public class UserController {
             userToken.setToken(token);
             userToken.setUsername(databaseUser.getUsername());
             response.addHeader("set-token", token);
-            BaseResponse.success(userToken);
+            return   BaseResponse.success(userToken);
         }
         return BaseResponse.badrequest();
+    }
+
+
+    @PostMapping(value = "/detail")
+    public BaseResponse<User> getDetail(@RequestParam Long id){
+        User databaseUser = userMapper.selectById(id);
+        if(databaseUser == null){
+            return BaseResponse.badrequest();
+        }
+        return BaseResponse.success(databaseUser);
     }
 
 }

@@ -34,6 +34,8 @@ public class PostAddDto extends BaseInput implements Serializable {
      * 作者资质
      */
     private String authorFlair;
+
+    private String images;
     /**
      * 作者资质地址
      */
