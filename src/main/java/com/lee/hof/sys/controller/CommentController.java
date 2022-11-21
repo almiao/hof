@@ -4,6 +4,7 @@ package com.lee.hof.sys.controller;
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.dto.CommentDto;
 import com.lee.hof.sys.bean.dto.CommentListDto;
+import com.lee.hof.sys.bean.model.Comment;
 import com.lee.hof.sys.bean.vo.CommentVo;
 import com.lee.hof.sys.service.CommentService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,7 @@ public class CommentController {
     CommentService commentService;
 
     @PostMapping("/add")
-    public BaseResponse<String> addComment(@RequestBody CommentDto dto){
+    public BaseResponse<Comment> addComment(@RequestBody CommentDto dto){
         return BaseResponse.success(commentService.addComment(dto));
     }
 

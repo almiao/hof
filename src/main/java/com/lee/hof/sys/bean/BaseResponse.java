@@ -16,6 +16,8 @@ public class BaseResponse<T> {
 
     private static final int CODE_NO_LOGIN = 300;
 
+    private static final int CODE_ERR_PASS = 402;
+
     private int code;
 
     private String msg;

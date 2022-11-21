@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.PostAddDto;
 import com.lee.hof.sys.bean.dto.PostListDto;
 import com.lee.hof.sys.bean.dto.PostUpdateDto;
@@ -46,17 +47,18 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Post post = new Post();
         BeanUtils.copyProperties(dto,post);
         post.setId(UUID.randomUUID().toString());
+        User user = UserContext.getUser();
+        post.setAuthor(user.getUsername());
+        post.setAuthorIconUrl(user.getImgId());
+        post.setAuthorNamePrefixed(user.getUsername().length()>10 ? user.getUsername().substring(0,10):user.getUsername());
         postMapper.insert(post);
         return post.getId();
     }
 
     @Override
     public Boolean delPost(User user, String postId) {
-
         QueryWrapper<Post> conditions = new QueryWrapper<Post>().eq("createBy", user.getId()).eq("uuid", postId);
-
         Post post= postMapper.selectOne(conditions);
-
         if(Objects.nonNull(post)){
            post.setStatus(99);
            post.setUpdateBy(user.getId());

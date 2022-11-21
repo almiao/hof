@@ -9,6 +9,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class CommentVo implements Serializable {
@@ -31,8 +32,9 @@ public class CommentVo implements Serializable {
 
     private String updateTimeStr;
 
-
     private int replyCnt;
+
+    private List<CommentVo> replyList;
 
 
     public CommentVo(Comment comment){

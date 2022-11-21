@@ -38,6 +38,8 @@ public class JwtInterceptor implements HandlerInterceptor {
             String username = JwtUtil.getUserNameByToken(request);
             // 这边拿到的 用户名 应该去数据库查询获得密码，简略，步骤在service直接获取密码
 
+            System.out.println("username:" + username);
+
             User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
 
             boolean result = JwtUtil.verify(token,username, user.getPassword());
