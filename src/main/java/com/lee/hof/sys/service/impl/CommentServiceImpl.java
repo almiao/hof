@@ -59,10 +59,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         QueryWrapper<Comment> conditions = new QueryWrapper<>();
         conditions.eq("post_id", dto.getPostId()).orderByDesc("create_time");
 
-        if(StringUtils.isEmpty(dto.getCommentId())) {
+        if(StringUtils.isEmpty(dto.getToCommentId())) {
             conditions.isNull("to_comment_id");
         }else{
-            conditions.eq("to_comment_id",dto.getCommentId());
+            conditions.eq("to_comment_id",dto.getToCommentId());
         }
         List<Comment> comments = commentMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions).getRecords();
 
