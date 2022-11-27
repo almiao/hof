@@ -6,6 +6,7 @@ server:
 #    key-store-type: PKCS12
 #    enabled: true
 
+
 spring:
   # 配置数据源
   datasource:
@@ -30,7 +31,7 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
   redis:
-    host: 127.0.0.1
+    host: 82.157.21.9
     database: 0
     port: 6379
     timeout: 1s
@@ -54,3 +55,11 @@ local:
 logging:
   level:
     root: debug
+  file:
+    # 默认情况下：会在项目的根目录下生成/output/logs/spring.log，默认的日志名是：spring.log
+    path: output/logs
+    # 如果不想把日志存放在logging.file.path目录下，可以采用name来重新定义存储的位置和日志文件的名称
+    #name: d:/output/logs/console.log
+  pattern:
+    console: "%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger{50}- %msg%n"
+    file: "%d{yyyy/MM/dd-HH:mm:ss} ---- [%thread] %-5level %logger{50}- %msg%n"
