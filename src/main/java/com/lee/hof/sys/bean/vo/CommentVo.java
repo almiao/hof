@@ -37,6 +37,9 @@ public class CommentVo implements Serializable {
     private List<CommentVo> replyList;
 
 
+    public CommentVo(){
+    }
+
     public CommentVo(Comment comment){
         this.id = comment.getId();
         this.postId = comment.getPostId();
