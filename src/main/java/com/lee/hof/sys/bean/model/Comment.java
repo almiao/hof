@@ -18,11 +18,11 @@ import java.sql.Timestamp;
 public class Comment implements Serializable {
 
     @Id
-    private String id;
+    private Long id;
 
     private String postId;
 
-    private String toCommentId;
+    private Long toCommentId;
 
     private Long userId;
 

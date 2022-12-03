@@ -45,8 +45,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setCommentTxt(commentDto.getCommentInfo());
         comment.setPostId(commentDto.getPostId());
         comment.setUserId(commentDto.getUserId());
-        if(commentDto.getToUser()!=null && commentDto.getToUser().getId()!=null){
-            comment.setToUserId(commentDto.getToUser().getId());
+        if( commentDto.getToUserId()!=null){
+            comment.setToUserId(commentDto.getToUserId());
         }
         comment.setToCommentId(commentDto.getToCommentId());
         commentMapper.insert(comment);

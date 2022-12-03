@@ -14,11 +14,11 @@ import java.util.List;
 @Data
 public class CommentVo implements Serializable {
 
-    private String id;
+    private Long id;
 
     private String postId;
 
-    private String toCommentId;
+    private Long toCommentId;
 
     private Long userId;
 
