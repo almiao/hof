@@ -16,8 +16,4 @@ public class CommentDto implements Serializable {
 
     private String commentInfo;
 
-    private String createTime;
-
-    private String updateTime;
-
 }

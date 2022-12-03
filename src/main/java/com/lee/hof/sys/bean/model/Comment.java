@@ -35,8 +35,6 @@ public class Comment implements Serializable {
     private Timestamp updateTime;
 
 
-    private String createTimeDesc;
-
     /**
      * 回复
      */
