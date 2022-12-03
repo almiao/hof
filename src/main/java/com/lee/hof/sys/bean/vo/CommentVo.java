@@ -30,6 +30,8 @@ public class CommentVo implements Serializable {
 
     private User user;
 
+    private User toUser;
+
     private String updateTimeStr;
 
     private int replyCnt;

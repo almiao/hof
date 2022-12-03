@@ -26,6 +26,8 @@ public class Comment implements Serializable {
 
     private Long userId;
 
+    private Long toUserId;
+
     private String commentTxt;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")

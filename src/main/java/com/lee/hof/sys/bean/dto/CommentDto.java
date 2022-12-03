@@ -1,6 +1,7 @@
 package com.lee.hof.sys.bean.dto;
 
 
+import com.lee.hof.sys.bean.model.User;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -20,5 +21,7 @@ public class CommentDto implements Serializable {
 
     @NotBlank(message = "评论信息不能为空")
     private String commentInfo;
+
+    private User toUser;
 
 }

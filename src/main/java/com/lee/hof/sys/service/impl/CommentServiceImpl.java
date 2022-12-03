@@ -45,6 +45,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setCommentTxt(commentDto.getCommentInfo());
         comment.setPostId(commentDto.getPostId());
         comment.setUserId(commentDto.getUserId());
+        if(commentDto.getToUser()!=null && commentDto.getToUser().getId()!=null){
+            comment.setToUserId(commentDto.getToUser().getId());
+        }
         comment.setToCommentId(commentDto.getToCommentId());
         commentMapper.insert(comment);
         return comment;
@@ -59,9 +62,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         QueryWrapper<Comment> conditions = new QueryWrapper<>();
         conditions.eq("post_id", dto.getPostId()).orderByDesc("create_time");
 
-        if(StringUtils.isEmpty(dto.getToCommentId())) {
-            conditions.isNull("to_comment_id");
-        }else{
+        if(!StringUtils.isEmpty(dto.getToCommentId())) {
             conditions.eq("to_comment_id",dto.getToCommentId());
         }
         List<Comment> comments = commentMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions).getRecords();
@@ -71,11 +72,18 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             if(comment.getUserId()!=null) {
                 commentVo.setUser(userService.getUserById(comment.getUserId()));
             }
+
+            if(comment.getToUserId()!=null){
+                commentVo.setToUser(userService.getUserById(comment.getToUserId()));
+            }
             int replyCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("to_comment_id", comment.getId()));
             List<Comment> childrens = commentMapper.selectList(new QueryWrapper<Comment>().eq("to_comment_id", comment.getId()));
             List<CommentVo> childs =  childrens.stream().map(cm -> {
                 CommentVo commentVo1 = new CommentVo(cm);
                 commentVo1.setUser(userService.getUserById(cm.getUserId()));
+                if(cm.getToUserId()!=null){
+                    commentVo1.setToUser(userService.getUserById(cm.getToUserId()));
+                }
                 return commentVo1;
             }).collect(Collectors.toList());
             commentVo.setReplyList(childs);
