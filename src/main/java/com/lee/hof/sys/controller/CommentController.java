@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class CommentController {
     CommentService commentService;
 
     @PostMapping("/add")
-    public BaseResponse<Comment> addComment(@RequestBody CommentDto dto){
+    public BaseResponse<Comment> addComment(@Valid @RequestBody CommentDto dto){
         return BaseResponse.success(commentService.addComment(dto));
     }
 
