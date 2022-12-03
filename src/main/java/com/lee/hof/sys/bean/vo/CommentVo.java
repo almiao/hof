@@ -22,7 +22,7 @@ public class CommentVo implements Serializable {
 
     private Long userId;
 
-    private String commentInfo;
+    private String commentTxt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Timestamp createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -43,7 +43,7 @@ public class CommentVo implements Serializable {
     public CommentVo(Comment comment){
         this.id = comment.getId();
         this.postId = comment.getPostId();
-        this.commentInfo = comment.getCommentInfo();
+        this.commentTxt = comment.getCommentTxt();
         this.createTime = comment.getCreateTime();
         this.toCommentId = comment.getToCommentId();
         this.updateTime = comment.getUpdateTime();

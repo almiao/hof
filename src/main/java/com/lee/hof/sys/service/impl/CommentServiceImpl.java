@@ -42,7 +42,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         Comment comment = new Comment();
         comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
         comment.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        comment.setCommentInfo(commentDto.getCommentInfo());
+        comment.setCommentTxt(commentDto.getCommentInfo());
         comment.setPostId(commentDto.getPostId());
         comment.setUserId(commentDto.getUserId());
         comment.setToCommentId(commentDto.getToCommentId());
