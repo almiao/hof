@@ -78,7 +78,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
         List<Comment> comments = commentMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions).getRecords();
 
-        return comments.stream().map(comment -> {
+        List<CommentVo> commentVos = new ArrayList<>();
+
+        comments.forEach(comment -> {
             CommentVo commentVo = new CommentVo(comment);
             if(comment.getUserId()!=null) {
                 commentVo.setUser(userService.getUserById(comment.getUserId()));
@@ -99,8 +101,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             }).collect(Collectors.toList());
             commentVo.setReplyList(childs);
             commentVo.setReplyCnt(replyCnt);
-            return commentVo;
-        }).collect(Collectors.toList());
+            commentVos.add(commentVo);
+        });
+        return commentVos;
     }
 
 
