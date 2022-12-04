@@ -36,10 +36,9 @@ spring:
     timeout: 10s
     jedis:
       pool:
-        max-active: 20
-        max-idle: 20
-        min-idle: 10
-        max-wait: -1ms
+        max-active: 4
+        max-idle: 4
+        min-idle: 1
     password: 597130788
   cache:
     redis:
