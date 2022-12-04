@@ -3,8 +3,8 @@ package com.lee.hof.sys.bean.dto;
 
 import lombok.Data;
 import lombok.NonNull;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Data

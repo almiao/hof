@@ -64,6 +64,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
         if(!StringUtils.isEmpty(dto.getToCommentId())) {
             conditions.eq("to_comment_id",dto.getToCommentId());
+        }else {
+            conditions.isNull("to_comment_id");
         }
         List<Comment> comments = commentMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions).getRecords();
 
