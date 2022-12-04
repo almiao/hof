@@ -36,8 +36,8 @@ spring:
     timeout: 10s
     jedis:
       pool:
-        max-active: 4
-        max-idle: 4
+        max-active: 32
+        max-idle: 32
         min-idle: 1
     password: 597130788
   cache:
