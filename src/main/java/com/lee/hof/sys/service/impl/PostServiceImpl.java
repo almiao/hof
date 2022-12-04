@@ -16,7 +16,7 @@ import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
 import com.lee.hof.sys.service.PostService;
-import jodd.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -119,8 +119,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public Page<Post> searchPost(PostListDto dto) {
         QueryWrapper<Post> conditions = new QueryWrapper<Post>()
                 .eq("createBy", dto.getUser().getId())
-                .like(StringUtil.isNotEmpty(dto.getPostName()),"name",dto.getPostName())
-                .like(StringUtil.isNotEmpty(dto.getContent()),"contentHtml",dto.getContent());
+                .like(StringUtils.isNotEmpty(dto.getPostName()),"name",dto.getPostName())
+                .like(StringUtils.isNotEmpty(dto.getContent()),"contentHtml",dto.getContent());
 
         return postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
     }

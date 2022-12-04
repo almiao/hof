@@ -138,13 +138,6 @@
                 <artifactId>aspectjweaver</artifactId>
             </dependency>
 
-
-            <!-- 使用redisson集成分布式锁等 -->
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>${redisson.version}</version>
-            </dependency>
             <!-- 用于序列化和反序列化-->
             <dependency>
                 <groupId>de.ruedigermoeller</groupId>

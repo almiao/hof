@@ -33,13 +33,12 @@ spring:
     host: 82.157.21.9
     database: 0
     port: 6379
-    timeout: 1s
+    timeout: 10s
     jedis:
       pool:
-        max-active: 20
-        max-idle: 20
-        min-idle: 10
-        max-wait: -1ms
+        max-active: 32
+        max-idle: 32
+        min-idle: 1
     password: 597130788
   cache:
     redis:

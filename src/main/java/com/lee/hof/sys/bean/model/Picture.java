@@ -3,7 +3,6 @@ package com.lee.hof.sys.bean.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
-import jodd.util.StringUtil;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -56,7 +55,7 @@ public class Picture extends BaseEntity implements Serializable {
 
     public void setContentPics(String contentPics) {
         this.contentPics = contentPics;
-        this.contentPicList = contentPics == null ? new ArrayList<>() : Arrays.asList(StringUtil.split(contentPics, ","));
+        this.contentPicList = contentPics == null ? new ArrayList<>() : Arrays.asList(StringUtils.split(contentPics, ","));
     }
 
 
