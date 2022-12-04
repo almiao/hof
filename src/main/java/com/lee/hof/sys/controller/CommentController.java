@@ -25,7 +25,7 @@ public class CommentController {
     CommentService commentService;
 
     @PostMapping("/add")
-    public BaseResponse<Comment> addComment(@Valid @RequestBody CommentDto dto){
+    public BaseResponse<CommentVo> addComment(@Valid @RequestBody CommentDto dto){
         return BaseResponse.success(commentService.addComment(dto));
     }
 

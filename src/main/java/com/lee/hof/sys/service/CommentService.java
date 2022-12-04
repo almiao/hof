@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface CommentService extends IService<Comment> {
 
-    Comment addComment(CommentDto comment);
+    CommentVo addComment(CommentDto comment);
 
 
 

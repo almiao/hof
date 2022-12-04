@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
 
     @Override
-    public Comment addComment(CommentDto commentDto) {
+    public CommentVo addComment(CommentDto commentDto) {
         Comment comment = new Comment();
         comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
         comment.setUpdateTime(new Timestamp(System.currentTimeMillis()));
@@ -50,7 +51,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
         comment.setToCommentId(commentDto.getToCommentId());
         commentMapper.insert(comment);
-        return comment;
+
+        CommentVo commentVo = new CommentVo(comment);
+        commentVo.setUser(userService.getUserById(comment.getUserId()));
+        if(comment.getToUserId()!=null){
+            commentVo.setToUser(userService.getUserById(comment.getToUserId()));
+        }
+        commentVo.setReplyCnt(0);
+        commentVo.setReplyList(new ArrayList<>());
+        return commentVo;
     }
 
 
