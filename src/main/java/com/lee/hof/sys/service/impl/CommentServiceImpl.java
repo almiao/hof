@@ -69,8 +69,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     public List<CommentVo> listComment(CommentListDto dto) {
 
         QueryWrapper<Comment> conditions = new QueryWrapper<>();
-        conditions.eq("post_id", dto.getPostId()).orderByDesc("create_time");
 
+        conditions.eq("post_id", dto.getPostId()).orderByDesc("create_time");
         if(!StringUtils.isEmpty(dto.getToCommentId())) {
             conditions.eq("to_comment_id",dto.getToCommentId());
         }else {
@@ -88,7 +88,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 commentVo.setToUser(userService.getUserById(comment.getToUserId()));
             }
             int replyCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("to_comment_id", comment.getId()));
-            List<Comment> childrens = commentMapper.selectList(new QueryWrapper<Comment>().eq("to_comment_id", comment.getId()).orderByAsc("id"));
+            List<Comment> childrens = commentMapper.selectList(new QueryWrapper<Comment>().eq("to_comment_id", comment.getId()).orderByAsc("create_time"));
             List<CommentVo> childs =  childrens.stream().map(cm -> {
                 CommentVo commentVo1 = new CommentVo(cm);
                 commentVo1.setUser(userService.getUserById(cm.getUserId()));
