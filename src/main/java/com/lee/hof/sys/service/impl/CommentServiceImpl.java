@@ -88,7 +88,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 commentVo.setToUser(userService.getUserById(comment.getToUserId()));
             }
             int replyCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("to_comment_id", comment.getId()));
-            List<Comment> childrens = commentMapper.selectList(new QueryWrapper<Comment>().eq("to_comment_id", comment.getId()));
+            List<Comment> childrens = commentMapper.selectList(new QueryWrapper<Comment>().eq("to_comment_id", comment.getId()).orderByAsc("id"));
             List<CommentVo> childs =  childrens.stream().map(cm -> {
                 CommentVo commentVo1 = new CommentVo(cm);
                 commentVo1.setUser(userService.getUserById(cm.getUserId()));
