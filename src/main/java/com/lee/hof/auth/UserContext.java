@@ -20,6 +20,9 @@ public class UserContext {
     }
 
     public static Long getUserId() {
+        if(userHolder.get() == null){
+            return null;
+        }
         return userHolder.get().getId();
     }
     /**
