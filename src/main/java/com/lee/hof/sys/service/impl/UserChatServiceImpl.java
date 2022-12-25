@@ -71,6 +71,7 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
 
     private UserChatVO convert(UserChat chat){
         UserChatVO userChatVO = new UserChatVO();
+        userChatVO.setId(chat.getId());
         userChatVO.setCreateTime(chat.getCreateTime());
         userChatVO.setUpdateTime(chat.getUpdateTime());
         userChatVO.setFromUserId(chat.getFromUserId());

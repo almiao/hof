@@ -29,15 +29,13 @@ public class ChatController extends BaseController {
         return BaseResponse.success(userChatService.listUserChat()) ;
     }
 
-
-
     @PostMapping("/get")
-    public BaseResponse<UserChatVO> newChat(@RequestParam Long toUserId) {
+    public BaseResponse<UserChatVO> newChat(@RequestParam( "toUserId") Long toUserId) {
         return BaseResponse.success(userChatService.newChat(toUserId)) ;
     }
 
     @PostMapping("/content/list")
-    public BaseResponse<List<ChatContent>> listChatContent(@RequestParam Long chatId) {
+    public BaseResponse<List<ChatContent>> listChatContent(@RequestParam("chatId") Long chatId) {
         return BaseResponse.success(chatContentService.getByChatId(chatId)) ;
     }
 }
