@@ -40,12 +40,7 @@ public class WebSocketServer {
         webSocketMap.put(userId, this);//加入set中
         this.userId = userId;
         addOnlineCount();           //在线数加1
-        try {
-            sendMessage("conn_success");
-            log.info("有新窗口开始监听:" + userId + ",当前在线人数为:" + getOnlineCount());
-        } catch (IOException e) {
-            log.error("websocket IO Exception");
-        }
+        log.info("有新窗口开始监听:" + userId + ",当前在线人数为:" + getOnlineCount());
     }
 
     /**
