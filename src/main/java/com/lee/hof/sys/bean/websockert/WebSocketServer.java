@@ -1,5 +1,8 @@
 package com.lee.hof.sys.bean.websockert;
 
+import com.alibaba.fastjson.JSONObject;
+import com.lee.hof.sys.bean.model.ChatContent;
+import com.lee.hof.sys.mapper.ChatContentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -8,36 +11,38 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
 @Service
-@ServerEndpoint("/api/websocket/{sid}")
+@ServerEndpoint("/api/websocket/{userId}")
 public class WebSocketServer {
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
-    //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-    private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<WebSocketServer>();
+
+    private static ConcurrentHashMap<Long, WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
 
     //接收sid
-    private String sid = "";
+    private Long userId = null;
+
+    private ChatContentMapper chatContentMapper;
 
     /**
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("sid") String sid) {
+    public void onOpen(Session session, @PathParam("userId") Long userId) {
         this.session = session;
-        webSocketSet.add(this);     //加入set中
-        this.sid = sid;
+        webSocketMap.put(userId, this);//加入set中
+        this.userId = userId;
         addOnlineCount();           //在线数加1
         try {
             sendMessage("conn_success");
-            log.info("有新窗口开始监听:" + sid + ",当前在线人数为:" + getOnlineCount());
+            log.info("有新窗口开始监听:" + userId + ",当前在线人数为:" + getOnlineCount());
         } catch (IOException e) {
             log.error("websocket IO Exception");
         }
@@ -48,10 +53,10 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-        webSocketSet.remove(this);  //从set中删除
+        webSocketMap.remove(this.userId);
         subOnlineCount();           //在线数减1
         //断开连接情况下，更新主板占用情况为释放
-        log.info("释放的sid为："+sid);
+        log.info("释放的sid为："+ userId);
         //这里写你 释放的时候，要处理的业务
         log.info("有一连接关闭！当前在线人数为" + getOnlineCount());
 
@@ -62,16 +67,17 @@ public class WebSocketServer {
      * @ Param message 客户端发送过来的消息
      */
     @OnMessage
-    public void onMessage(String message, Session session) {
-        log.info("收到来自窗口" + sid + "的信息:" + message);
-        //群发消息
-        for (WebSocketServer item : webSocketSet) {
-            try {
-                item.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void onMessage(String message, Session session) throws IOException {
+        log.info("收到来自窗口" + userId + "的信息:" + message);
+        ChatContent chatContent = JSONObject.parseObject(message, ChatContent.class);
+        Long toUserId =  chatContent.getToUserId();
+
+        WebSocketServer webSocketServer = webSocketMap.get(toUserId);
+        if(webSocketServer!=null){
+            webSocketServer.sendMessage(message);
         }
+
+        chatContentMapper.insert(chatContent);
     }
 
     /**
@@ -94,22 +100,22 @@ public class WebSocketServer {
     /**
      * 群发自定义消息
      */
-    public static void sendInfo(String message, @PathParam("sid") String sid) throws IOException {
-        log.info("推送消息到窗口" + sid + "，推送内容:" + message);
-
-        for (WebSocketServer item : webSocketSet) {
-            try {
-                //这里可以设定只推送给这个sid的，为null则全部推送
-                if (sid == null) {
+//    public static void sendInfo(String message, @PathParam("sid") String sid) throws IOException {
+//        log.info("推送消息到窗口" + sid + "，推送内容:" + message);
+//
+//        for (WebSocketServer item : webSocketSet) {
+//            try {
+//                //这里可以设定只推送给这个sid的，为null则全部推送
+//                if (sid == null) {
+////                    item.sendMessage(message);
+//                } else if (item.userId.equals(sid)) {
 //                    item.sendMessage(message);
-                } else if (item.sid.equals(sid)) {
-                    item.sendMessage(message);
-                }
-            } catch (IOException e) {
-                continue;
-            }
-        }
-    }
+//                }
+//            } catch (IOException e) {
+//                continue;
+//            }
+//        }
+//    }
 
     public static synchronized int getOnlineCount() {
         return onlineCount;
@@ -123,7 +129,4 @@ public class WebSocketServer {
         WebSocketServer.onlineCount--;
     }
 
-    public static CopyOnWriteArraySet<WebSocketServer> getWebSocketSet() {
-        return webSocketSet;
-    }
 }
