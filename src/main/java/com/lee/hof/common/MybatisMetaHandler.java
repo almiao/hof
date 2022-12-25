@@ -22,7 +22,7 @@ public class MybatisMetaHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
-        this.strictUpdateFill(metaObject, "updateBy", Long.class, UserContext.getUser().getId());
+        this.strictUpdateFill(metaObject, "updateBy", Long.class, UserContext.getUserId() == null ? 0L: UserContext.getUserId());
     }
 }
 
