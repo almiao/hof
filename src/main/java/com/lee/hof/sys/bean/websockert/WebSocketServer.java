@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -29,6 +30,7 @@ public class WebSocketServer {
     //接收sid
     private Long userId = null;
 
+    @Resource
     private ChatContentMapper chatContentMapper;
 
     /**
