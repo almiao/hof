@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.lee.hof.sys.bean.model.ChatContent;
 import com.lee.hof.sys.mapper.ChatContentMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -30,9 +30,14 @@ public class WebSocketServer {
     //接收sid
     private Long userId = null;
 
-    @Resource
-    private ChatContentMapper chatContentMapper;
+    private static ApplicationContext applicationContext;
 
+    private  ChatContentMapper chatContentMapper;
+
+
+    public static void setApplicationContext(ApplicationContext applicationContext) {
+        WebSocketServer.applicationContext = applicationContext;
+    }
     /**
      * 连接建立成功调用的方法
      */
@@ -73,7 +78,9 @@ public class WebSocketServer {
         if(webSocketServer!=null){
             webSocketServer.sendMessage(message);
         }
-
+        if(chatContentMapper == null) {
+            chatContentMapper = applicationContext.getBean(ChatContentMapper.class);
+        }
         chatContentMapper.insert(chatContent);
     }
 
