@@ -32,7 +32,6 @@ public class ChatContentServiceImpl extends ServiceImpl<ChatContentMapper, ChatC
     public List<ChatContent> getByChatId(Long chatId) {
         QueryWrapper<ChatContent> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("chat_id", chatId);
-        queryWrapper.orderByDesc("id");
         return chatContentMapper.selectList(queryWrapper);
     }
 }
