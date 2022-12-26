@@ -64,19 +64,24 @@ public class WebSocketServer {
 
     }
 
+    public static String ConfirmRead ="CONFIRM_READ";
+
     /**
      * 收到客户端消息后调用的方法
      * @ Param message 客户端发送过来的消息
      */
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-        log.info("收到来自窗口" + userId + "的信息:" + message);
+
         ChatContent chatContent = JSONObject.parseObject(message, ChatContent.class);
         Long toUserId =  chatContent.getToUserId();
 
         WebSocketServer webSocketServer = webSocketMap.get(toUserId);
-        if(webSocketServer!=null){
-            webSocketServer.sendMessage(message);
+        if(webSocketServer != null){
+            chatContent.setIsRead(1);
+            webSocketServer.sendMessage(JSONObject.toJSONString(chatContent));
+        }else{
+            chatContent.setIsRead(0);
         }
         if(chatContentMapper == null) {
             chatContentMapper = applicationContext.getBean(ChatContentMapper.class);

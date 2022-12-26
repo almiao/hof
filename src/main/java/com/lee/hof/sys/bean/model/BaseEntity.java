@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author tangle
@@ -21,10 +21,10 @@ public class BaseEntity {
     private Long updateBy;
 
     @TableField(fill = FieldFill.INSERT)
-    private Timestamp createTime;
+    private Date createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Timestamp updateTime;
+    private Date updateTime;
 
     private Integer status;
 
