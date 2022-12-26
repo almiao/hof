@@ -47,7 +47,7 @@ public class WebSocketServer {
         webSocketMap.put(userId, this);//加入set中
         this.userId = userId;
         addOnlineCount();           //在线数加1
-        log.info("有新窗口开始监听:" + userId + ",当前在线人数为:" + getOnlineCount());
+        log.info("有新窗口开始监听:" + userId + ",当前在线人数为:" + webSocketMap.size());
     }
 
     /**
@@ -72,7 +72,7 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-
+        log.info("msg:" +message);
         ChatContent chatContent = JSONObject.parseObject(message, ChatContent.class);
         Long toUserId =  chatContent.getToUserId();
 
