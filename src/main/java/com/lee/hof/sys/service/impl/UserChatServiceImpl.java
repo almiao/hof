@@ -77,6 +77,7 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
         userChatVO.setFromUserId(chat.getFromUserId());
         userChatVO.setToUserId(chat.getToUserId());
         userChatVO.setToUser(userService.getUserById(chat.getToUserId()));
+        userChatVO.setFromUser(userService.getUserById(chat.getFromUserId()));
         userChatVO.setChatContents(chatContentService.getByChatId(chat.getId()));
         return userChatVO;
     }

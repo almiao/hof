@@ -22,6 +22,10 @@ public class UserChatVO {
 
     private User toUser;
 
+    private User fromUser;
+
+
+
     private List<ChatContent> chatContents;
 
 }
