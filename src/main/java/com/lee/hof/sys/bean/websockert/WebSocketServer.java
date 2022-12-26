@@ -78,9 +78,11 @@ public class WebSocketServer {
 
         WebSocketServer webSocketServer = webSocketMap.get(toUserId);
         if(webSocketServer != null){
+            log.info("链接在线");
             chatContent.setIsRead(1);
             webSocketServer.sendMessage(JSONObject.toJSONString(chatContent));
         }else{
+            log.info("链接不在线");
             chatContent.setIsRead(0);
         }
         if(chatContentMapper == null) {
