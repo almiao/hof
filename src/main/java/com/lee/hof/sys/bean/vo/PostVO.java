@@ -1,6 +1,7 @@
 package com.lee.hof.sys.bean.vo;
 
 import com.lee.hof.sys.bean.model.Post;
+import com.lee.hof.sys.bean.model.User;
 import lombok.Data;
 
 
@@ -15,4 +16,6 @@ public class PostVO extends Post {
 
     private String notLikeId;
 
+
+    private User author;
 }

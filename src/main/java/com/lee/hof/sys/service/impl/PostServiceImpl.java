@@ -16,8 +16,10 @@ import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
 import com.lee.hof.sys.service.PostService;
+import com.lee.hof.sys.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,9 +50,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         BeanUtils.copyProperties(dto,post);
         post.setId(UUID.randomUUID().toString());
         User user = UserContext.getUser();
-        post.setAuthor(user.getUsername());
-        post.setAuthorIconUrl(user.getImgId());
-        post.setAuthorNamePrefixed(user.getUsername().length()>10 ? user.getUsername().substring(0,10):user.getUsername());
+        post.setAuthorId(user.getId());
         postMapper.insert(post);
         return post.getId();
     }
@@ -109,11 +109,17 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                 postVO.setNotLike(true);
                 postVO.setNotLikeId(finalNotLikeMap.get(post.getId()).getId());
             }
+
+            postVO.setAuthor(userService.getUserById(post.getAuthorId()));
+
             return postVO;
         });
 
         return list;
     }
+
+    @Autowired
+    UserService userService;
 
     @Override
     public Page<Post> searchPost(PostListDto dto) {
@@ -143,6 +149,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if(Objects.nonNull(post)){
             BeanUtils.copyProperties(post,postDetailVo);
         }
+        postDetailVo.setAuthor(userService.getUserById(post.getAuthorId()));
         return postDetailVo;
     }
 

@@ -41,21 +41,9 @@ public class Post implements Serializable{
     private String channelName;
     private String channelNamePrefixed;
     private String channelIconUrl;
-    /**
-     * 作者名
-     */
-    private String author;
-    /**
-     * 作者名简写
-     */
-    private String authorNamePrefixed;
-    /**
-     * 作者头像url
-     */
-    private String authorIconUrl;
-    /**
-     * 作者资质
-     */
+
+    private Long authorId;
+
     private String authorFlair;
     /**
      * 标题

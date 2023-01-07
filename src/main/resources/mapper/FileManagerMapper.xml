@@ -20,9 +20,7 @@
 
     <select id="getByUuid"
             resultType="com.lee.hof.sys.bean.model.FileManager">
-
         select * from file_manager where uuid = #{uuid} limit 1
-
     </select>
 
 </mapper>
