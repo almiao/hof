@@ -61,6 +61,7 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
         fileManager.setName(file.getOriginalFilename());
         fileManager.setUuid(uuid);
         fileManager.setContent(bos.toByteArray());
+        fileManager.setFullPath("/" + uuid +"/" +fileManager.getName());
 
         this.baseMapper.insert(fileManager);
 

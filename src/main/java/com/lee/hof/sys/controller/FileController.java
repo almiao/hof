@@ -29,9 +29,7 @@ public class FileController {
 
     @PostMapping(value = "/upload",headers = "content-type=multipart/form-data")
     public BaseResponse<FileUploadBean> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
-
        return BaseResponse.success(fileService.uploadFile(file));
-
     }
 
     @GetMapping("/download")
@@ -41,12 +39,22 @@ public class FileController {
         fileService.download(fileId,response);
     }
 
+
+
+    @GetMapping("/download/{fileId}/{fileName}")
+    @ResponseBody
+    public void downloadFile(@PathVariable String fileId,@PathVariable String fileName, HttpServletResponse response) throws IOException{
+
+        fileService.download(fileId,response);
+    }
+
+
     @PostMapping("/upload/multi")
     @ResponseBody
     public BaseResponse<String> pic(MultipartFile[] files, HttpSession session) throws Exception {
         List<String> result = new LinkedList<>();
         for(MultipartFile file:files){
-            FileUploadBean fileUploadBean =   fileService.uploadFile(file);
+            FileUploadBean fileUploadBean = fileService.uploadFile(file);
             result.add(fileUploadBean.getId());
         }
         return BaseResponse.success(String.join(",",result));
