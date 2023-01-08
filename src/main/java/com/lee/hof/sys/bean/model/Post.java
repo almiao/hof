@@ -39,12 +39,13 @@ public class Post implements Serializable{
     @Id
     private String id;
     private String channelName;
+
     private String channelNamePrefixed;
+
     private String channelIconUrl;
 
     private Long authorId;
 
-    private String authorFlair;
     /**
      * 标题
      */
@@ -55,15 +56,7 @@ public class Post implements Serializable{
     /**
      * 文本
      */
-    private String selfText;
-    /**
-     * 无图片文本
-     */
-    private String selfTextPlain;
-    /**
-     * 文本剪切
-     */
-    private String selfTextPlainTrimmed;
+    private String contentText;
     /**
      * 地址
      */
@@ -76,19 +69,7 @@ public class Post implements Serializable{
      * 视频下载地址
      */
     private String videoDownloadUrl;
-    /***
-     * 动态图id
-     */
-    private String gfycatId;
-    private String streamableShortCode;
 
-    private boolean isImgur;
-    private boolean isGfycat;
-    private boolean isStreamable;
-    /**
-     * 永久链接
-     */
-    private String permalink;
     private int likeCnt;
     private int notLikeCnt;
 
@@ -112,20 +93,11 @@ public class Post implements Serializable{
      * 评论数
      */
     private int commentCnt;
-    /**
-     *
-     */
-    private int upvoteRatio;
 
     /**
      * 是否隐藏
      */
     private boolean hidden;
-    private boolean spoiler;
-    /**
-     * 浏览等级
-     */
-    private boolean nsfw;
     /**
      *
      */
@@ -136,7 +108,6 @@ public class Post implements Serializable{
     private boolean archived;
     private boolean locked;
     private boolean saved;
-    private boolean isCrosspost;
     /**
      * 是否已读
      */
