@@ -87,7 +87,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
             postVO.setLikeCnt(cnt);
 
-            Like meLiks = likeMapper.selectOne(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0).eq("create_by", meUserId));
+            Like meLiks = likeMapper.selectOne(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0).eq("create_by", meUserId).last(" limit 1"));
 
             if(meLiks!= null){
                 postVO.setLike(true);
