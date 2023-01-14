@@ -16,6 +16,7 @@ public class PostVO extends Post {
 
     private String notLikeId;
 
+    private int likeCnt;
 
     private User author;
 }

@@ -70,9 +70,6 @@ public class Post implements Serializable{
      */
     private String videoDownloadUrl;
 
-    private int likeCnt;
-    private int notLikeCnt;
-
 
     private long postTimeMillis;
 

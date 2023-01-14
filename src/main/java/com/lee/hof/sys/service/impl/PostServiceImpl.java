@@ -1,6 +1,5 @@
 package com.lee.hof.sys.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,9 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * <p>
@@ -73,42 +71,29 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if(dto.getUser()!= null && dto.getUserId()!=null){
             conditions.eq("create_by", dto.getUserId());
         }
+
         conditions.orderByDesc("update_time");
+
         Page<Post> result = postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
 
-        List<String> postId = result.getRecords().stream().map(Post::getId).collect(Collectors.toList());
-        Map<String,Like> likeMap = new HashMap<>();
-        Map<String,Like> notLikeMap = new HashMap<>();
-        if(CollectionUtil.isNotEmpty(postId)){
-
-            List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().in("target_id",postId).eq("level",0)
-                    .eq("create_by",dto.getUserId()));
-
-            likeMap = likes.stream().collect(Collectors.toMap(Like::getTargetId, Function.identity()));
-
-            List<Like> notLikes = likeMapper.selectList(new QueryWrapper<Like>().in("target_id",postId).eq("level",1)
-                    .eq("create_by",dto.getUserId()));
-
-            notLikeMap = notLikes.stream().collect(Collectors.toMap(Like::getTargetId, Function.identity()));
-
-        }
+        Long meUserId = UserContext.getUserId();
 
 
-        Map<String, Like> finalLikeMap = likeMap;
-        Map<String, Like> finalNotLikeMap = notLikeMap;
         IPage<PostVO> list = result.convert(post -> {
             PostVO postVO = new PostVO();
             BeanUtils.copyProperties(post, postVO);
 
-            if(finalLikeMap.containsKey(post.getId())){
+            int cnt = likeMapper.selectCount(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0));
+
+            postVO.setLikeCnt(cnt);
+
+            Like meLiks = likeMapper.selectOne(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0).eq("create_by", meUserId));
+
+            if(meLiks!= null){
                 postVO.setLike(true);
-                postVO.setLikeId(finalLikeMap.get(post.getId()).getId());
+                postVO.setLikeId(meLiks.getId());
             }
 
-            if(finalNotLikeMap.containsKey(post.getId())){
-                postVO.setNotLike(true);
-                postVO.setNotLikeId(finalNotLikeMap.get(post.getId()).getId());
-            }
 
             postVO.setAuthor(userService.getUserById(post.getAuthorId()));
 

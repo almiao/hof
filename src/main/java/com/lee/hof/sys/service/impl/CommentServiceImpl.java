@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.sys.bean.dto.CommentDto;
 import com.lee.hof.sys.bean.dto.CommentListDto;
 import com.lee.hof.sys.bean.model.Comment;
+import com.lee.hof.sys.bean.model.Like;
 import com.lee.hof.sys.bean.vo.CommentVo;
 import com.lee.hof.sys.mapper.CommentMapper;
+import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.service.CommentService;
 import com.lee.hof.sys.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +35,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Resource
     CommentMapper commentMapper;
+
+    @Resource
+    LikeMapper likeMapper;
 
     @Resource
     private UserService userService;
@@ -99,6 +104,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 }
                 return commentVo1;
             }).collect(Collectors.toList());
+
+            List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().eq("to_target_id", comment.getId().toString()).eq("target_entity_type","comment"));
+            commentVo.setLikeList(likes);
             commentVo.setReplyList(childs);
             commentVo.setReplyCnt(replyCnt);
             commentVos.add(commentVo);
