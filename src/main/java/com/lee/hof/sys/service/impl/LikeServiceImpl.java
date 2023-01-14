@@ -48,12 +48,13 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
     public String undoLike(UndoLike id) {
 
         Like like = likMapper.selectOne(new QueryWrapper<Like>().eq("create_by", id.getCreateBy()).eq("target_id", id.getTargetId())
-        .eq("level", id.getLevel()).orderByAsc());
+        .eq("level", id.getLevel()).eq("is_del",0).orderByAsc());
         if(like == null){
             return null;
         }
+        like.setIsDel(1);
 
-        likMapper.deleteById(like.getId());
+        likMapper.updateById(like);
 
         return like.getId();
     }
