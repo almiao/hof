@@ -105,7 +105,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 return commentVo1;
             }).collect(Collectors.toList());
 
-            List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().eq("to_target_id", comment.getId().toString()).eq("target_entity_type","comment"));
+            List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().eq("target_id", comment.getId().toString()).eq("target_entity_type","comment"));
             commentVo.setLikeList(likes);
             commentVo.setReplyList(childs);
             commentVo.setReplyCnt(replyCnt);
