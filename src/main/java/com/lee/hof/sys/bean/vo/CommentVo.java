@@ -20,6 +20,8 @@ public class CommentVo implements Serializable {
 
     private String postId;
 
+    private Long parentCommentId;
+
     private Long toCommentId;
 
     private Long userId;
@@ -49,6 +51,7 @@ public class CommentVo implements Serializable {
     public CommentVo(Comment comment){
         this.id = comment.getId();
         this.postId = comment.getPostId();
+        this.parentCommentId = comment.getParentCommentId();
         this.commentTxt = comment.getCommentTxt();
         this.createTime = comment.getCreateTime();
         this.toCommentId = comment.getToCommentId();
