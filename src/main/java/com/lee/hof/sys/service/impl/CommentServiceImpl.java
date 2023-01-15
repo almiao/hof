@@ -76,7 +76,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
         QueryWrapper<Comment> conditions = new QueryWrapper<>();
 
-        conditions.eq("post_id", dto.getPostId()).orderByDesc("create_time");
+        conditions.eq("post_id", dto.getPostId());
         if(!StringUtils.isEmpty(dto.getParentCommentId())) {
             conditions.eq("parent_comment_id",dto.getParentCommentId());
         }else {
