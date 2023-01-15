@@ -8,10 +8,12 @@ import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.PostAddDto;
 import com.lee.hof.sys.bean.dto.PostListDto;
 import com.lee.hof.sys.bean.dto.PostUpdateDto;
+import com.lee.hof.sys.bean.model.Comment;
 import com.lee.hof.sys.bean.model.Like;
 import com.lee.hof.sys.bean.model.Post;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.vo.PostVO;
+import com.lee.hof.sys.mapper.CommentMapper;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
 import com.lee.hof.sys.service.PostService;
@@ -41,6 +43,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Resource
     LikeMapper likeMapper;
+
+    @Resource
+    CommentMapper commentMapper;
 
     @Override
     public String addPost(PostAddDto dto) {
@@ -84,16 +89,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             BeanUtils.copyProperties(post, postVO);
 
             int cnt = likeMapper.selectCount(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0));
-
             postVO.setLikeCnt(cnt);
-
             Like meLiks = likeMapper.selectOne(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0).eq("create_by", meUserId).last(" limit 1"));
-
             if(meLiks!= null){
                 postVO.setLike(true);
                 postVO.setLikeId(meLiks.getId());
             }
-
+            int commentCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("post_id", post.getId()));
+            postVO.setCommentCnt(commentCnt);
 
             postVO.setAuthor(userService.getUserById(post.getAuthorId()));
 

@@ -10,6 +10,8 @@ public class PostVO extends Post {
 
     private boolean like;
 
+    private int commentCnt;
+
     private boolean notLike;
 
     private String likeId;
