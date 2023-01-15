@@ -9,7 +9,7 @@ public class CommentListDto extends BaseInput {
 
     public String postId;
 
-    private String toCommentId;
+    private String parentCommentId;
 
     private int pageNum = 0;
 

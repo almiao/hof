@@ -13,6 +13,8 @@ public class CommentDto implements Serializable {
     @NonNull
     private String postId;
 
+    private Long parentCommentId;
+
     private Long toCommentId;
 
     @NonNull

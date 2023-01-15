@@ -22,6 +22,8 @@ public class Comment implements Serializable {
 
     private String postId;
 
+    private Long parentCommentId;
+
     private Long toCommentId;
 
     private Long userId;
