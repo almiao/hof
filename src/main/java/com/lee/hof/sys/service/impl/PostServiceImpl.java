@@ -48,14 +48,15 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     CommentMapper commentMapper;
 
     @Override
-    public String addPost(PostAddDto dto) {
+    public PostVO addPost(PostAddDto dto) {
         Post post = new Post();
         BeanUtils.copyProperties(dto,post);
         post.setId(UUID.randomUUID().toString());
         User user = UserContext.getUser();
         post.setAuthorId(user.getId());
         postMapper.insert(post);
-        return post.getId();
+
+        return convertPost(post, user.getId());
     }
 
     @Override
@@ -85,25 +86,29 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
 
         IPage<PostVO> list = result.convert(post -> {
-            PostVO postVO = new PostVO();
-            BeanUtils.copyProperties(post, postVO);
-
-            int cnt = likeMapper.selectCount(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0));
-            postVO.setLikeCnt(cnt);
-            Like meLiks = likeMapper.selectOne(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0).eq("create_by", meUserId).last(" limit 1"));
-            if(meLiks!= null){
-                postVO.setLike(true);
-                postVO.setLikeId(meLiks.getId());
-            }
-            int commentCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("post_id", post.getId()));
-            postVO.setCommentCnt(commentCnt);
-
-            postVO.setAuthor(userService.getUserById(post.getAuthorId()));
-
-            return postVO;
+            return convertPost(post,meUserId);
         });
-
         return list;
+    }
+
+    private PostVO convertPost(Post post,long meUserId){
+
+        PostVO postVO = new PostVO();
+        BeanUtils.copyProperties(post, postVO);
+
+        int cnt = likeMapper.selectCount(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0));
+        postVO.setLikeCnt(cnt);
+        Like meLiks = likeMapper.selectOne(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0).eq("create_by", meUserId).last(" limit 1"));
+        if(meLiks!= null){
+            postVO.setLike(true);
+            postVO.setLikeId(meLiks.getId());
+        }
+        int commentCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("post_id", post.getId()));
+        postVO.setCommentCnt(commentCnt);
+
+        postVO.setAuthor(userService.getUserById(post.getAuthorId()));
+
+        return postVO;
     }
 
     @Autowired

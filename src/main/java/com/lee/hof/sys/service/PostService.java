@@ -20,7 +20,7 @@ import com.lee.hof.sys.bean.vo.PostVO;
  */
 public interface PostService extends IService<Post> {
 
-    String addPost(PostAddDto dto);
+    PostVO addPost(PostAddDto dto);
 
     Boolean delPost(User user, String postId);
 

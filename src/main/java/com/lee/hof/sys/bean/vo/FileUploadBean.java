@@ -2,6 +2,11 @@ package com.lee.hof.sys.bean.vo;
 
 public class FileUploadBean {
 
+    private String id;
+
+    private String name;
+
+    private String url;
 
 
     public String getId() {
@@ -20,11 +25,6 @@ public class FileUploadBean {
         this.name = name;
     }
 
-    private String id;
-
-    private String name;
-
-    private String url;
 
     public String getUrl() {
         return url;

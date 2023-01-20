@@ -6,7 +6,6 @@ import com.lee.hof.sys.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +25,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    @Cacheable(cacheNames="getUserById", key = "#id")
+//    @Cacheable(cacheNames="getUserById", key = "#id")
     public User getUserById(Long id) {
-        redisTemplate.opsForValue().set("hello user id"+id , "hello Value" + id);
+//        redisTemplate.opsForValue().set("hello user id"+id , "hello Value" + id);
         logger.info("MYSQL 命中");
         return userMapper.selectById(id == null ? 1L : id);
     }

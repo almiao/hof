@@ -2,6 +2,7 @@ package com.lee.hof.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.common.exception.HofException;
+import com.lee.hof.common.upload.UploadedFileBean;
 import com.lee.hof.common.upload.service.local.LocalStorageService;
 import com.lee.hof.sys.bean.model.FileManager;
 import com.lee.hof.sys.bean.vo.FileUploadBean;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.UUID;
 
@@ -45,16 +43,11 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
         while((len = input.read(b)) != -1) {
             bos.write(b, 0, len);
         }
-
-
-        // 参数列表
-//        UploadedFileBean uploadedFileBean = localStorageService.uploadFile(file);
-
         // 参数列表
 //        UploadedFileBean uploadedFileBean = new UploadedFileBean();
 
 
-        String uuid = UUID.randomUUID().toString();
+        String uuid = UUID.randomUUID().toString().substring(0,8);
 
         FileManager fileManager = new FileManager();
 //        BeanUtils.copyProperties(uploadedFileBean, fileManager);
@@ -62,6 +55,43 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
         fileManager.setUuid(uuid);
         fileManager.setContent(bos.toByteArray());
         fileManager.setFullPath("/" + uuid +"/" +fileManager.getName());
+//        // 参数列表
+//        UploadedFileBean uploadedFileBean = localStorageService.uploadFile(file);
+
+        this.baseMapper.insert(fileManager);
+
+        FileUploadBean fileBean = new FileUploadBean();
+
+        fileBean.setId(fileManager.getUuid());
+        fileBean.setName(fileManager.getName());
+        fileBean.setUrl(fileManager.getFullPath());
+
+        //请求接口
+        return fileBean;
+    }
+
+
+    public FileUploadBean uploadFileNew(MultipartFile file) throws Exception {
+
+        InputStream input = file.getInputStream();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] b = new byte[1024];
+        int len = -1;
+        while((len = input.read(b)) != -1) {
+            bos.write(b, 0, len);
+        }
+        // 参数列
+
+        UploadedFileBean uploadedFileBean = localStorageService.uploadFile(file);
+
+
+        FileManager fileManager = new FileManager();
+        fileManager.setName(file.getOriginalFilename());
+        fileManager.setContent(bos.toByteArray());
+        fileManager.setFullPath(uploadedFileBean.getFullPath());
+        fileManager.setUuid(uploadedFileBean.getFileId());
+        fileManager.setProvider(uploadedFileBean.getProvider());
+//        // 参数列表
 
         this.baseMapper.insert(fileManager);
 
@@ -80,13 +110,36 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
 
         FileManager fileManager = this.baseMapper.getByUuid(uuid);
 
-        if(fileManager==null || fileManager.getContent() == null){
+        if(fileManager==null){
             throw new HofException("未找到文件");
         }
         System.out.println("下载文件文件:" + fileManager.getName());
         // 参数列表
-//        try (InputStream inputStream = localStorageService.getFile(fileManager.getFileId())) {
         try (InputStream inputStream =  new ByteArrayInputStream(fileManager.getContent())){
+            String encoderFileName = URLEncoder.encode(fileManager.getName(), "UTF-8");
+            response.setHeader("Content-deposition", String.format("attachment;filename=%s;filename*=UTF-8''%s", encoderFileName, encoderFileName));
+            response.setContentType(fileManager.getType());
+            IOUtils.copy(inputStream, response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new HofException("文件读取错误");
+        }
+    }
+
+
+    public void downloadNew(String uuid, HttpServletResponse response) {
+        FileManager fileManager = this.baseMapper.getByUuid(uuid);
+        if (fileManager == null || fileManager.getContent() == null) {
+            throw new HofException("未找到文件");
+        }
+        // 参数列表
+        try {
+            InputStream inputStream = null;
+            if(fileManager.getProvider() == null){
+                inputStream =  new ByteArrayInputStream(fileManager.getContent());
+            }else{
+                inputStream = localStorageService.getFile(fileManager.getFullPath());
+            }
             String encoderFileName = URLEncoder.encode(fileManager.getName(), "UTF-8");
             response.setHeader("Content-deposition", String.format("attachment;filename=%s;filename*=UTF-8''%s", encoderFileName, encoderFileName));
             response.setContentType(fileManager.getType());

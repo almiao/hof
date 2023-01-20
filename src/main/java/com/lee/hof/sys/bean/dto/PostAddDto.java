@@ -36,15 +36,7 @@ public class PostAddDto extends BaseInput implements Serializable {
     /**
      * 文本
      */
-    private String selfText;
-    /**
-     * 无图片文本
-     */
-    private String selfTextPlain;
-    /**
-     * 文本剪切
-     */
-    private String selfTextPlainTrimmed;
+    private String contentText;
     /**
      * 地址
      */

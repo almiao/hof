@@ -18,6 +18,9 @@ import java.io.FileNotFoundException;
  */
 public interface FileManagerService extends IService<FileManager> {
     FileUploadBean uploadFile(MultipartFile file) throws Exception;
+    FileUploadBean uploadFileNew(MultipartFile file) throws Exception;
 
     void download(String fileId, HttpServletResponse response) throws FileNotFoundException;
+
+    void downloadNew(String fileId, HttpServletResponse response) throws FileNotFoundException;
 }

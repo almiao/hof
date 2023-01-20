@@ -38,9 +38,10 @@ public class LocalStorageService extends StorageService {
 
     @Override
     public UploadedFileBean uploadFile(MultipartFile uploadedFile, String targetFilename) throws IOException {
+        String uuid = UUID.randomUUID().toString().substring(0,6);
         if (StringUtils.isEmpty(targetFilename)) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-            targetFilename = simpleDateFormat.format(Calendar.getInstance().getTime()) + "/" + uploadedFile.getOriginalFilename();
+            targetFilename = simpleDateFormat.format(Calendar.getInstance().getTime())+"_"+ uuid+ "/" + uploadedFile.getOriginalFilename();
         }
 
         targetFilename = targetFilename.replaceAll("^[\\/\\\\]+", "");
@@ -53,7 +54,6 @@ public class LocalStorageService extends StorageService {
         String localFilename = localStoragePath + "/" + targetFilename;
         FileUtils.forceMkdir(new File(localFilename).getParentFile());
 
-
         org.apache.commons.io.IOUtils.copy(inputStream, new FileOutputStream(localFilename));
 
         UploadedFileBean uploadedFileBean = new UploadedFileBean(targetFilename, LOCAL_PROVIDER_NAME);
@@ -61,7 +61,8 @@ public class LocalStorageService extends StorageService {
         uploadedFileBean.setSize(fileInfo.getSize());
         uploadedFileBean.setType(fileInfo.getContentType());
         uploadedFileBean.setExtension(FilenameUtils.getExtension(fileInfo.getName()));
-        uploadedFileBean.setFullPath(localFilename);
+        uploadedFileBean.setFullPath(targetFilename);
+        uploadedFileBean.setFileId(UUID.randomUUID().toString());
 
         return uploadedFileBean;
     }

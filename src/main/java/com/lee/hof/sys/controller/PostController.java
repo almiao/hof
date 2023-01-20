@@ -23,7 +23,7 @@ public class PostController {
     PostService postService;
 
     @PostMapping("/add")
-    public BaseResponse<String> addPost(@RequestBody PostAddDto dto){
+    public BaseResponse<PostVO> addPost(@RequestBody PostAddDto dto){
         return BaseResponse.success(postService.addPost(dto));
     }
 

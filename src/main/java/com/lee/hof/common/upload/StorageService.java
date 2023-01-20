@@ -10,6 +10,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class StorageService {
 
@@ -98,9 +99,10 @@ public abstract class StorageService {
      * @throws IOException
      */
     public UploadedFileBean uploadFile(MultipartFile uploadedFile, String targetFilename) throws IOException {
+        String uuid = UUID.randomUUID().toString().substring(0,6);
         if (StringUtils.isEmpty(targetFilename)) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-            targetFilename = simpleDateFormat.format(Calendar.getInstance().getTime()) + "/" + uploadedFile.getOriginalFilename();
+            targetFilename = simpleDateFormat.format(Calendar.getInstance().getTime())+"_"+ uuid + "/" + uploadedFile.getOriginalFilename();
         }
         return uploadFile(uploadedFile.getInputStream(), new FileInfo(uploadedFile), targetFilename);
     }

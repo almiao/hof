@@ -49,7 +49,7 @@ public class JwtInterceptor implements HandlerInterceptor {
                 return true;
             }
         }else {
-            System.out.println("null token");
+            System.out.println(" null token");
         }
         System.out.println("未通过拦截器");
         return false;
