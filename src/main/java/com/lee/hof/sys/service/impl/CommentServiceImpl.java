@@ -87,35 +87,41 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         List<CommentVo> commentVos = new ArrayList<>();
 
         comments.forEach(comment -> {
-            CommentVo commentVo = new CommentVo(comment);
-            if(comment.getUserId()!=null) {
-                commentVo.setUser(userService.getUserById(comment.getUserId()));
-            }
-
-            if(comment.getToUserId()!=null){
-                commentVo.setToUser(userService.getUserById(comment.getToUserId()));
-            }
-            int replyCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("parent_comment_id", comment.getId()));
-            List<Comment> childrens = commentMapper.selectList(new QueryWrapper<Comment>().eq("parent_comment_id", comment.getId()));
-            List<CommentVo> childs =  childrens.stream().map(cm -> {
-                CommentVo commentVo1 = new CommentVo(cm);
-                commentVo1.setUser(userService.getUserById(cm.getUserId()));
-                if(cm.getToUserId()!=null){
-                    commentVo1.setToUser(userService.getUserById(cm.getToUserId()));
-                }
-                return commentVo1;
-            }).collect(Collectors.toList());
-
-            List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().eq("target_id", comment.getId().toString()).eq("target_entity_type","comment"));
-            commentVo.setLikeList(likes);
-            commentVo.setReplyList(childs);
-            commentVo.setReplyCnt(replyCnt);
-            commentVos.add(commentVo);
+            commentVos.add(convert(comment));
         });
         return commentVos;
     }
 
+    @Override
+    public CommentVo convert(Comment comment) {
+        if(comment == null){
+            return null;
+        }
 
+        CommentVo commentVo = new CommentVo(comment);
+        if(comment.getUserId()!=null) {
+            commentVo.setUser(userService.getUserById(comment.getUserId()));
+        }
+        if(comment.getToUserId()!=null){
+            commentVo.setToUser(userService.getUserById(comment.getToUserId()));
+        }
+        int replyCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("parent_comment_id", comment.getId()));
+        List<Comment> childrens = commentMapper.selectList(new QueryWrapper<Comment>().eq("parent_comment_id", comment.getId()));
+        List<CommentVo> childs =  childrens.stream().map(cm -> {
+            CommentVo commentVo1 = new CommentVo(cm);
+            commentVo1.setUser(userService.getUserById(cm.getUserId()));
+            if(cm.getToUserId()!=null){
+                commentVo1.setToUser(userService.getUserById(cm.getToUserId()));
+            }
+            return commentVo1;
+        }).collect(Collectors.toList());
+
+        List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().eq("target_id", comment.getId().toString()).eq("target_entity_type","comment"));
+        commentVo.setLikeList(likes);
+        commentVo.setReplyList(childs);
+        commentVo.setReplyCnt(replyCnt);
+        return commentVo;
+    }
 
 
 }

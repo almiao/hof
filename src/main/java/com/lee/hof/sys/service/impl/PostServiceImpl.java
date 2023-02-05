@@ -13,6 +13,7 @@ import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.CommentMapper;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
+import com.lee.hof.sys.service.CommentService;
 import com.lee.hof.sys.service.PostService;
 import com.lee.hof.sys.service.TopicService;
 import com.lee.hof.sys.service.UserService;
@@ -89,6 +90,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return list;
     }
 
+    @Resource
+    private CommentService commentService;
+
     private PostVO convertPost(Post post,long meUserId){
 
         PostVO postVO = new PostVO();
@@ -102,6 +106,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             postVO.setLikeId(meLiks.getId());
         }
         int commentCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("post_id", post.getId()));
+
+        Comment comment =  commentMapper.selectOne(new QueryWrapper<Comment>().eq("post_id", post.getId())
+                .last("limit 1"));
+
+        postVO.setMostValuedComment(commentService.convert(comment));
+
         postVO.setCommentCnt(commentCnt);
         postVO.setAuthor(userService.getUserById(post.getAuthorId()));
         postVO.setTopic(topicService.getById(post.getTopicId()));

@@ -24,4 +24,6 @@ public class PostVO extends Post {
     private User author;
 
     private Topic topic;
+
+    private CommentVo mostValuedComment;
 }

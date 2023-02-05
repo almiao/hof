@@ -23,5 +23,7 @@ public interface CommentService extends IService<Comment> {
 
 
     List<CommentVo> listComment(CommentListDto dto);
+
+    CommentVo convert(Comment comment);
     
 }
