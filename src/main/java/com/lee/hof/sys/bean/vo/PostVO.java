@@ -1,6 +1,7 @@
 package com.lee.hof.sys.bean.vo;
 
 import com.lee.hof.sys.bean.model.Post;
+import com.lee.hof.sys.bean.model.Topic;
 import com.lee.hof.sys.bean.model.User;
 import lombok.Data;
 
@@ -21,4 +22,6 @@ public class PostVO extends Post {
     private int likeCnt;
 
     private User author;
+
+    private Topic topic;
 }

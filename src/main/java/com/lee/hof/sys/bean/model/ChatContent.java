@@ -43,13 +43,8 @@ public class ChatContent extends BaseEntity {
 
     private int isRead;
 
-
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     private String content;
-
-
-
 }

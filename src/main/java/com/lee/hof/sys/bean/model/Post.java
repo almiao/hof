@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -19,8 +17,6 @@ import java.time.LocalDateTime;
 
 @Data
 @TableName("post")
-@Entity
-@Table(name="post")
 public class Post implements Serializable{
     private static final long serialVersionUID = 1876655654053364580L;
 
@@ -38,6 +34,7 @@ public class Post implements Serializable{
 
     @Id
     private String id;
+
     private String channelName;
 
     private String channelNamePrefixed;
@@ -45,6 +42,9 @@ public class Post implements Serializable{
     private String channelIconUrl;
 
     private Long authorId;
+
+
+    private Long topicId;
 
     /**
      * 标题
@@ -114,7 +114,6 @@ public class Post implements Serializable{
      * 用户设置为隐藏
      */
     private boolean isHiddenManuallyByUser = false;
-
 
 
 }

@@ -54,7 +54,7 @@ public class FileController {
     public BaseResponse<String> pic(MultipartFile[] files, HttpSession session) throws Exception {
         List<String> result = new LinkedList<>();
         for(MultipartFile file:files){
-            FileUploadBean fileUploadBean = fileService.uploadFile(file);
+            FileUploadBean fileUploadBean = fileService.uploadFileNew(file);
             result.add(fileUploadBean.getId());
         }
         return BaseResponse.success(String.join(",",result));

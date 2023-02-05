@@ -8,15 +8,13 @@ import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.PostAddDto;
 import com.lee.hof.sys.bean.dto.PostListDto;
 import com.lee.hof.sys.bean.dto.PostUpdateDto;
-import com.lee.hof.sys.bean.model.Comment;
-import com.lee.hof.sys.bean.model.Like;
-import com.lee.hof.sys.bean.model.Post;
-import com.lee.hof.sys.bean.model.User;
+import com.lee.hof.sys.bean.model.*;
 import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.CommentMapper;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
 import com.lee.hof.sys.service.PostService;
+import com.lee.hof.sys.service.TopicService;
 import com.lee.hof.sys.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -105,11 +103,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }
         int commentCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("post_id", post.getId()));
         postVO.setCommentCnt(commentCnt);
-
         postVO.setAuthor(userService.getUserById(post.getAuthorId()));
+        postVO.setTopic(topicService.getById(post.getTopicId()));
 
         return postVO;
     }
+
+    @Resource
+    TopicService topicService;
 
     @Autowired
     UserService userService;

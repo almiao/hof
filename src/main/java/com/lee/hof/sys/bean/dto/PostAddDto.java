@@ -117,6 +117,8 @@ public class PostAddDto extends BaseInput implements Serializable {
      */
     private boolean isHiddenManuallyByUser = false;
 
+
+    private Long topicId;
 }
 
 

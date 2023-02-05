@@ -12,8 +12,7 @@ import java.io.Serializable;
  */
 
 @Data
-public class
-SellOrderListDto extends BaseInput implements Serializable {
+public class SellOrderListDto extends BaseInput implements Serializable {
     private static final long serialVersionUID = 1876655654053364580L;
 
     private String searchTxt;
@@ -28,7 +27,6 @@ SellOrderListDto extends BaseInput implements Serializable {
     private Double distanceRangeHigh;
 
     private String orderByField;
-
 
     private int pageNum;
 

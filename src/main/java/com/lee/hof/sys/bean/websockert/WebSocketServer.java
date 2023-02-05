@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Slf4j
 @Service
-@ServerEndpoint("/api/websocket/{userId}")
+@ServerEndpoint("/api/websocket/{chatId}/{userId}")
 public class WebSocketServer {
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
@@ -42,12 +42,12 @@ public class WebSocketServer {
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId") Long userId) {
+    public void onOpen(Session session,@PathParam("chatId") Long chatId, @PathParam("userId") Long userId) {
         this.session = session;
         webSocketMap.put(userId, this);//加入set中
         this.userId = userId;
         addOnlineCount();           //在线数加1
-        log.info("有新窗口开始监听:" + userId + ",当前在线人数为:" + webSocketMap.size());
+        log.info("有新窗口开始监听:" + chatId + ",当前在线:" + JSONObject.toJSON(webSocketMap.keys()));
     }
 
     /**

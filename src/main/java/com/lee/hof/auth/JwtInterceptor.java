@@ -1,8 +1,8 @@
 package com.lee.hof.auth;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.mapper.UserMapper;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,6 +17,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Resource
     UserMapper userMapper;
+
+    @Resource
+    RedisTemplate<String,Object> redisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -35,15 +38,16 @@ public class JwtInterceptor implements HandlerInterceptor {
                 return true;
             }
 
-            String username = JwtUtil.getUserNameByToken(request);
-            // 这边拿到的 用户名 应该去数据库查询获得密码，简略，步骤在service直接获取密码
+//            String username = JwtUtil.getUserNameByToken(request);
 
-            System.out.println("username:" + username);
+            token = request.getHeader("token");
 
-            User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+            User user = (User) redisTemplate.opsForValue().get(token);
 
-            boolean result = JwtUtil.verify(token,username, user.getPassword());
-            if(result){
+//            User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+
+//            boolean result = JwtUtil.verify(token,username, user.getPassword());
+            if(user != null){
                 UserContext.setUser(user);
                 System.out.println("通过拦截器");
                 return true;

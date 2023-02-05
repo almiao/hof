@@ -45,5 +45,7 @@ public class User extends BaseEntity {
 
     private String role;
 
+    private String token;
+
 
 }

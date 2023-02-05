@@ -30,7 +30,8 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
   redis:
-    host: 82.157.21.9
+#    host: 82.157.21.9
+    host: 127.0.0.1
     database: 0
     port: 6379
     timeout: 10s
