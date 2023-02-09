@@ -24,6 +24,8 @@ public class UserChatVO {
 
     private User fromUser;
 
+    private Long relatedGood;
+
 
 
     private List<ChatContent> chatContents;

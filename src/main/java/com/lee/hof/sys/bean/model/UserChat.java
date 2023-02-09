@@ -40,5 +40,10 @@ public class UserChat extends BaseEntity {
 
     private Timestamp updateTime;
 
+    /**
+     * 关联商品
+     */
+    private Long relateGood;
+
 
 }

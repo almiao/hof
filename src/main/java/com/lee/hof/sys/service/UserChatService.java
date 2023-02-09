@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface UserChatService extends IService<UserChat> {
 
-    UserChatVO newChat(Long toUserId);
+    UserChatVO newChat(Long toUserId,Long relateGood);
 
     List<UserChatVO> listUserChat();
 

@@ -31,14 +31,15 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
     UserService userService;
 
     @Override
-    public UserChatVO newChat(Long toUserId) {
+    public UserChatVO newChat(Long toUserId, Long relateGood) {
 
         Long fromUserId = UserContext.getUserId();
-        QueryWrapper<UserChat> queryWrapper =   new QueryWrapper<>();
-        queryWrapper.eq("from_user_id",fromUserId);
+        QueryWrapper<UserChat> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("from_user_id", fromUserId);
         queryWrapper.eq("to_user_id", toUserId);
         UserChat chat = userChatMapper.selectOne(queryWrapper);
-        if(chat!= null){
+
+        if(chat != null){
             return convert(chat);
         }
         QueryWrapper<UserChat> reverse =   new QueryWrapper<>();
@@ -50,11 +51,11 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
         }
 
         UserChat userChat = new UserChat();
-
         userChat.setCreateTime(new Timestamp(System.currentTimeMillis()));
         userChat.setFromUserId(fromUserId);
         userChat.setToUserId(toUserId);
         userChat.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        userChat.setRelateGood(relateGood);
         userChatMapper.insert(userChat);
         return convert(userChat);
     }
@@ -79,6 +80,7 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
         userChatVO.setToUser(userService.getUserById(chat.getToUserId()));
         userChatVO.setFromUser(userService.getUserById(chat.getFromUserId()));
         userChatVO.setChatContents(chatContentService.getByChatId(chat.getId()));
+        userChatVO.setRelatedGood(chat.getRelateGood());
         return userChatVO;
     }
 
