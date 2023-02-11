@@ -46,6 +46,7 @@ public class UserController {
             userToken.setId(databaseUser.getId().toString());
             userToken.setToken(token);
             userToken.setUsername(databaseUser.getUsername());
+            userToken.setImgId(databaseUser.getImgId());
             response.addHeader("set-token", token);
             redisTemplate.opsForValue().set(token, databaseUser, 30, TimeUnit.DAYS);
             return   BaseResponse.success(userToken);

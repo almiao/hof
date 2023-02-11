@@ -5,6 +5,16 @@ public class UserToken {
     private String id;
     private String username;
     private String token;
+    private String imgId;
+
+
+    public String getImgId() {
+        return imgId;
+    }
+
+    public void setImgId(String imgId) {
+        this.imgId = imgId;
+    }
 
     public String getId() {
         return id;

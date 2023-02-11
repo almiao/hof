@@ -41,14 +41,14 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
         UserChat chat = userChatMapper.selectOne(queryWrapper);
 
         if(chat != null){
-            return convert(chat);
+            return convert(chat, fromUserId);
         }
         QueryWrapper<UserChat> reverse =   new QueryWrapper<>();
         reverse.eq("from_user_id",toUserId);
         reverse.eq("to_user_id", fromUserId);
         UserChat reverseChat = userChatMapper.selectOne(reverse);
         if(reverseChat!= null){
-            return convert(reverseChat);
+            return convert(reverseChat,fromUserId);
         }
 
         UserChat userChat = new UserChat();
@@ -58,7 +58,7 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
         userChat.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         userChat.setRelateGood(relateGood);
         userChatMapper.insert(userChat);
-        return convert(userChat);
+        return convert(userChat, fromUserId);
     }
 
     @Override
@@ -68,18 +68,22 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
         queryWrapper.eq("from_user_id",userId).or().eq("to_user_id",userId);
         queryWrapper.orderByDesc("update_time");
         List<UserChat> chats = userChatMapper.selectList(queryWrapper);
-        return chats.stream().map(this::convert).collect(Collectors.toList());
+        return chats.stream().map(chat ->convert(chat,userId)).collect(Collectors.toList());
     }
 
-    private UserChatVO convert(UserChat chat){
+    private UserChatVO convert(UserChat chat, long meUserId){
         UserChatVO userChatVO = new UserChatVO();
         userChatVO.setId(chat.getId());
         userChatVO.setCreateTime(chat.getCreateTime());
         userChatVO.setUpdateTime(chat.getUpdateTime());
         userChatVO.setFromUserId(chat.getFromUserId());
         userChatVO.setToUserId(chat.getToUserId());
-        userChatVO.setToUser(userService.getUserById(chat.getToUserId()));
-        userChatVO.setFromUser(userService.getUserById(chat.getFromUserId()));
+        if(chat.getFromUserId() == meUserId) {
+            userChatVO.setToUser(userService.getUserById(chat.getToUserId()));
+        }else
+        {
+            userChatVO.setToUser(userService.getUserById(chat.getFromUserId()));
+        }
         userChatVO.setChatContents(chatContentService.getByChatId(chat.getId()));
         userChatVO.setRelatedGood(chat.getRelateGood());
         return userChatVO;
