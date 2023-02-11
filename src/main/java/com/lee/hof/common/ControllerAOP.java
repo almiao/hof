@@ -46,12 +46,12 @@ public class ControllerAOP {
         HttpServletRequest request = attributes.getRequest();
 
         // 记录下请求内容
-        logger.debug("请求地址 : " + request.getRequestURL().toString());
-        logger.debug("HTTP METHOD : " + request.getMethod());
+        logger.info("请求地址 : " + request.getRequestURL().toString());
+        logger.info("HTTP METHOD : " + request.getMethod());
         // 获取真实的ip地址
-        logger.debug("CLASS_METHOD : " + jointPoint.getSignature().getDeclaringTypeName() + "."
+        logger.info("CLASS_METHOD : " + jointPoint.getSignature().getDeclaringTypeName() + "."
                 + jointPoint.getSignature().getName());
-        logger.debug("参数 : " + Arrays.toString(jointPoint.getArgs()));
+        logger.info("参数 : " + Arrays.toString(jointPoint.getArgs()));
 
             //获取方法参数值
             Object[] args = jointPoint.getArgs();

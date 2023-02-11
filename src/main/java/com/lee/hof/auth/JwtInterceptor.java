@@ -1,5 +1,6 @@
 package com.lee.hof.auth;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.mapper.UserMapper;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -49,7 +50,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 //            boolean result = JwtUtil.verify(token,username, user.getPassword());
             if(user != null){
                 UserContext.setUser(user);
-                System.out.println("通过拦截器");
+                System.out.println("通过拦截器" + JSONObject.toJSON(user));
                 return true;
             }
         }else {
