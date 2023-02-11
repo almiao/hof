@@ -44,8 +44,8 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
             return convert(chat);
         }
         QueryWrapper<UserChat> reverse =   new QueryWrapper<>();
-        queryWrapper.eq("from_user_id",toUserId);
-        queryWrapper.eq("to_user_id", fromUserId);
+        reverse.eq("from_user_id",toUserId);
+        reverse.eq("to_user_id", fromUserId);
         UserChat reverseChat = userChatMapper.selectOne(reverse);
         if(reverseChat!= null){
             return convert(reverseChat);
