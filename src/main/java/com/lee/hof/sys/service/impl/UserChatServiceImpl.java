@@ -34,6 +34,7 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> i
     public UserChatVO newChat(Long toUserId, Long relateGood) {
 
         Long fromUserId = UserContext.getUserId();
+        log.warn(fromUserId.toString());
         QueryWrapper<UserChat> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("from_user_id", fromUserId);
         queryWrapper.eq("to_user_id", toUserId);
