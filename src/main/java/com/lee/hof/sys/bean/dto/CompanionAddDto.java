@@ -2,6 +2,7 @@ package com.lee.hof.sys.bean.dto;
 
 import com.lee.hof.sys.bean.model.BaseInput;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
 
 
 @Data
@@ -10,11 +11,13 @@ public class CompanionAddDto extends BaseInput {
     /**
      * 标题
      */
+    @NotBlank(message = "title should not be null")
     private String title;
 
     /**
      * 描述
      */
+    @NotBlank(message = "desc should not be null")
     private String desc;
 
     /**
@@ -30,11 +33,13 @@ public class CompanionAddDto extends BaseInput {
     /**
      * 出发地点
      */
+//    @NotBlank(message = "startDetailLocation should not be null")
     private String startDetailLocation;
 
     /**
      * 到达城市
      */
+//    @NotBlank(message = "endCity should not be null")
     private String endCity;
 
     /**

@@ -32,7 +32,7 @@ public class Companion implements Serializable {
 
     private String title;
 
-    private String desc;
+    private String contentDesc;
 
     private String picIds;
 

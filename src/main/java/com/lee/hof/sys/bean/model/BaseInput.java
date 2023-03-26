@@ -1,7 +1,5 @@
 package com.lee.hof.sys.bean.model;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * @author tangle
  * @description
@@ -18,7 +16,6 @@ public class BaseInput{
         this.userId = userId;
     }
 
-    @NotNull
     private Long userId;
 
     private User user;

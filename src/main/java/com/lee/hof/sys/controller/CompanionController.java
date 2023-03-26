@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/companion")
@@ -21,7 +22,7 @@ public class CompanionController {
     CompanionService companionService;
 
     @PostMapping("/add")
-    public BaseResponse<Companion> addPost(@RequestBody CompanionAddDto dto){
+    public BaseResponse<Companion> addPost(@Valid @RequestBody CompanionAddDto dto){
         return BaseResponse.success(companionService.addCompanion(dto));
     }
 
