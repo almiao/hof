@@ -18,7 +18,7 @@ public class CompanionAddDto extends BaseInput {
      * 描述
      */
     @NotBlank(message = "desc should not be null")
-    private String desc;
+    private String contentDesc;
 
     /**
      * 相关图片

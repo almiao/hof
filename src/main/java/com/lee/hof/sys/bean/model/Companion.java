@@ -36,7 +36,7 @@ public class Companion implements Serializable {
 
     private String picIds;
 
-    private String startCity;
+    private String startLocation;
 
     private String startDetailLocation;
 
