@@ -1,8 +1,10 @@
 package com.lee.hof.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.CompanionAddDto;
+import com.lee.hof.sys.bean.dto.CompanionListDto;
 import com.lee.hof.sys.bean.model.Companion;
 import com.lee.hof.sys.mapper.CompanionMapper;
 import com.lee.hof.sys.service.CompanionService;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -32,5 +35,10 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
         companionMapper.insert(companion);
 
         return companion;
+    }
+
+    @Override
+    public List<Companion> listCompanion(CompanionListDto dto) {
+         return companionMapper.selectList(new QueryWrapper<>());
     }
 }

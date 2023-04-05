@@ -2,7 +2,10 @@ package com.lee.hof.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.hof.sys.bean.dto.CompanionAddDto;
+import com.lee.hof.sys.bean.dto.CompanionListDto;
 import com.lee.hof.sys.bean.model.Companion;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,4 +19,8 @@ public interface CompanionService extends IService<Companion> {
 
 
     Companion addCompanion(CompanionAddDto dto);
+
+
+
+    List<Companion> listCompanion(CompanionListDto dto);
 }
