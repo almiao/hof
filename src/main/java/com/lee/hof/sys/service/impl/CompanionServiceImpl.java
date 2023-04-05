@@ -40,6 +40,7 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
         return companion;
     }
 
+    @Resource
     private UserService userService;
 
     @Override
