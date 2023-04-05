@@ -54,7 +54,7 @@ local:
     path: ''
 logging:
   level:
-    root: info
+    root: debug
   file:
     # 默认情况下：会在项目的根目录下生成/output/logs/spring.log，默认的日志名是：spring.log
     path: output/logs
