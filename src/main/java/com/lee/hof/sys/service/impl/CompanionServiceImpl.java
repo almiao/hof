@@ -35,7 +35,9 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
         companion.setCreateBy(UserContext.getUserId());
         companion.setCreateTime(LocalDateTime.now());
 
-        companionMapper.insert(companion);
+        int inserted =  companionMapper.insert(companion);
+
+        System.out.println("创建成功：%d" + inserted);
 
         return companion;
     }
