@@ -6,14 +6,17 @@ import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.CompanionAddDto;
 import com.lee.hof.sys.bean.dto.CompanionListDto;
 import com.lee.hof.sys.bean.model.Companion;
+import com.lee.hof.sys.bean.vo.CompanionVO;
 import com.lee.hof.sys.mapper.CompanionMapper;
 import com.lee.hof.sys.service.CompanionService;
+import com.lee.hof.sys.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,8 +40,20 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
         return companion;
     }
 
+    private UserService userService;
+
     @Override
-    public List<Companion> listCompanion(CompanionListDto dto) {
-         return companionMapper.selectList(new QueryWrapper<>());
+    public List<CompanionVO> listCompanion(CompanionListDto dto) {
+
+         List<Companion> companions = companionMapper.selectList(new QueryWrapper<>());
+
+         List<CompanionVO> companionVOS = companions.stream().map(companion -> {
+             CompanionVO companionVO = new CompanionVO();
+             BeanUtils.copyProperties(companion, companionVO);
+             companionVO.setUser(userService.getUserById(companion.getCreateBy()));
+             return companionVO;
+         }).collect(Collectors.toList());
+
+         return companionVOS;
     }
 }

@@ -5,6 +5,7 @@ import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.dto.CompanionAddDto;
 import com.lee.hof.sys.bean.dto.CompanionListDto;
 import com.lee.hof.sys.bean.model.Companion;
+import com.lee.hof.sys.bean.vo.CompanionVO;
 import com.lee.hof.sys.service.CompanionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,7 @@ public class CompanionController {
 
 
     @PostMapping("/list")
-    public BaseResponse<List<Companion>> listCompanion(@Valid @RequestBody CompanionListDto dto){
+    public BaseResponse<List<CompanionVO>> listCompanion(@Valid @RequestBody CompanionListDto dto){
         return BaseResponse.success(companionService.listCompanion(dto));
     }
 
