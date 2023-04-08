@@ -2,26 +2,25 @@ package com.lee.hof.sys.bean.dto;
 
 import com.lee.hof.sys.bean.model.BaseInput;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
 
 
 @Data
 public class CompanionAddDto extends BaseInput {
 
     /**
-     * 标题
+
+     /**
+     * 如4月下旬
      */
-    @NotBlank(message = "title should not be null")
     private String title;
 
     /**
-     * 描述
+     * 作者描述
      */
-    @NotBlank(message = "desc should not be null")
     private String contentDesc;
 
     /**
-     * 相关图片
+     * 图片
      */
     private String picIds;
 
@@ -31,40 +30,65 @@ public class CompanionAddDto extends BaseInput {
     private String startCity;
 
     /**
-     * 出发地点
+     * 出发地点描述
      */
-//    @NotBlank(message = "startDetailLocation should not be null")
-    private String startDetailLocation;
+    private String startDetailLocationDesc;
+
+    /**
+     * 出发具体坐标
+     */
+    private String startDetailLocationPoi;
+
 
     /**
      * 到达城市
      */
-//    @NotBlank(message = "endCity should not be null")
     private String endCity;
 
     /**
-     * 约伴类型
+     * 具体景点描述
+     */
+    private String endDetailLocationDesc;
+
+    /**
+     * 具体经典坐标
+     */
+    private String endDetailLocationPoi;
+
+    /**
+     * 活动类型
      */
     private String companionType;
 
     /**
-     * 期望人数
+     * 预期同行人数
      */
     private int expectPersonNum;
 
     /**
-     * 开始时间
+     * 预期开始日期
      */
     private String expectStartDate;
 
     /**
-     * 结束时间
+     * 预期结束日志
      */
     private String expectEndDate;
 
     /**
-     * 相关旅行游记
+     *
      */
     private String referenceCompanionId;
+
+    /**
+     * 费用预期
+     */
+    private String maxCostDesc;
+
+
+    /**
+     * 费用
+     */
+    private String costShareType;
 
 }
