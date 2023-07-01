@@ -40,6 +40,7 @@ public class UserController {
                 databaseUser = new User();
                 databaseUser.setPhone(user.getPhone());
                 databaseUser.setUsername(user.getPhone());
+                userMapper.insert(databaseUser);
             }
             token = JwtUtil.sign(databaseUser.getPhone(), databaseUser.getValidNum());
         }else{
