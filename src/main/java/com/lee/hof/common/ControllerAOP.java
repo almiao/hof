@@ -87,7 +87,8 @@ public class ControllerAOP {
            return BaseResponse.error(throwable.getMessage());
         } catch (Throwable throwable){
             throwable.printStackTrace();
-            return  BaseResponse.error("内部错误");
+            logger.error("内部异常:{}", throwable.getLocalizedMessage());
+            return BaseResponse.error("内部错误");
         }
 
         return result;
