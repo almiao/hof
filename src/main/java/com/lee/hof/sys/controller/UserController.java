@@ -7,6 +7,7 @@ import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.model.UserToken;
 import com.lee.hof.sys.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.TimeUnit;
 
+
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -60,8 +63,12 @@ public class UserController {
             userToken.setUsername(databaseUser.getUsername());
             userToken.setImgId(databaseUser.getImgId());
             response.addHeader("set-token", token);
+
+            log.info("请求地址 : " + userToken);
             redisTemplate.opsForValue().set(token, databaseUser, 30, TimeUnit.DAYS);
-            return   BaseResponse.success(userToken);
+            return BaseResponse.success(userToken);
+        }else {
+            log.info("bad token" );
         }
         return BaseResponse.badrequest();
     }

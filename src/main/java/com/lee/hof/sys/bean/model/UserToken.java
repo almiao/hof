@@ -1,5 +1,8 @@
 package com.lee.hof.sys.bean.model;
 
+import lombok.Data;
+
+@Data
 public class UserToken {
 
     private String id;
