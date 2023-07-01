@@ -7,6 +7,7 @@ import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.model.UserToken;
 import com.lee.hof.sys.mapper.UserMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -33,14 +32,26 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public BaseResponse<UserToken> login(@RequestBody User user, HttpServletResponse response){
-        Map<String, Object> map = new HashMap<>();
-        String username = user.getUsername();
-        String password = user.getPassword();
-        User databaseUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", username).eq("password", password));
-        if(databaseUser == null){
-            return BaseResponse.badrequest();
+        User databaseUser;
+        String token;
+        if(StringUtils.isNoneBlank(user.getPhone())){
+            databaseUser = userMapper.selectOne(new QueryWrapper<User>().eq("phone", user.getPhone()));
+            if(databaseUser == null){
+                databaseUser = new User();
+                databaseUser.setPhone(user.getPhone());
+                databaseUser.setUsername(user.getPhone());
+            }
+            token = JwtUtil.sign(databaseUser.getPhone(), databaseUser.getValidNum());
+        }else{
+            String username = user.getUsername();
+            String password = user.getPassword();
+            databaseUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", username).eq("password", password));
+            if(databaseUser == null){
+                return BaseResponse.badrequest();
+            }
+            token = JwtUtil.sign(databaseUser.getUsername(), databaseUser.getPassword());
         }
-        String token = JwtUtil.sign(username,password);
+
         if (token != null){
             UserToken userToken = new UserToken();
             userToken.setId(databaseUser.getId().toString());
