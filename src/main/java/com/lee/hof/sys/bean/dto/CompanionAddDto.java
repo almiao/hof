@@ -37,7 +37,7 @@ public class CompanionAddDto extends BaseInput {
     /**
      * 出发具体坐标
      */
-    private String startDetailLocationPoi;
+    private String startLatLng;
 
 
     /**
@@ -53,7 +53,7 @@ public class CompanionAddDto extends BaseInput {
     /**
      * 具体经典坐标
      */
-    private String endDetailLocationPoi;
+    private String endLatLng;
 
     /**
      * 活动类型
