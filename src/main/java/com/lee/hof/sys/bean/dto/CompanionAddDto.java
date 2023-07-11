@@ -63,7 +63,7 @@ public class CompanionAddDto extends BaseInput {
     /**
      * 预期同行人数
      */
-    private int expectPersonNum;
+    private String expectPersonNum;
 
     /**
      * 预期开始日期

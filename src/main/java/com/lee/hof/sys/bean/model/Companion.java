@@ -84,7 +84,7 @@ public class Companion implements Serializable {
     /**
      * 预期同行人数
      */
-    private int expectPersonNum;
+    private String expectPersonNum;
 
     /**
      * 预期开始日期
