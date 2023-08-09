@@ -126,6 +126,9 @@ public class Companion implements Serializable {
     private LocalDateTime updateTime;
 
     private Integer status;
+
+
+    private String companionUsers;
 }
 
 

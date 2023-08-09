@@ -6,15 +6,18 @@ import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.CompanionAddDto;
 import com.lee.hof.sys.bean.dto.CompanionListDto;
 import com.lee.hof.sys.bean.model.Companion;
+import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.vo.CompanionVO;
 import com.lee.hof.sys.mapper.CompanionMapper;
 import com.lee.hof.sys.service.CompanionService;
 import com.lee.hof.sys.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +57,18 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
              CompanionVO companionVO = new CompanionVO();
              BeanUtils.copyProperties(companion, companionVO);
              companionVO.setUser(userService.getUserById(companion.getCreateBy()));
+
+             List<User> users = new ArrayList<>();
+
+             if(StringUtils.isNoneBlank(companion.getCompanionUsers())){
+
+                 String[] userId = StringUtils.split(companion.getCompanionUsers());
+
+                 for(String id:userId){
+                     users.add(userService.getUserById(Long.parseLong(id)));
+                 }
+             }
+             companionVO.setCompanionUserList(users);
              return companionVO;
          }).collect(Collectors.toList());
 

@@ -4,6 +4,8 @@ import com.lee.hof.sys.bean.model.Companion;
 import com.lee.hof.sys.bean.model.User;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author tangle
  * @description
@@ -14,6 +16,8 @@ public class CompanionVO extends Companion {
     private static final long serialVersionUID = 18766556543364580L;
 
     private User user;
+
+    private List<User> companionUserList;
 }
 
 
