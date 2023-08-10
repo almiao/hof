@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.CompanionAddDto;
+import com.lee.hof.sys.bean.dto.CompanionJoinDto;
 import com.lee.hof.sys.bean.dto.CompanionListDto;
 import com.lee.hof.sys.bean.model.Companion;
 import com.lee.hof.sys.bean.model.User;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +47,31 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
         return companion;
     }
 
+    @Override
+    public CompanionVO joinCompanion(CompanionJoinDto dto) {
+
+        Companion companion = companionMapper.selectById(dto.getCompanionId());
+
+        if(StringUtils.isNoneBlank(companion.getCompanionUsers())){
+            String[] userId = StringUtils.split(companion.getCompanionUsers());
+
+
+            List<String> re = Arrays.asList(userId);
+
+            re.add(dto.getUserId().toString());
+
+            companion.setCompanionUsers(StringUtils.join(re,","));
+
+
+        }else{
+            companion.setCompanionUsers(dto.getUserId().toString());
+        }
+
+        companionMapper.updateById(companion);
+
+        return convert(companion);
+    }
+
     @Resource
     private UserService userService;
 
@@ -53,25 +80,30 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
 
          List<Companion> companions = companionMapper.selectList(new QueryWrapper<>());
 
-         List<CompanionVO> companionVOS = companions.stream().map(companion -> {
-             CompanionVO companionVO = new CompanionVO();
-             BeanUtils.copyProperties(companion, companionVO);
-             companionVO.setUser(userService.getUserById(companion.getCreateBy()));
-
-             List<User> users = new ArrayList<>();
-
-             if(StringUtils.isNoneBlank(companion.getCompanionUsers())){
-
-                 String[] userId = StringUtils.split(companion.getCompanionUsers());
-
-                 for(String id:userId){
-                     users.add(userService.getUserById(Long.parseLong(id)));
-                 }
-             }
-             companionVO.setCompanionUserList(users);
-             return companionVO;
-         }).collect(Collectors.toList());
-
+         List<CompanionVO> companionVOS = companions.stream().map(this::convert).collect(Collectors.toList());
          return companionVOS;
     }
+
+
+    private CompanionVO convert(Companion companion){
+        CompanionVO companionVO = new CompanionVO();
+        BeanUtils.copyProperties(companion, companionVO);
+        companionVO.setUser(userService.getUserById(companion.getCreateBy()));
+
+        List<User> users = new ArrayList<>();
+
+        if(StringUtils.isNoneBlank(companion.getCompanionUsers())){
+
+            String[] userId = StringUtils.split(companion.getCompanionUsers());
+
+            for(String id:userId){
+                users.add(userService.getUserById(Long.parseLong(id)));
+            }
+        }
+        companionVO.setCompanionUserList(users);
+        return companionVO;
+
+    }
+
+
 }

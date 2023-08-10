@@ -3,6 +3,7 @@ package com.lee.hof.sys.controller;
 
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.dto.CompanionAddDto;
+import com.lee.hof.sys.bean.dto.CompanionJoinDto;
 import com.lee.hof.sys.bean.dto.CompanionListDto;
 import com.lee.hof.sys.bean.model.Companion;
 import com.lee.hof.sys.bean.vo.CompanionVO;
@@ -29,6 +30,12 @@ public class CompanionController {
         return BaseResponse.success(companionService.addCompanion(dto));
     }
 
+
+
+    @PostMapping("/join")
+    public BaseResponse<Companion> join(@Valid @RequestBody CompanionJoinDto dto){
+        return BaseResponse.success(companionService.joinCompanion(dto));
+    }
 
 
     @PostMapping("/list")
