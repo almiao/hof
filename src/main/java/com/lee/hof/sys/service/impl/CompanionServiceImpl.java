@@ -18,9 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -49,26 +47,17 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
 
     @Override
     public CompanionVO joinCompanion(CompanionJoinDto dto) {
-
         Companion companion = companionMapper.selectById(dto.getCompanionId());
-
         if(StringUtils.isNoneBlank(companion.getCompanionUsers())){
             String[] userId = StringUtils.split(companion.getCompanionUsers());
-
-
-            List<String> re = Arrays.asList(userId);
-
+            Set<String> re = new HashSet<>();
+            Collections.addAll(re, userId);
             re.add(dto.getUserId().toString());
-
             companion.setCompanionUsers(StringUtils.join(re,","));
-
-
         }else{
             companion.setCompanionUsers(dto.getUserId().toString());
         }
-
         companionMapper.updateById(companion);
-
         return convert(companion);
     }
 
