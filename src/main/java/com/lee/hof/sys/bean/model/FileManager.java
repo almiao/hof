@@ -1,14 +1,12 @@
 package com.lee.hof.sys.bean.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 
 /**
  * @author tangle
@@ -48,9 +46,6 @@ public class FileManager {
 
         private Integer statusId;
 
-        @TableField("content")
-        @Lob
-        private byte[] content;
 
 
         private int width;

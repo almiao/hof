@@ -1,5 +1,6 @@
 package com.lee.hof.sys.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.common.exception.HofException;
@@ -10,6 +11,8 @@ import com.lee.hof.sys.bean.vo.FileUploadBean;
 import com.lee.hof.sys.mapper.FileManagerMapper;
 import com.lee.hof.sys.service.FileManagerService;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,7 +63,6 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
 //        BeanUtils.copyProperties(uploadedFileBean, fileManager);
         fileManager.setName(file.getOriginalFilename());
         fileManager.setUuid(uuid);
-        fileManager.setContent(bos.toByteArray());
         fileManager.setFullPath("/" + uuid +"/" +fileManager.getName());
 //        // 参数列表
 //        UploadedFileBean uploadedFileBean = localStorageService.uploadFile(file);
@@ -81,12 +83,9 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
     public FileUploadBean uploadFileNew(MultipartFile file) throws Exception {
 
         InputStream input = file.getInputStream();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] b = new byte[1024];
-        int len = -1;
-        while((len = input.read(b)) != -1) {
-            bos.write(b, 0, len);
-        }
+
+        BufferedImage bufferedImage = ImageIO.read(input);
+
         // 参数列
 
         UploadedFileBean uploadedFileBean = localStorageService.uploadFile(file);
@@ -94,11 +93,11 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
 
         FileManager fileManager = new FileManager();
         fileManager.setName(file.getOriginalFilename());
-        fileManager.setContent(bos.toByteArray());
         fileManager.setFullPath(uploadedFileBean.getFullPath());
         fileManager.setUuid(uploadedFileBean.getFileId());
         fileManager.setProvider(uploadedFileBean.getProvider());
-
+        fileManager.setWidth(bufferedImage.getWidth());
+        fileManager.setHeight(bufferedImage.getHeight());
 //        // 参数列表
 
         this.baseMapper.insert(fileManager);
@@ -114,25 +113,25 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
     }
 
 
-    public void download(String uuid, HttpServletResponse response) {
-
-        FileManager fileManager = this.baseMapper.getByUuid(uuid);
-
-        if(fileManager==null){
-            throw new HofException("未找到文件");
-        }
-        System.out.println("下载文件文件:" + fileManager.getName());
-        // 参数列表
-        try (InputStream inputStream =  new ByteArrayInputStream(fileManager.getContent())){
-            String encoderFileName = URLEncoder.encode(fileManager.getName(), "UTF-8");
-            response.setHeader("Content-deposition", String.format("attachment;filename=%s;filename*=UTF-8''%s", encoderFileName, encoderFileName));
-            response.setContentType(fileManager.getType());
-            IOUtils.copy(inputStream, response.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new HofException("文件读取错误");
-        }
-    }
+//    public void download(String uuid, HttpServletResponse response) {
+//
+//        FileManager fileManager = this.baseMapper.getByUuid(uuid);
+//
+//        if(fileManager==null){
+//            throw new HofException("未找到文件");
+//        }
+//        System.out.println("下载文件文件:" + fileManager.getName());
+//        // 参数列表
+//        try (InputStream inputStream =  new ByteArrayInputStream(fileManager.getContent())){
+//            String encoderFileName = URLEncoder.encode(fileManager.getName(), "UTF-8");
+//            response.setHeader("Content-deposition", String.format("attachment;filename=%s;filename*=UTF-8''%s", encoderFileName, encoderFileName));
+//            response.setContentType(fileManager.getType());
+//            IOUtils.copy(inputStream, response.getOutputStream());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw new HofException("文件读取错误");
+//        }
+//    }
 
 
     public void downloadNew(String uuid, HttpServletResponse response) {
@@ -143,43 +142,35 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
         // 参数列表
         try {
             InputStream inputStream = null;
-            if(fileManager.getProvider() == null){
-                inputStream =  new ByteArrayInputStream(fileManager.getContent());
-            }else{
-                inputStream = localStorageService.getFile(fileManager.getFullPath());
-            }
+            inputStream = localStorageService.getFile(fileManager.getFullPath());
             String encoderFileName = URLEncoder.encode(fileManager.getName(), "UTF-8");
             response.setHeader("Content-deposition", String.format("attachment;filename=%s;filename*=UTF-8''%s", encoderFileName, encoderFileName));
             response.setContentType(fileManager.getType());
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
-            throw new HofException("文件读取错误");
+            throw new HofException("文件读取错误:"+fileManager.getUuid());
         }
     }
 
 
+    private final static Logger logger = LoggerFactory.getLogger(FileManagerServiceImpl.class);
     public void clean() {
         List<FileManager> fileManagers = this.baseMapper.selectList(new QueryWrapper<>());
-        if (fileManagers == null ) {
-            throw new HofException("未找到文件");
-        }
+        logger.warn(JSONUtil.toJsonStr(fileManagers));
         for(FileManager fileManager:fileManagers){
             // 参数列表
             try {
-                InputStream inputStream = null;
-                if(fileManager.getProvider() == null){
-                    inputStream =  new ByteArrayInputStream(fileManager.getContent());
-                }else{
-                    inputStream = localStorageService.getFile(fileManager.getFullPath());
-                }
+                logger.warn("error:{}"+fileManager.getFullPath());
+                InputStream inputStream = localStorageService.getFile(fileManager.getFullPath());
                 BufferedImage imageIO = ImageIO.read(inputStream);
                 fileManager.setWidth(imageIO.getWidth());
                 fileManager.setHeight(imageIO.getHeight());
+                logger.warn(JSONUtil.toJsonStr(fileManager));
                 baseMapper.updateById(fileManager);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                throw new HofException("文件读取错误");
+                log.error("error:", e);
             }
         }
 

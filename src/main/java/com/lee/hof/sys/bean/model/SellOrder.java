@@ -92,6 +92,10 @@ public class SellOrder implements Serializable {
     @TableField(exist = false)
     private User user;
 
+    private int coverWidth;
+
+    private int coverHeight;
+
 }
 
 
