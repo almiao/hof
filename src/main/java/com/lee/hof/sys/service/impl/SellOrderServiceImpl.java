@@ -7,8 +7,10 @@ import com.lee.hof.auth.UserContext;
 import com.lee.hof.common.exception.HofException;
 import com.lee.hof.sys.bean.SellOrderStatus;
 import com.lee.hof.sys.bean.dto.SellOrderListDto;
+import com.lee.hof.sys.bean.model.FileManager;
 import com.lee.hof.sys.bean.model.SellOrder;
 import com.lee.hof.sys.bean.model.User;
+import com.lee.hof.sys.mapper.FileManagerMapper;
 import com.lee.hof.sys.mapper.SellOrderMapper;
 import com.lee.hof.sys.service.SellOrderService;
 import com.lee.hof.sys.service.UserService;
@@ -154,10 +156,16 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
             if(StringUtils.isNoneBlank(sellOrder.getFileIds())){
                String[] file = StringUtils.split(sellOrder.getFileIds(),",");
                sellOrder.setCoverFileId(file[0]);
+                FileManager fileManager = fileManagerMapper.getByUuid(sellOrder.getCoverFileId());
+                sellOrder.setCoverWidth(fileManager.getWidth());
+                sellOrder.setCoverHeight(fileManager.getHeight());
                sellOrderMapper.updateById(sellOrder);
             }
         });
         return result;
 
     }
+
+    @Resource
+    private FileManagerMapper fileManagerMapper;
 }

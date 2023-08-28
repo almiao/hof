@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,6 +97,7 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
         fileManager.setProvider(uploadedFileBean.getProvider());
         fileManager.setWidth(bufferedImage.getWidth());
         fileManager.setHeight(bufferedImage.getHeight());
+        fileManager.setFileId(uploadedFileBean.getFileId());
 //        // 参数列表
 
         this.baseMapper.insert(fileManager);
