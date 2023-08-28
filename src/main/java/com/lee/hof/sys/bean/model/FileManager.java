@@ -51,4 +51,9 @@ public class FileManager {
         @TableField("content")
         @Lob
         private byte[] content;
+
+
+        private int width;
+
+        private int height;
 }

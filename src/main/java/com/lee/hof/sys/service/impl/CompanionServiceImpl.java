@@ -66,9 +66,7 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
 
     @Override
     public List<CompanionVO> listCompanion(CompanionListDto dto) {
-
          List<Companion> companions = companionMapper.selectList(new QueryWrapper<>());
-
          List<CompanionVO> companionVOS = companions.stream().map(this::convert).collect(Collectors.toList());
          return companionVOS;
     }
@@ -78,13 +76,9 @@ public class CompanionServiceImpl extends ServiceImpl<CompanionMapper, Companion
         CompanionVO companionVO = new CompanionVO();
         BeanUtils.copyProperties(companion, companionVO);
         companionVO.setUser(userService.getUserById(companion.getCreateBy()));
-
         List<User> users = new ArrayList<>();
-
         if(StringUtils.isNoneBlank(companion.getCompanionUsers())){
-
-            String[] userId = StringUtils.split(companion.getCompanionUsers());
-
+            String[] userId = StringUtils.split(companion.getCompanionUsers(),",");
             for(String id:userId){
                 users.add(userService.getUserById(Long.parseLong(id)));
             }

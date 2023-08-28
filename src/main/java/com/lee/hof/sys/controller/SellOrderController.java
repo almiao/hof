@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/sellOrder")
-public class OrderController extends BaseController {
+public class SellOrderController extends BaseController {
 
 
     @Resource
@@ -40,9 +40,6 @@ public class OrderController extends BaseController {
     public BaseResponse<SellOrder> getDetail(@RequestParam Long orderId) {
         return BaseResponse.success(sellOrderService.getSellOrderDetail(orderId)) ;
     }
-
-
-
 
     @PostMapping("/get/editing")
     public BaseResponse<SellOrder> get() {

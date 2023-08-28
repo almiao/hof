@@ -44,8 +44,14 @@ public class FileController {
     @GetMapping("/download/{fileId}/{fileName}")
     @ResponseBody
     public void downloadFile(@PathVariable String fileId,@PathVariable String fileName, HttpServletResponse response) throws IOException{
-
         fileService.downloadNew(fileId,response);
+    }
+
+
+    @GetMapping("/download/clean")
+    @ResponseBody
+    public void clean() {
+        fileService.clean();
     }
 
 

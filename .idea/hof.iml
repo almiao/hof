@@ -38,6 +38,7 @@
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.aliyun:aliyun-java-sdk-ram:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.aliyun:aliyun-java-sdk-kms:2.11.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.afkbrb:github-avatar-generator:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-websocket:2.3.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.2.11.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.2.11.RELEASE" level="project" />

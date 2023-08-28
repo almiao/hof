@@ -23,4 +23,6 @@ public interface FileManagerService extends IService<FileManager> {
     void download(String fileId, HttpServletResponse response) throws FileNotFoundException;
 
     void downloadNew(String fileId, HttpServletResponse response) throws FileNotFoundException;
+
+    void clean();
 }

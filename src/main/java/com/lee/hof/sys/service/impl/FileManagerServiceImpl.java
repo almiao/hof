@@ -1,5 +1,6 @@
 package com.lee.hof.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.common.exception.HofException;
 import com.lee.hof.common.upload.UploadedFileBean;
@@ -13,9 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -91,6 +98,7 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
         fileManager.setFullPath(uploadedFileBean.getFullPath());
         fileManager.setUuid(uploadedFileBean.getFileId());
         fileManager.setProvider(uploadedFileBean.getProvider());
+
 //        // 参数列表
 
         this.baseMapper.insert(fileManager);
@@ -129,7 +137,7 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
 
     public void downloadNew(String uuid, HttpServletResponse response) {
         FileManager fileManager = this.baseMapper.getByUuid(uuid);
-        if (fileManager == null || fileManager.getContent() == null) {
+        if (fileManager == null ) {
             throw new HofException("未找到文件");
         }
         // 参数列表
@@ -149,4 +157,34 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
             throw new HofException("文件读取错误");
         }
     }
+
+
+    public void clean() {
+        List<FileManager> fileManagers = this.baseMapper.selectList(new QueryWrapper<>());
+        if (fileManagers == null ) {
+            throw new HofException("未找到文件");
+        }
+        for(FileManager fileManager:fileManagers){
+            // 参数列表
+            try {
+                InputStream inputStream = null;
+                if(fileManager.getProvider() == null){
+                    inputStream =  new ByteArrayInputStream(fileManager.getContent());
+                }else{
+                    inputStream = localStorageService.getFile(fileManager.getFullPath());
+                }
+                BufferedImage imageIO = ImageIO.read(inputStream);
+                fileManager.setWidth(imageIO.getWidth());
+                fileManager.setHeight(imageIO.getHeight());
+                baseMapper.updateById(fileManager);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new HofException("文件读取错误");
+            }
+        }
+
+    }
+
+
+
 }

@@ -16,7 +16,7 @@ import java.util.*;
 public class LocalStorageService extends StorageService {
     private static final String LOCAL_PROVIDER_NAME = "local";
 
-    String localStoragePath;
+    public String localStoragePath;
 
     public LocalStorageService(Properties properties) {
         if (properties.containsKey("local.storage.path")) {
@@ -29,6 +29,10 @@ public class LocalStorageService extends StorageService {
         if (!localStorageFile.exists()) {
             localStorageFile.mkdirs();
         }
+    }
+
+    public String getLocalStoragePath() {
+        return localStoragePath;
     }
 
     @Override

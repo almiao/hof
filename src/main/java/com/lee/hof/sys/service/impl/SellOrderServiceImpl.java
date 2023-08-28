@@ -8,8 +8,11 @@ import com.lee.hof.common.exception.HofException;
 import com.lee.hof.sys.bean.SellOrderStatus;
 import com.lee.hof.sys.bean.dto.SellOrderListDto;
 import com.lee.hof.sys.bean.model.SellOrder;
+import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.mapper.SellOrderMapper;
 import com.lee.hof.sys.service.SellOrderService;
+import com.lee.hof.sys.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +25,12 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
     @Resource
     SellOrderMapper sellOrderMapper;
 
+    @Resource
+    UserService userService;
+
     @Override
     public Long newSellOrder() {
-
         long userId = UserContext.getUser().getId();
-
         SellOrder existOrder = sellOrderMapper.selectOne(new QueryWrapper<SellOrder>()
                 .eq("user_id", userId)
                 .eq("valid_status", 1)
@@ -142,7 +146,18 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
 
         queryWrapper.eq("status", SellOrderStatus.PUBLISHED.getCode());
 
-        return sellOrderMapper.selectPage(new Page<>(dto.getPageNum(), dto.getPageSize()), queryWrapper);
+        Page<SellOrder> result = sellOrderMapper.selectPage(new Page<>(dto.getPageNum(), dto.getPageSize()), queryWrapper);
+
+        result.getRecords().forEach(sellOrder -> {
+            User user = userService.getUserById(sellOrder.getUserId());
+            sellOrder.setUser(user);
+            if(StringUtils.isNoneBlank(sellOrder.getFileIds())){
+               String[] file = StringUtils.split(sellOrder.getFileIds(),",");
+               sellOrder.setCoverFileId(file[0]);
+               sellOrderMapper.updateById(sellOrder);
+            }
+        });
+        return result;
 
     }
 }
