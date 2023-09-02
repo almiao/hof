@@ -105,9 +105,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             postVO.setLike(true);
             postVO.setLikeId(meLiks.getId());
         }
-        int commentCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("post_id", post.getId()));
+        int commentCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("entity_id", post.getId()));
 
-        Comment comment =  commentMapper.selectOne(new QueryWrapper<Comment>().eq("post_id", post.getId())
+        Comment comment =  commentMapper.selectOne(new QueryWrapper<Comment>().eq("entity_id", post.getId())
                 .last("limit 1"));
 
         postVO.setMostValuedComment(commentService.convert(comment));

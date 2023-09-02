@@ -70,6 +70,18 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
 
         BeanUtils.copyProperties(sellOrder, existOrder, "createTime", "validStatus", "status");
 
+        if(StringUtils.isNoneBlank(sellOrder.getFileIds()) && StringUtils.isEmpty(sellOrder.getCoverFileId())){
+            String[] file = StringUtils.split(sellOrder.getFileIds(), ",");
+            existOrder.setCoverFileId(file[0]);
+        }
+
+        if(StringUtils.isNoneBlank(existOrder.getCoverFileId())){
+
+            FileManager fileManager = fileManagerMapper.getByUuid(existOrder.getCoverFileId());
+            existOrder.setCoverHeight(fileManager.getHeight());
+            existOrder.setCoverWidth(fileManager.getWidth());
+        }
+
         existOrder.setUserId(UserContext.getUserId());
         existOrder.setValidStatus(1);
 
@@ -153,14 +165,6 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
         result.getRecords().forEach(sellOrder -> {
             User user = userService.getUserById(sellOrder.getUserId());
             sellOrder.setUser(user);
-            if(StringUtils.isNoneBlank(sellOrder.getFileIds())){
-               String[] file = StringUtils.split(sellOrder.getFileIds(),",");
-               sellOrder.setCoverFileId(file[0]);
-                FileManager fileManager = fileManagerMapper.getByUuid(sellOrder.getCoverFileId());
-                sellOrder.setCoverWidth(fileManager.getWidth());
-                sellOrder.setCoverHeight(fileManager.getHeight());
-               sellOrderMapper.updateById(sellOrder);
-            }
         });
         return result;
 

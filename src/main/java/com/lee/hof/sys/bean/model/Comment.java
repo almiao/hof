@@ -20,15 +20,13 @@ public class Comment implements Serializable {
     @Id
     private Long id;
 
-    private String postId;
+    private String entityId;
 
     private Long parentCommentId;
 
-    private Long toCommentId;
+    private Long replyToCommentId;
 
     private Long userId;
-
-    private Long toUserId;
 
     private String commentTxt;
 

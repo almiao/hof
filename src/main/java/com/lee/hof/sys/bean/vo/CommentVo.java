@@ -18,11 +18,13 @@ public class CommentVo implements Serializable {
 
     private Long id;
 
-    private String postId;
+    private String entityId;
 
     private Long parentCommentId;
 
     private Long toCommentId;
+
+    private CommentVo replyTo;
 
     private Long userId;
 
@@ -50,11 +52,11 @@ public class CommentVo implements Serializable {
 
     public CommentVo(Comment comment){
         this.id = comment.getId();
-        this.postId = comment.getPostId();
+        this.entityId = comment.getEntityId();
         this.parentCommentId = comment.getParentCommentId();
         this.commentTxt = comment.getCommentTxt();
         this.createTime = comment.getCreateTime();
-        this.toCommentId = comment.getToCommentId();
+        this.toCommentId = comment.getReplyToCommentId();
         this.updateTime = comment.getUpdateTime();
         this.updateTimeStr = Utils.formatTime(comment.getUpdateTime().getTime());
         this.userId = comment.getUserId();

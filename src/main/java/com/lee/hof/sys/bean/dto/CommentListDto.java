@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class CommentListDto extends BaseInput {
 
-    public String postId;
+    public String entityId;
 
     private String parentCommentId;
 

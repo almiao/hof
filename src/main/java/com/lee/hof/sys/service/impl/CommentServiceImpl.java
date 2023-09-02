@@ -49,23 +49,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setParentCommentId(commentDto.getParentCommentId());
         comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
         comment.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        comment.setCommentTxt(commentDto.getCommentInfo());
-        comment.setPostId(commentDto.getPostId());
+        comment.setCommentTxt(commentDto.getCommentText());
+        comment.setEntityId(commentDto.getEntityId());
         comment.setUserId(commentDto.getUserId());
-        if( commentDto.getToUserId()!=null){
-            comment.setToUserId(commentDto.getToUserId());
-        }
-        comment.setToCommentId(commentDto.getToCommentId());
+        comment.setReplyToCommentId(commentDto.getReplyToCommentId());
         commentMapper.insert(comment);
-
-        CommentVo commentVo = new CommentVo(comment);
-        commentVo.setUser(userService.getUserById(comment.getUserId()));
-        if(comment.getToUserId()!=null){
-            commentVo.setToUser(userService.getUserById(comment.getToUserId()));
-        }
-        commentVo.setReplyCnt(0);
-        commentVo.setReplyList(new ArrayList<>());
-        return commentVo;
+        return convert(comment);
     }
 
 
@@ -76,7 +65,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
         QueryWrapper<Comment> conditions = new QueryWrapper<>();
 
-        conditions.eq("post_id", dto.getPostId());
+        conditions.eq("entity_id", dto.getEntityId());
         if(!StringUtils.isEmpty(dto.getParentCommentId())) {
             conditions.eq("parent_comment_id",dto.getParentCommentId());
         }else {
@@ -97,22 +86,21 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if(comment == null){
             return null;
         }
-
         CommentVo commentVo = new CommentVo(comment);
         if(comment.getUserId()!=null) {
             commentVo.setUser(userService.getUserById(comment.getUserId()));
         }
-        if(comment.getToUserId()!=null){
-            commentVo.setToUser(userService.getUserById(comment.getToUserId()));
+        if(comment.getReplyToCommentId() != null){
+            Comment reply = commentMapper.selectById(comment.getReplyToCommentId());
+            CommentVo commentVo1 = new CommentVo(reply);
+            commentVo1.setUser(userService.getUserById(reply.getUserId()));
+            commentVo.setReplyTo(commentVo1);
         }
         int replyCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("parent_comment_id", comment.getId()));
         List<Comment> childrens = commentMapper.selectList(new QueryWrapper<Comment>().eq("parent_comment_id", comment.getId()));
         List<CommentVo> childs =  childrens.stream().map(cm -> {
             CommentVo commentVo1 = new CommentVo(cm);
             commentVo1.setUser(userService.getUserById(cm.getUserId()));
-            if(cm.getToUserId()!=null){
-                commentVo1.setToUser(userService.getUserById(cm.getToUserId()));
-            }
             return commentVo1;
         }).collect(Collectors.toList());
 
