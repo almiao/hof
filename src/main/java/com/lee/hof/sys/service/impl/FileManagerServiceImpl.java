@@ -148,7 +148,7 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
             response.setContentType(fileManager.getType());
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("文件读取错误:", e);
             throw new HofException("文件读取错误:"+fileManager.getUuid());
         }
     }

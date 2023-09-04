@@ -106,7 +106,7 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
 
         sellOrderMapper.updateById(existOrder);
 
-        return existOrder;
+        return convert(existOrder);
     }
 
     @Override
@@ -123,10 +123,10 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
     public SellOrder getSellOrderDetail(Long orderId) {
         long userId = UserContext.getUser().getId();
 
-        return sellOrderMapper.selectOne(new QueryWrapper<SellOrder>().eq("user_id", userId)
+        return convert(sellOrderMapper.selectOne(new QueryWrapper<SellOrder>().eq("user_id", userId)
                 .eq("valid_status", 1)
                 .eq("id", orderId)
-                .last("limit 1"));
+                .last("limit 1")));
     }
 
     @Override
@@ -162,13 +162,19 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
 
         Page<SellOrder> result = sellOrderMapper.selectPage(new Page<>(dto.getPageNum(), dto.getPageSize()), queryWrapper);
 
-        result.getRecords().forEach(sellOrder -> {
-            User user = userService.getUserById(sellOrder.getUserId());
-            sellOrder.setUser(user);
-        });
+        result.getRecords().forEach(this::convert);
         return result;
 
     }
+
+
+    private SellOrder convert(SellOrder sellOrder){
+        User user = userService.getUserById(sellOrder.getUserId());
+        sellOrder.setUser(user);
+        return sellOrder;
+    }
+
+
 
     @Resource
     private FileManagerMapper fileManagerMapper;
