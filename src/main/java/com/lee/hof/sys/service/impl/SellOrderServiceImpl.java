@@ -102,7 +102,7 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
             throw new HofException("不存在");
         }
 
-        existOrder.setStatus(SellOrderStatus.VALIDATING.getCode());
+        existOrder.setStatus(SellOrderStatus.PUBLISHED.getCode());
 
         sellOrderMapper.updateById(existOrder);
 
