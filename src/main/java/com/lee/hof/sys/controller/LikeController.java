@@ -21,7 +21,7 @@ public class LikeController {
     LikeService likeService;
 
     @PostMapping("/add")
-    public BaseResponse<String> addPost(@RequestBody Like like){
+    public BaseResponse<String> addLike(@RequestBody Like like){
         return BaseResponse.success(likeService.add(like));
     }
 
