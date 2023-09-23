@@ -5,10 +5,7 @@ import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.model.Contract;
 import com.lee.hof.sys.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,8 +31,8 @@ public class ContractController extends BaseController {
     }
 
     @PostMapping("/createOrUpdate")
-    public BaseResponse<Contract> createOrUpdate(@RequestParam Contract contractId) {
-        return BaseResponse.success(contractService.createOrUpdate(contractId)) ;
+    public BaseResponse<Contract> createOrUpdate(@RequestBody Contract contract) {
+        return BaseResponse.success(contractService.createOrUpdate(contract)) ;
     }
 
     @PostMapping("/list")

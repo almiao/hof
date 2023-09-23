@@ -39,7 +39,6 @@ public class Contract extends BaseEntity {
 
     private String sellerIdCardNum;
 
-
     private String carLicenseNum;
 
     private String carBrandName;
@@ -49,7 +48,6 @@ public class Contract extends BaseEntity {
     private String carUsedDistance;
 
     private String carPictures;
-
 
     /**
      * 保险单照片
