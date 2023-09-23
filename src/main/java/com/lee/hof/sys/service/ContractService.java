@@ -13,4 +13,7 @@ import com.lee.hof.sys.bean.model.Contract;
  */
 public interface ContractService extends IService<Contract> {
 
+    Contract createOrUpdate(Contract contract);
+
+
 }

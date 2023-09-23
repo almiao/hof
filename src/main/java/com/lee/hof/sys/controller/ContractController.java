@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * <p>
  *  前端控制器
@@ -30,6 +32,19 @@ public class ContractController extends BaseController {
     public BaseResponse<Contract> get(@RequestParam Long contractId) {
        return BaseResponse.success(contractService.getById(contractId)) ;
     }
+
+    @PostMapping("/createOrUpdate")
+    public BaseResponse<Contract> createOrUpdate(@RequestParam Contract contractId) {
+        return BaseResponse.success(contractService.createOrUpdate(contractId)) ;
+    }
+
+    @PostMapping("/list")
+    public BaseResponse<List<Contract>> list() {
+        return BaseResponse.success(contractService.list()) ;
+    }
+
+
+
 
 }
 

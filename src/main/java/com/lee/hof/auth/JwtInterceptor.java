@@ -50,6 +50,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 //            boolean result = JwtUtil.verify(token,username, user.getPassword());
             if(user != null){
                 UserContext.setUser(user);
+
                 System.out.println("通过拦截器" + JSONObject.toJSON(user));
                 return true;
             }
