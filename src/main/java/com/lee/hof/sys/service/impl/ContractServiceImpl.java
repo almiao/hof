@@ -25,12 +25,10 @@ public class ContractServiceImpl extends ServiceImpl<ContractMapper, Contract> i
 
     @Override
     public Contract createOrUpdate(Contract contract) {
-
         if(contract.getId() != null){
             Contract dataBase = getById(contract.getId());
             BeanUtils.copyProperties(contract, dataBase, Utils.getNullPropertyNames(contract));
             updateById(dataBase);
-
             return dataBase;
         }else{
             Contract contractNew = new Contract();

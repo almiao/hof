@@ -39,14 +39,29 @@ public class Contract extends BaseEntity {
 
     private String sellerIdCardNum;
 
+    /**
+     * 车牌号
+     */
     private String carLicenseNum;
 
+    /**
+     * 车辆型号
+     */
     private String carBrandName;
 
+    /**
+     * 上牌时间
+     */
     private String carLicenseTime;
 
+    /**
+     * 行驶里程
+     */
     private String carUsedDistance;
 
+    /**
+     * 车辆照片
+     */
     private String carPictures;
 
     /**
@@ -63,6 +78,20 @@ public class Contract extends BaseEntity {
      * 行驶证照片
      */
     private String driveLicensePictures;
+
+    private String carPrice;
+
+    private String transTaxPayBy;
+
+    private String receiveBankName;
+
+    private String receiveAccountName;
+
+    private String receiveAccountCode;
+
+    private String retainPercent;
+
+    private String transPercent;
 
     public String getCarInsurancePictures() {
         return carInsurancePictures;
@@ -204,4 +233,5 @@ public class Contract extends BaseEntity {
     public void setDriverLicensePictures(String driverLicensePictures) {
         this.driverLicensePictures = driverLicensePictures;
     }
+
 }
