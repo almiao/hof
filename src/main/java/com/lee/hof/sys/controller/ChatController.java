@@ -30,7 +30,7 @@ public class ChatController extends BaseController {
     }
 
     @PostMapping("/get")
-    public BaseResponse<UserChatVO> newChat(@RequestParam( "toUserId") Long toUserId,@RequestParam(value = "relateGood", required = false) Long relateGood) {
+    public BaseResponse<UserChatVO> get(@RequestParam( "toUserId") Long toUserId,@RequestParam(value = "relateGood", required = false) Long relateGood) {
         return BaseResponse.success(userChatService.newChat(toUserId,relateGood)) ;
     }
 

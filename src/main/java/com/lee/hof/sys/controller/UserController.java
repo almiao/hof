@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -123,6 +124,13 @@ public class UserController {
         if(databaseUser == null){
             return BaseResponse.badrequest();
         }
+        return BaseResponse.success(databaseUser);
+    }
+
+
+    @PostMapping(value = "/listContact")
+    public BaseResponse<List<User>> listContact(@RequestParam(required = false) String searchParam){
+        List<User> databaseUser = userMapper.selectList(new QueryWrapper<>());
         return BaseResponse.success(databaseUser);
     }
 

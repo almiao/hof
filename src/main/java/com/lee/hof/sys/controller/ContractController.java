@@ -35,6 +35,7 @@ public class ContractController extends BaseController {
         return BaseResponse.success(contractService.createOrUpdate(contract)) ;
     }
 
+
     @PostMapping("/list")
     public BaseResponse<List<Contract>> list() {
         return BaseResponse.success(contractService.list()) ;

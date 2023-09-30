@@ -93,6 +93,82 @@ public class Contract extends BaseEntity {
 
     private String transPercent;
 
+    private String buyerSignatureFileId;
+
+    private String sellerSignatureFileId;
+
+    public String getCarPrice() {
+        return carPrice;
+    }
+
+    public void setCarPrice(String carPrice) {
+        this.carPrice = carPrice;
+    }
+
+    public String getTransTaxPayBy() {
+        return transTaxPayBy;
+    }
+
+    public void setTransTaxPayBy(String transTaxPayBy) {
+        this.transTaxPayBy = transTaxPayBy;
+    }
+
+    public String getReceiveBankName() {
+        return receiveBankName;
+    }
+
+    public void setReceiveBankName(String receiveBankName) {
+        this.receiveBankName = receiveBankName;
+    }
+
+    public String getReceiveAccountName() {
+        return receiveAccountName;
+    }
+
+    public void setReceiveAccountName(String receiveAccountName) {
+        this.receiveAccountName = receiveAccountName;
+    }
+
+    public String getReceiveAccountCode() {
+        return receiveAccountCode;
+    }
+
+    public void setReceiveAccountCode(String receiveAccountCode) {
+        this.receiveAccountCode = receiveAccountCode;
+    }
+
+    public String getRetainPercent() {
+        return retainPercent;
+    }
+
+    public void setRetainPercent(String retainPercent) {
+        this.retainPercent = retainPercent;
+    }
+
+    public String getTransPercent() {
+        return transPercent;
+    }
+
+    public void setTransPercent(String transPercent) {
+        this.transPercent = transPercent;
+    }
+
+    public String getBuyerSignatureFileId() {
+        return buyerSignatureFileId;
+    }
+
+    public void setBuyerSignatureFileId(String buyerSignatureFileId) {
+        this.buyerSignatureFileId = buyerSignatureFileId;
+    }
+
+    public String getSellerSignatureFileId() {
+        return sellerSignatureFileId;
+    }
+
+    public void setSellerSignatureFileId(String sellerSignatureFileId) {
+        this.sellerSignatureFileId = sellerSignatureFileId;
+    }
+
     public String getCarInsurancePictures() {
         return carInsurancePictures;
     }
