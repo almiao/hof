@@ -1,5 +1,6 @@
 package com.lee.hof.sys.service.impl;
 
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -55,6 +57,22 @@ public class ContractServiceImpl extends ServiceImpl<ContractMapper, Contract> i
                 contract.setSellerUserId(UserContext.getUserId());
                 if(contract.getStatus() == ContractStatusEnum.BuyerFilledNeedSellerFILL.getCode()){
                     contract.setStatus(ContractStatusEnum.FilledNeedSign.getCode());
+                }else{
+                    contract.setStatus(ContractStatusEnum.SellerFilledNeedBuyerFill.getCode());
+                }
+            }
+        }else if(dto.getStage() ==2){
+            if(dto.isCurrentIsBuyer()){
+                Assert.isTrue(Objects.equals(UserContext.getUserId(), contract.getBuyerUserId()));
+                if(contract.getStatus() == ContractStatusEnum.SellerSignedNeedBuyerSign.getCode()){
+                    contract.setStatus(ContractStatusEnum.Signed.getCode());
+                }else{
+                    contract.setStatus(ContractStatusEnum.BuyerFilledNeedSellerFILL.getCode());
+                }
+            }else{
+                Assert.isTrue(Objects.equals(UserContext.getUserId(), contract.getSellerUserId()));
+                if(contract.getStatus() == ContractStatusEnum.BuyerSignedNeedSellerSign.getCode()){
+                    contract.setStatus(ContractStatusEnum.Signed.getCode());
                 }else{
                     contract.setStatus(ContractStatusEnum.SellerFilledNeedBuyerFill.getCode());
                 }

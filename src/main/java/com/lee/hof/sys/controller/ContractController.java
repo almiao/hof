@@ -42,8 +42,5 @@ public class ContractController extends BaseController {
         return BaseResponse.success(contractService.list()) ;
     }
 
-
-
-
 }
 
