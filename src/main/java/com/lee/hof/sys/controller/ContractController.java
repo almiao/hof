@@ -2,6 +2,7 @@ package com.lee.hof.sys.controller;
 
 
 import com.lee.hof.sys.bean.BaseResponse;
+import com.lee.hof.sys.bean.dto.ContractUpdateDto;
 import com.lee.hof.sys.bean.model.Contract;
 import com.lee.hof.sys.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ContractController extends BaseController {
     }
 
     @PostMapping("/createOrUpdate")
-    public BaseResponse<Contract> createOrUpdate(@RequestBody Contract contract) {
+    public BaseResponse<Contract> createOrUpdate(@RequestBody ContractUpdateDto contract) {
         return BaseResponse.success(contractService.createOrUpdate(contract)) ;
     }
 

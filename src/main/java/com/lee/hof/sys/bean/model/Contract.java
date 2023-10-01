@@ -22,6 +22,10 @@ public class Contract extends BaseEntity {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    private Long buyerUserId;
+
+    private Long sellerUserId;
+
     private String buyerRealName;
 
     private String buyerPhoneNum;
@@ -96,6 +100,23 @@ public class Contract extends BaseEntity {
     private String buyerSignatureFileId;
 
     private String sellerSignatureFileId;
+
+
+    public Long getBuyerUserId() {
+        return buyerUserId;
+    }
+
+    public void setBuyerUserId(Long buyerUserId) {
+        this.buyerUserId = buyerUserId;
+    }
+
+    public Long getSellerUserId() {
+        return sellerUserId;
+    }
+
+    public void setSellerUserId(Long sellerUserId) {
+        this.sellerUserId = sellerUserId;
+    }
 
     public String getCarPrice() {
         return carPrice;
