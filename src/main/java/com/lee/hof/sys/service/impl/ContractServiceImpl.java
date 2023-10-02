@@ -67,14 +67,14 @@ public class ContractServiceImpl extends ServiceImpl<ContractMapper, Contract> i
                 if(contract.getStatus() == ContractStatusEnum.SellerSignedNeedBuyerSign.getCode()){
                     contract.setStatus(ContractStatusEnum.Signed.getCode());
                 }else{
-                    contract.setStatus(ContractStatusEnum.BuyerFilledNeedSellerFILL.getCode());
+                    contract.setStatus(ContractStatusEnum.BuyerSignedNeedSellerSign.getCode());
                 }
             }else{
                 Assert.isTrue(Objects.equals(UserContext.getUserId(), contract.getSellerUserId()));
                 if(contract.getStatus() == ContractStatusEnum.BuyerSignedNeedSellerSign.getCode()){
                     contract.setStatus(ContractStatusEnum.Signed.getCode());
                 }else{
-                    contract.setStatus(ContractStatusEnum.SellerFilledNeedBuyerFill.getCode());
+                    contract.setStatus(ContractStatusEnum.SellerSignedNeedBuyerSign.getCode());
                 }
             }
         }

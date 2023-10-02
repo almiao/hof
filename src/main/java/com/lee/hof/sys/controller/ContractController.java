@@ -1,6 +1,8 @@
 package com.lee.hof.sys.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.dto.ContractUpdateDto;
 import com.lee.hof.sys.bean.model.Contract;
@@ -39,7 +41,9 @@ public class ContractController extends BaseController {
 
     @PostMapping("/list")
     public BaseResponse<List<Contract>> list() {
-        return BaseResponse.success(contractService.list()) ;
+        QueryWrapper<Contract> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("seller_user_id", UserContext.getUserId()).or().eq("buyer_user_id", UserContext.getUserId()).or().eq("create_by", UserContext.getUserId());
+        return BaseResponse.success(contractService.list(queryWrapper)) ;
     }
 
 }

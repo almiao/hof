@@ -46,12 +46,18 @@ public class Contract extends BaseEntity {
     /**
      * 车牌号
      */
-    private String carLicenseNum;
+    private String carNum;
+
 
     /**
      * 车辆型号
      */
     private String carBrandName;
+
+    /**
+     * 车牌号
+     */
+    private String carLicenseNum;
 
     /**
      * 上牌时间
@@ -100,6 +106,38 @@ public class Contract extends BaseEntity {
     private String buyerSignatureFileId;
 
     private String sellerSignatureFileId;
+
+    /**
+     * 0未填写，1，0次，2,1次
+     */
+    private int repairCntFirstStage;
+
+    private int repairCntSecondStage;
+
+    private int repairCntThirdStage;
+
+    /**
+     * 使用性质
+     */
+    private String usage;
+
+    /**
+     * 违约罚金
+     */
+    private String penalty;
+
+    /**
+     * 甲方权利义务
+     */
+    private String sellerRightAndDuty;
+    /**
+     * 乙方权利义务
+     */
+    private String buyerRightAndDuty;
+
+
+
+
 
 
     public Long getBuyerUserId() {
