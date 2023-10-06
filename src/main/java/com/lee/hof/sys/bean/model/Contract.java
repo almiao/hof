@@ -116,10 +116,12 @@ public class Contract extends BaseEntity {
 
     private int repairCntThirdStage;
 
+
+    private String carOwner;
     /**
      * 使用性质
      */
-    private String usage;
+    private String carUsage;
 
     /**
      * 违约罚金
@@ -134,10 +136,6 @@ public class Contract extends BaseEntity {
      * 乙方权利义务
      */
     private String buyerRightAndDuty;
-
-
-
-
 
 
     public Long getBuyerUserId() {

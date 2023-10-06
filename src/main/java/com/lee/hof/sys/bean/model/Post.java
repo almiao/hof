@@ -81,7 +81,7 @@ public class Post implements Serializable{
     /**
      * 类型
      */
-    private String postType;
+    private int viewType;
     /**
      * 投票类型
      */
