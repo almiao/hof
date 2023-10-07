@@ -45,6 +45,7 @@ public class PostAddDto extends BaseInput implements Serializable {
      * 视频地址
      */
     private String videoUrl;
+    private int viewType;
     /**
      * 视频下载地址
      */

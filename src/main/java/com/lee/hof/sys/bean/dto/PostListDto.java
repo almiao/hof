@@ -19,6 +19,8 @@ public class PostListDto extends BaseInput {
 
     private Date endDate;
 
+    private String channelName;
+
 
     private int pageNum = 0;
 

@@ -8,7 +8,10 @@ import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.PostAddDto;
 import com.lee.hof.sys.bean.dto.PostListDto;
 import com.lee.hof.sys.bean.dto.PostUpdateDto;
-import com.lee.hof.sys.bean.model.*;
+import com.lee.hof.sys.bean.model.Comment;
+import com.lee.hof.sys.bean.model.Like;
+import com.lee.hof.sys.bean.model.Post;
+import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.CommentMapper;
 import com.lee.hof.sys.mapper.LikeMapper;
@@ -23,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -53,6 +57,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         post.setId(UUID.randomUUID().toString());
         User user = UserContext.getUser();
         post.setAuthorId(user.getId());
+        post.setCreateTime(LocalDateTime.now());
+        post.setUpdateTime(LocalDateTime.now());
         postMapper.insert(post);
 
         return convertPost(post, user.getId());
@@ -77,17 +83,17 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             conditions.eq("create_by", dto.getUserId());
         }
 
+        if(StringUtils.isNotBlank(dto.getChannelName())){
+            conditions.eq("channel_name", dto.getChannelName());
+        }
+
         conditions.orderByDesc("update_time");
 
         Page<Post> result = postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
 
         Long meUserId = UserContext.getUserId();
 
-
-        IPage<PostVO> list = result.convert(post -> {
-            return convertPost(post,meUserId);
-        });
-        return list;
+        return result.convert(post -> convertPost(post,meUserId));
     }
 
     @Resource
@@ -141,6 +147,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Post post= postMapper.selectOne(conditions);
         if(Objects.nonNull(post)){
             BeanUtils.copyProperties(postUpdateDto,post);
+            post.setUpdateTime(LocalDateTime.now());
             postMapper.updateById(post);
         }
         return true;
