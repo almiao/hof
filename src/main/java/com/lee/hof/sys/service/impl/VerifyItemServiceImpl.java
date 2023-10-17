@@ -1,6 +1,5 @@
 package com.lee.hof.sys.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,8 +59,8 @@ public class VerifyItemServiceImpl extends ServiceImpl<VerifyItemMapper, VerifyI
     public String updateVerifyComponent(VerifyComponentAddOrUpdateDto dto) {
         VerifyComponent verifyComponent;
 
-        if(dto.getComponentId()!=null){
-            verifyComponent = verifyComponentMapper.selectById(dto.getComponentId());
+        if(dto.getVerifyComponentId()!=null){
+            verifyComponent = verifyComponentMapper.selectById(dto.getVerifyComponentId());
         }else{
             verifyComponent = new VerifyComponent();
             verifyComponent.setId(UUID.randomUUID().toString());
@@ -70,15 +68,11 @@ public class VerifyItemServiceImpl extends ServiceImpl<VerifyItemMapper, VerifyI
 
         verifyComponent.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
-        verifyComponent.setFileIds(dto.getFileIds());
-        verifyComponent.setOrderId("default");
+        verifyComponent.setVerifyContent(dto.getVerifyContent());
         verifyComponent.setUserId(UserContext.getUser().getId());
         verifyComponent.setVerifyCode(dto.getVerifyCode());
 
-        verifyComponent.setExtendInfo(JSON.toJSONString(dto.getExtendInfo()));
-
-
-        if(dto.getComponentId() == null){
+        if(dto.getVerifyComponentId() == null){
             verifyComponentMapper.insert(verifyComponent);
         }else{
             verifyComponentMapper.updateById(verifyComponent);
@@ -88,22 +82,15 @@ public class VerifyItemServiceImpl extends ServiceImpl<VerifyItemMapper, VerifyI
     }
 
     @Override
-    public VerifyComponentResponse getVerifyComponent(VerifyComponentGetDto dto) {
+    public VerifyComponent getVerifyComponent(VerifyComponentGetDto dto) {
         VerifyComponentResponse response = new VerifyComponentResponse();
 
 
         VerifyComponent verifyComponent = verifyComponentMapper.selectOne(new QueryWrapper<VerifyComponent>().eq("user_id",
-                UserContext.getUser().getId()).eq("verify_code",dto.getVerifyCode()).eq("order_id",dto.getOrderId() == null ?"default":dto.getOrderId()).orderByDesc("id").last( " limit 1"));
+                UserContext.getUser().getId()).eq("verify_code", dto.getVerifyCode()).orderByDesc("id").last( " limit 1"));
 
-        if(verifyComponent != null){
-            response.setFileId(Arrays.asList(verifyComponent.getFileIds().split(",")));
-            response.setComponentId(verifyComponent.getId());
-            response.setExtendInfo(verifyComponent.getExtendMap());
 
-            return response;
-        }
-
-        return response;
+        return verifyComponent;
     }
 
 

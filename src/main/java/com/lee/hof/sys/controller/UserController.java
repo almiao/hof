@@ -4,12 +4,16 @@ package com.lee.hof.sys.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.afkbrb.avatar.Avatar;
 import com.lee.hof.auth.JwtUtil;
+import com.lee.hof.auth.UserContext;
 import com.lee.hof.common.upload.service.local.LocalStorageService;
 import com.lee.hof.sys.bean.BaseResponse;
+import com.lee.hof.sys.bean.enums.ValidStatusEum;
 import com.lee.hof.sys.bean.model.FileManager;
 import com.lee.hof.sys.bean.model.User;
+import com.lee.hof.sys.bean.model.UserComponent;
 import com.lee.hof.sys.bean.model.UserToken;
 import com.lee.hof.sys.mapper.FileManagerMapper;
+import com.lee.hof.sys.mapper.UserComponentMapper;
 import com.lee.hof.sys.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -37,6 +41,11 @@ public class UserController {
 
     @Resource
     UserMapper userMapper;
+
+
+
+    @Resource
+    UserComponentMapper userComponentMapper;
 
     @Resource
     @Autowired
@@ -133,5 +142,33 @@ public class UserController {
         List<User> databaseUser = userMapper.selectList(new QueryWrapper<>());
         return BaseResponse.success(databaseUser);
     }
+
+
+    @PostMapping(value = "/getComponent")
+    public BaseResponse<UserComponent> getUserComponent(@RequestParam(required = true) String verifyCode){
+        UserComponent databaseUser = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", UserContext.getUserId()).eq("verify_code",verifyCode).eq("valid_status", ValidStatusEum.VALID.getCode()));
+        return BaseResponse.success(databaseUser);
+    }
+
+    @PostMapping(value = "/addComponent")
+    public BaseResponse<UserComponent> addUserComponent(@RequestBody UserComponent request){
+        UserComponent current = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", UserContext.getUserId()).eq("verify_code", request.getVerifyCode()));
+        UserComponent newComponent = new UserComponent();
+        newComponent.setContent(request.getContent());
+        newComponent.setUserId(request.getUserId());
+        newComponent.setVerifyCode(request.getVerifyCode());
+        newComponent.setValidStatus(ValidStatusEum.VALID.getCode());
+        if(current != null){
+            newComponent.setVersion(current.getVersion() +1);
+            current.setValidStatus(ValidStatusEum.UNVALID.getCode());
+            userComponentMapper.updateById(current);
+        }else{
+            newComponent.setVersion(1);
+        }
+        userComponentMapper.insert(newComponent);
+
+        return BaseResponse.success(newComponent);
+    }
+
 
 }

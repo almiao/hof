@@ -2,7 +2,6 @@ package com.lee.hof.sys.bean.dto;
 
 
 import java.io.Serializable;
-import java.util.Map;
 
 
 /**
@@ -11,20 +10,19 @@ import java.util.Map;
 
 public class VerifyComponentAddOrUpdateDto implements Serializable {
 
-    private String componentId;
+    private String verifyComponentId;
 
     private String verifyCode;
 
-    private String fileIds;
+    private String verifyContent;
 
-    private Map<String, String> extendInfo;
 
-    public String getComponentId() {
-        return componentId;
+    public String getVerifyComponentId() {
+        return verifyComponentId;
     }
 
-    public void setComponentId(String componentId) {
-        this.componentId = componentId;
+    public void setVerifyComponentId(String verifyComponentId) {
+        this.verifyComponentId = verifyComponentId;
     }
 
     public String getVerifyCode() {
@@ -35,20 +33,13 @@ public class VerifyComponentAddOrUpdateDto implements Serializable {
         this.verifyCode = verifyCode;
     }
 
-    public String getFileIds() {
-        return fileIds;
+    public String getVerifyContent() {
+        return verifyContent;
     }
 
-    public void setFileIds(String fileIds) {
-        this.fileIds = fileIds;
+    public void setVerifyContent(String verifyContent) {
+        this.verifyContent = verifyContent;
     }
 
-    public Map<String, String> getExtendInfo() {
-        return extendInfo;
-    }
-
-    public void setExtendInfo(Map<String, String> extendInfo) {
-        this.extendInfo = extendInfo;
-    }
 }
 

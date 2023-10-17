@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * <p>
@@ -27,7 +26,7 @@ public class VerifyComponentServiceImpl extends ServiceImpl<VerifyComponentMappe
 
 
     @Override
-    public String addComponent(MultipartFile file, String componentId) throws IOException {
+    public String addComponent(MultipartFile file, String componentId) {
         return null;
     }
 

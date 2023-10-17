@@ -8,7 +8,7 @@ import com.lee.hof.sys.bean.GuaziResponse;
 import com.lee.hof.sys.bean.dto.VerifyComponentAddOrUpdateDto;
 import com.lee.hof.sys.bean.dto.VerifyComponentGetDto;
 import com.lee.hof.sys.bean.dto.VerifyItemListDto;
-import com.lee.hof.sys.bean.model.VerifyComponentResponse;
+import com.lee.hof.sys.bean.model.VerifyComponent;
 import com.lee.hof.sys.bean.model.VerifyItem;
 import com.lee.hof.sys.bean.vo.BrandResponse;
 import com.lee.hof.sys.service.VerifyItemService;
@@ -38,8 +38,8 @@ public class VerifyController {
         return BaseResponse.success(verifyItemService.updateVerifyComponent(dto));
     }
 
-    @PostMapping("/component/get")
-    public BaseResponse<VerifyComponentResponse> getVerifyComponent(@RequestBody VerifyComponentGetDto dto) {
+    @PostMapping("/component/getLatest")
+    public BaseResponse<VerifyComponent> getVerifyComponent(@RequestBody VerifyComponentGetDto dto) {
         return BaseResponse.success(verifyItemService.getVerifyComponent(dto));
     }
 

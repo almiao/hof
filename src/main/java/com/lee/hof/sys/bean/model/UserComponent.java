@@ -12,10 +12,10 @@ import java.sql.Timestamp;
 
 
 @Data
-@TableName("verify_component")
+@TableName("user_component")
 @Entity
-@Table(name="verify_component")
-public class VerifyComponent {
+@Table(name="user_component")
+public class UserComponent {
 
     @Id
     private String id;
@@ -24,15 +24,17 @@ public class VerifyComponent {
 
     private String verifyCode;
 
-    private String verifyContent;
+    private int validStatus;
 
-    private String verifyType;
+    private int version;
 
-    private int verifyStatus;
+    private String content;
 
     @TableField(fill = FieldFill.INSERT)
     private Timestamp createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Timestamp updateTime;
+
+
 }

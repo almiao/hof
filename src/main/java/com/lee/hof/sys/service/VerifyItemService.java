@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.hof.sys.bean.dto.VerifyComponentAddOrUpdateDto;
 import com.lee.hof.sys.bean.dto.VerifyComponentGetDto;
 import com.lee.hof.sys.bean.dto.VerifyItemListDto;
-import com.lee.hof.sys.bean.model.VerifyComponentResponse;
+import com.lee.hof.sys.bean.model.VerifyComponent;
 import com.lee.hof.sys.bean.model.VerifyItem;
 
 import java.util.List;
@@ -22,5 +22,5 @@ public interface VerifyItemService extends IService<VerifyItem> {
 
     String updateVerifyComponent(VerifyComponentAddOrUpdateDto dto);
 
-    VerifyComponentResponse getVerifyComponent(VerifyComponentGetDto dto);
+    VerifyComponent getVerifyComponent(VerifyComponentGetDto dto);
 }
