@@ -1,4 +1,4 @@
-package com.lee.hof.sys.bean.model;
+package com.lee.hof.sys.bean.model.component;
 
 
 import lombok.Data;
