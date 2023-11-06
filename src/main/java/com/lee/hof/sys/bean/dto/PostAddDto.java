@@ -79,6 +79,8 @@ public class PostAddDto extends BaseInput implements Serializable {
      * 投票类型
      */
     private int voteType;
+
+    private String voteContent;
     /**
      * 评论数
      */

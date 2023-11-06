@@ -43,6 +43,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private UserService userService;
 
 
+    public static void main(String[] args) {
+        int a =3;
+        int b = 3*100/(a+5);
+        System.out.println(b);
+    }
+
+
     @Override
     public CommentVo addComment(CommentDto commentDto) {
         Comment comment = new Comment();

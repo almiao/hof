@@ -14,11 +14,13 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @MapperScan("com.lee.hof.sys.mapper")
 @SpringBootApplication
 @EnableCaching
+@EnableScheduling
 public class HofApplication extends SpringBootServletInitializer{
 
     public static void main(String[] args) {

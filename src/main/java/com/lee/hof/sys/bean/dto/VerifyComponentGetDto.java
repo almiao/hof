@@ -10,9 +10,15 @@ import java.io.Serializable;
 
 public class VerifyComponentGetDto implements Serializable {
 
-    private String orderId;
+    private String verifyComponentId;
 
     private String verifyCode;
+
+    private String verifyContent;
+
+    private Integer verifyStatus;
+
+
 
     public String getVerifyCode() {
         return verifyCode;
@@ -22,13 +28,28 @@ public class VerifyComponentGetDto implements Serializable {
         this.verifyCode = verifyCode;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getVerifyComponentId() {
+        return verifyComponentId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setVerifyComponentId(String verifyComponentId) {
+        this.verifyComponentId = verifyComponentId;
     }
 
+    public String getVerifyContent() {
+        return verifyContent;
+    }
+
+    public void setVerifyContent(String verifyContent) {
+        this.verifyContent = verifyContent;
+    }
+
+    public Integer getVerifyStatus() {
+        return verifyStatus;
+    }
+
+    public void setVerifyStatus(Integer verifyStatus) {
+        this.verifyStatus = verifyStatus;
+    }
 }
 

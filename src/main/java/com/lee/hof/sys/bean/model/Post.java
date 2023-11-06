@@ -87,6 +87,10 @@ public class Post implements Serializable{
      */
     private int voteType;
     /**
+     * 投票内容
+     */
+    private String voteContent;
+    /**
      * 评论数
      */
     private int commentCnt;

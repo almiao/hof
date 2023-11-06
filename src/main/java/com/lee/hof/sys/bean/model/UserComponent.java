@@ -1,14 +1,12 @@
 package com.lee.hof.sys.bean.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 @Data
@@ -18,9 +16,10 @@ import java.sql.Timestamp;
 public class UserComponent {
 
     @Id
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Integer id;
 
-    private long userId;
+    private Long userId;
 
     private String verifyCode;
 
@@ -31,10 +30,10 @@ public class UserComponent {
     private String content;
 
     @TableField(fill = FieldFill.INSERT)
-    private Timestamp createTime;
+    private Date createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Timestamp updateTime;
+    private Date updateTime;
 
 
 }

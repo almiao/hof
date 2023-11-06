@@ -12,12 +12,15 @@ import com.lee.hof.sys.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Random;
 
+@Component
 public class VerifyItemTask {
+
     private final static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Resource
     VerifyComponentMapper componentMapper;
@@ -25,7 +28,7 @@ public class VerifyItemTask {
     @Resource
     UserComponentMapper userComponentMapper;
 
-    @Scheduled(fixedDelay = 1000*10)
+    @Scheduled(fixedDelay = 1000*60)
     public void verify(){
         logger.info("start task");
         List<VerifyComponent> components = componentMapper.selectList(new QueryWrapper<VerifyComponent>().eq("verify_status", VerifyStatusEum.NEED_VERIFY.getCode()));
@@ -33,7 +36,7 @@ public class VerifyItemTask {
         for(VerifyComponent verifyComponent:components){
             if(rand > 50){
                 verifyComponent.setVerifyStatus(VerifyStatusEum.Success.getCode());
-                UserComponent current = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", verifyComponent.getUserId()).eq("verify_code",verifyComponent.getVerifyCode()));
+                UserComponent current = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", verifyComponent.getUserId()).eq("verify_code",verifyComponent.getVerifyCode()).orderByAsc("valid_status").last(" limit 1"));
                 UserComponent newComponent = new UserComponent();
                 newComponent.setContent(verifyComponent.getVerifyContent());
                 newComponent.setUserId(verifyComponent.getUserId());
@@ -47,6 +50,7 @@ public class VerifyItemTask {
                     newComponent.setVersion(1);
                 }
                 userComponentMapper.insert(newComponent);
+                componentMapper.updateById(verifyComponent);
             }else{
                 verifyComponent.setVerifyStatus(VerifyStatusEum.FAIL.getCode());
             }

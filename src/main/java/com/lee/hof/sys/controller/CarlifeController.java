@@ -3,9 +3,9 @@ package com.lee.hof.sys.controller;
 
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.model.Channel;
-import com.lee.hof.sys.bean.model.Group;
+import com.lee.hof.sys.bean.model.DriverGroup;
 import com.lee.hof.sys.service.ChannelService;
-import com.lee.hof.sys.service.GroupService;
+import com.lee.hof.sys.service.DriverGroupService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ public class CarlifeController {
     ChannelService channelService;
 
     @Resource
-    GroupService groupService;
+    DriverGroupService groupService;
 
     @GetMapping("/channel/list")
     public BaseResponse<List<Channel>> getChannels(){
@@ -29,7 +29,7 @@ public class CarlifeController {
     }
 
     @GetMapping("/group/list")
-    public BaseResponse<List<Group>> getGroups(){
+    public BaseResponse<List<DriverGroup>> getGroups(){
         return BaseResponse.success(groupService.listGroup());
     }
 

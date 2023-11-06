@@ -49,5 +49,11 @@ public class User extends BaseEntity {
 
     private String validNum;
 
+    private String location;
+
+    private String signature;
+
+    private String sex;
+
 
 }

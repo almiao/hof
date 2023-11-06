@@ -24,18 +24,4 @@ public class SystemController {
         return mav;
     }
 
-//    //推送数据接口
-//    @ResponseBody
-//    @RequestMapping("/socket/push/{cid}")
-//    public Map pushToWeb(@PathVariable String cid, String message) {
-//        Map<String,Object> result = new HashMap<>();
-//        try {
-//            WebSocketServer.sendInfo(message, cid);
-//            result.put("code", cid);
-//            result.put("msg", message);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
 }

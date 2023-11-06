@@ -8,7 +8,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 @Data
@@ -31,8 +31,8 @@ public class VerifyComponent {
     private int verifyStatus;
 
     @TableField(fill = FieldFill.INSERT)
-    private Timestamp createTime;
+    private Date createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Timestamp updateTime;
+    private Date updateTime;
 }

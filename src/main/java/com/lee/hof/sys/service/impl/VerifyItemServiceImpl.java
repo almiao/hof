@@ -6,8 +6,8 @@ import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.VerifyComponentAddOrUpdateDto;
 import com.lee.hof.sys.bean.dto.VerifyComponentGetDto;
 import com.lee.hof.sys.bean.dto.VerifyItemListDto;
+import com.lee.hof.sys.bean.enums.VerifyStatusEum;
 import com.lee.hof.sys.bean.model.VerifyComponent;
-import com.lee.hof.sys.bean.model.VerifyComponentResponse;
 import com.lee.hof.sys.bean.model.VerifyItem;
 import com.lee.hof.sys.mapper.VerifyComponentMapper;
 import com.lee.hof.sys.mapper.VerifyItemMapper;
@@ -32,7 +32,6 @@ public class VerifyItemServiceImpl extends ServiceImpl<VerifyItemMapper, VerifyI
 
     @Resource
     VerifyItemMapper verifyItemMapper;
-
 
     @Resource
     VerifyComponentMapper verifyComponentMapper;
@@ -71,6 +70,7 @@ public class VerifyItemServiceImpl extends ServiceImpl<VerifyItemMapper, VerifyI
         verifyComponent.setVerifyContent(dto.getVerifyContent());
         verifyComponent.setUserId(UserContext.getUser().getId());
         verifyComponent.setVerifyCode(dto.getVerifyCode());
+        verifyComponent.setVerifyStatus(VerifyStatusEum.NEED_VERIFY.getCode());
 
         if(dto.getVerifyComponentId() == null){
             verifyComponentMapper.insert(verifyComponent);
@@ -83,11 +83,12 @@ public class VerifyItemServiceImpl extends ServiceImpl<VerifyItemMapper, VerifyI
 
     @Override
     public VerifyComponent getVerifyComponent(VerifyComponentGetDto dto) {
-        VerifyComponentResponse response = new VerifyComponentResponse();
 
-
-        VerifyComponent verifyComponent = verifyComponentMapper.selectOne(new QueryWrapper<VerifyComponent>().eq("user_id",
-                UserContext.getUser().getId()).eq("verify_code", dto.getVerifyCode()).orderByDesc("id").last( " limit 1"));
+        VerifyComponent verifyComponent = verifyComponentMapper.selectOne(new QueryWrapper<VerifyComponent>()
+                .eq("user_id", UserContext.getUser().getId())
+                .eq("verify_code", dto.getVerifyCode())
+                .orderByDesc("id")
+                .last( " limit 1"));
 
 
         return verifyComponent;

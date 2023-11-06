@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.afkbrb.avatar.Avatar;
 import com.lee.hof.auth.JwtUtil;
 import com.lee.hof.auth.UserContext;
+import com.lee.hof.common.exception.HofException;
 import com.lee.hof.common.upload.service.local.LocalStorageService;
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.enums.ValidStatusEum;
@@ -136,6 +137,23 @@ public class UserController {
         return BaseResponse.success(databaseUser);
     }
 
+    @PostMapping(value = "/update")
+    public BaseResponse<User> getDetail(@RequestBody User user){
+        User databaseUser = userMapper.selectById(user.getId());
+        if(databaseUser == null){
+            return BaseResponse.badrequest();
+        }
+        databaseUser.setImgId(user.getImgId());
+        databaseUser.setUsername(user.getUsername());
+        databaseUser.setSignature(user.getSignature());
+        databaseUser.setLocation(user.getLocation());
+        databaseUser.setSex(user.getSex());
+        userMapper.updateById(databaseUser);
+        return BaseResponse.success(databaseUser);
+    }
+
+
+
 
     @PostMapping(value = "/listContact")
     public BaseResponse<List<User>> listContact(@RequestParam(required = false) String searchParam){
@@ -155,7 +173,7 @@ public class UserController {
         UserComponent current = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", UserContext.getUserId()).eq("verify_code", request.getVerifyCode()));
         UserComponent newComponent = new UserComponent();
         newComponent.setContent(request.getContent());
-        newComponent.setUserId(request.getUserId());
+        newComponent.setUserId(UserContext.getUserId());
         newComponent.setVerifyCode(request.getVerifyCode());
         newComponent.setValidStatus(ValidStatusEum.VALID.getCode());
         if(current != null){
@@ -168,6 +186,18 @@ public class UserController {
         userComponentMapper.insert(newComponent);
 
         return BaseResponse.success(newComponent);
+    }
+
+
+    @PostMapping(value = "/delUserComponent")
+    public BaseResponse<UserComponent> delUserComponent(@RequestParam Long componentId){
+        UserComponent current = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", UserContext.getUserId()).eq("id", componentId));
+        if(current == null){
+            throw new HofException("用户组件不存在");
+        }
+        current.setValidStatus(ValidStatusEum.UNVALID.getCode());
+        userComponentMapper.updateById(current);
+        return BaseResponse.success(current);
     }
 
 
