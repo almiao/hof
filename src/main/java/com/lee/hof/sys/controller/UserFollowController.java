@@ -1,0 +1,65 @@
+package com.lee.hof.sys.controller;
+
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lee.hof.auth.UserContext;
+import com.lee.hof.sys.bean.BaseResponse;
+import com.lee.hof.sys.bean.UserFollowStatus;
+import com.lee.hof.sys.bean.model.UserFollow;
+import com.lee.hof.sys.mapper.UserFollowMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+
+@Slf4j
+@RestController
+@RequestMapping("/userfollow")
+public class UserFollowController {
+
+
+    @Resource
+    UserFollowMapper userFollowMapper;
+
+    @PostMapping(value = "/add")
+    public BaseResponse<UserFollow> add(@RequestBody UserFollow userFollowRequest ){
+        UserFollow userFollow = userFollowMapper.selectOne(new QueryWrapper<UserFollow>().eq("user_id", UserContext.getUserId()).eq("to_entity_id", userFollowRequest.getToEntityId()));
+
+        if(userFollow == null){
+            userFollow = userFollowRequest;
+            userFollow.setToEntityId(userFollowRequest.getToEntityId());
+            userFollow.setUserId(UserContext.getUserId());
+            userFollow.setStatus(UserFollowStatus.NORMAL.getCode());
+            userFollowMapper.insert(userFollow);
+        }else{
+            userFollow.setStatus(UserFollowStatus.NORMAL.getCode());
+            userFollowMapper.updateById(userFollow);
+        }
+
+        return BaseResponse.success(userFollow);
+    }
+
+
+
+    @PostMapping(value = "/delete")
+    public BaseResponse<UserFollow> delete(@RequestBody UserFollow userFollowRequest){
+        UserFollow userFollow = userFollowMapper.selectById(userFollowRequest.getId());
+        userFollow.setStatus(UserFollowStatus.DELETED.getCode());
+        userFollowMapper.updateById(userFollow);
+        return BaseResponse.success(userFollow);
+    }
+
+
+    @PostMapping(value = "/list")
+    public BaseResponse<List<UserFollow>> list(){
+        List<UserFollow> userFollow = userFollowMapper.selectList(new QueryWrapper<UserFollow>().eq("user_id", UserContext.getUserId()));
+        return BaseResponse.success(userFollow);
+    }
+
+
+}
