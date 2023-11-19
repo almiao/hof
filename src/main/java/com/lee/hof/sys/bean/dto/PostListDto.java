@@ -27,4 +27,6 @@ public class PostListDto extends BaseInput {
     private int pageSize = 10;
 
     private String sortBy;
+
+    private Long createBy;
 }

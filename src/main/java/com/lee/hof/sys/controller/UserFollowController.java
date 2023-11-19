@@ -7,6 +7,7 @@ import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.UserFollowStatus;
 import com.lee.hof.sys.bean.model.UserFollow;
 import com.lee.hof.sys.mapper.UserFollowMapper;
+import com.lee.hof.sys.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,10 @@ public class UserFollowController {
 
     @Resource
     UserFollowMapper userFollowMapper;
+
+
+    @Resource
+    UserService userService;
 
     @PostMapping(value = "/add")
     public BaseResponse<UserFollow> add(@RequestBody UserFollow userFollowRequest ){
@@ -58,8 +63,20 @@ public class UserFollowController {
     @PostMapping(value = "/list")
     public BaseResponse<List<UserFollow>> list(){
         List<UserFollow> userFollow = userFollowMapper.selectList(new QueryWrapper<UserFollow>().eq("user_id", UserContext.getUserId()));
+
+        userFollow.stream().forEach(userFollow1 -> {
+            userFollow1.setUser(userService.getUserById(userFollow1.getToEntityId()));
+        });
+
         return BaseResponse.success(userFollow);
     }
+
+
+
+
+
+
+
 
 
 }

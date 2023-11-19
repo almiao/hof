@@ -7,19 +7,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.PostAddDto;
 import com.lee.hof.sys.bean.dto.PostListDto;
+import com.lee.hof.sys.bean.dto.PostSearchDto;
 import com.lee.hof.sys.bean.dto.PostUpdateDto;
-import com.lee.hof.sys.bean.model.Comment;
-import com.lee.hof.sys.bean.model.Like;
-import com.lee.hof.sys.bean.model.Post;
-import com.lee.hof.sys.bean.model.User;
+import com.lee.hof.sys.bean.enums.CommonStatusEum;
+import com.lee.hof.sys.bean.model.*;
 import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.CommentMapper;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
-import com.lee.hof.sys.service.CommentService;
-import com.lee.hof.sys.service.PostService;
-import com.lee.hof.sys.service.TopicService;
-import com.lee.hof.sys.service.UserService;
+import com.lee.hof.sys.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +23,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -131,14 +129,40 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Autowired
     UserService userService;
 
+    @Resource
+    SearchHistoryService searchHistoryService;
+
     @Override
-    public Page<Post> searchPost(PostListDto dto) {
+    public Page<Post> searchPost(PostSearchDto dto) {
         QueryWrapper<Post> conditions = new QueryWrapper<Post>()
-                .eq("createBy", dto.getUser().getId())
-                .like(StringUtils.isNotEmpty(dto.getPostName()),"name",dto.getPostName())
-                .like(StringUtils.isNotEmpty(dto.getContent()),"contentHtml",dto.getContent());
+                .like("name",dto.getSearchText())
+                .like("contentHtml",dto.getSearchText());
+
+
+
+
 
         return postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
+    }
+
+    @Override
+    public List<String> listSearchHistory() {
+
+        List<SearchHistory> searchHistories = searchHistoryService.list(new QueryWrapper<SearchHistory>()
+        .eq("create_by", UserContext.getUserId()).eq("status", 0));
+
+        return searchHistories.stream().map(SearchHistory::getSearch_text).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean delSearchHistory() {
+        List<SearchHistory> searchHistories = searchHistoryService.list(new QueryWrapper<SearchHistory>()
+                .eq("create_by", UserContext.getUserId()).eq("status", CommonStatusEum.INIT));
+        searchHistories.forEach(searchHistory -> {
+            searchHistory.setStatus(CommonStatusEum.HIDE.getCode());
+        });
+        searchHistoryService.updateBatchById(searchHistories);
+        return true;
     }
 
     @Override
