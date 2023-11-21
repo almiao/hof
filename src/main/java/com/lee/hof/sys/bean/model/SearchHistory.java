@@ -17,7 +17,7 @@ import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("user_follow")
+@TableName("search_history")
 public class SearchHistory  extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1876655654053364580L;
 

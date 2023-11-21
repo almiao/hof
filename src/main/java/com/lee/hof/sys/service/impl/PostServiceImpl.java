@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -135,13 +136,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public Page<Post> searchPost(PostSearchDto dto) {
         QueryWrapper<Post> conditions = new QueryWrapper<Post>()
-                .like("name",dto.getSearchText())
-                .like("contentHtml",dto.getSearchText());
-
-
-
-
-
+                .like("title",dto.getSearchText())
+                .like("content_text",dto.getSearchText());
         return postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
     }
 
@@ -186,6 +182,31 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }
         postDetailVo.setAuthor(userService.getUserById(post.getAuthorId()));
         return postDetailVo;
+    }
+
+    @Override
+    public List<String> searchPostHint(PostSearchDto dto) {
+
+        List<String> f = new ArrayList<>();
+
+        QueryWrapper<Post> conditions = new QueryWrapper<Post>()
+                .like("title",dto.getSearchText())
+                .like("content_text",dto.getSearchText());
+        List<Post> result = postMapper.selectList(conditions);
+
+        result.stream().forEach(post -> {
+            if(post.getTitle()!= null && post.getTitle().contains(dto.getSearchText())){
+                   f.add(post.getTitle());
+            }
+
+            if(post.getContentText()!= null && post.getContentText().contains(dto.getSearchText())) {
+              f.add(post.getContentText().substring(post.getContentText().indexOf(dto.getSearchText(),5)));
+            }
+        });
+
+
+
+        return f;
     }
 
 

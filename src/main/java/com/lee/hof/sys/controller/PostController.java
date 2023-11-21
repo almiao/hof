@@ -32,17 +32,23 @@ public class PostController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<IPage<Post>> searchPost(@RequestBody PostSearchDto dto){
-        return ResponseEntity.ok(postService.searchPost(dto));
+    public BaseResponse<IPage<Post>> searchPost(@RequestBody PostSearchDto dto){
+        return BaseResponse.success(postService.searchPost(dto));
     }
+
+    @PostMapping("/search/hint")
+    public BaseResponse<List<String>> searchPostHint(@RequestBody PostSearchDto dto){
+        return BaseResponse.success(postService.searchPostHint(dto));
+    }
+
     @PostMapping("/search/history")
-    public ResponseEntity<List<String>> listSearchHistory(){
-        return ResponseEntity.ok(postService.listSearchHistory());
+    public BaseResponse<List<String>> listSearchHistory(){
+        return BaseResponse.success(postService.listSearchHistory());
     }
 
     @PostMapping("/search/history/del")
-    public ResponseEntity<Boolean> delSearchHistory(){
-        return ResponseEntity.ok(postService.delSearchHistory());
+    public BaseResponse<Boolean> delSearchHistory(){
+        return BaseResponse.success(postService.delSearchHistory());
     }
 
     @PostMapping("/list")
