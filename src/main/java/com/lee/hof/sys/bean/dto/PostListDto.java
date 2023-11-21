@@ -13,7 +13,7 @@ public class PostListDto extends BaseInput {
 
     public String postName;
 
-    public String content;
+    public String searchText;
 
     public Date startDate;
 

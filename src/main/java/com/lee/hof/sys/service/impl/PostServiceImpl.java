@@ -15,6 +15,7 @@ import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.CommentMapper;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
+import com.lee.hof.sys.mapper.SearchHistoryMapper;
 import com.lee.hof.sys.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -86,6 +87,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             conditions.eq("channel_name", dto.getChannelName());
         }
 
+        if(StringUtils.isNotBlank(dto.getSearchText())){
+            conditions.and(postQueryWrapper -> postQueryWrapper.like("title", dto.getSearchText()).or().like("content_text", dto.getSearchText()));
+            SearchHistory searchHistory = new SearchHistory();
+            searchHistory.setSearch_text(dto.getSearchText());
+            searchHistoryMapper.insert(searchHistory);
+        }
+
         conditions.orderByDesc("update_time");
 
         Page<Post> result = postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
@@ -132,6 +140,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Resource
     SearchHistoryService searchHistoryService;
+
+    @Resource
+    SearchHistoryMapper searchHistoryMapper;
 
     @Override
     public Page<Post> searchPost(PostSearchDto dto) {
@@ -190,22 +201,23 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         List<String> f = new ArrayList<>();
 
         QueryWrapper<Post> conditions = new QueryWrapper<Post>()
-                .like("title",dto.getSearchText())
+                .like("title",dto.getSearchText()).or()
                 .like("content_text",dto.getSearchText());
         List<Post> result = postMapper.selectList(conditions);
 
         result.stream().forEach(post -> {
             if(post.getTitle()!= null && post.getTitle().contains(dto.getSearchText())){
-                   f.add(post.getTitle());
+                int startIndex = post.getTitle().indexOf(dto.getSearchText());
+                int endIndex = Math.min(startIndex+3, post.getTitle().length());
+                f.add(post.getTitle().substring(startIndex, endIndex));
             }
 
             if(post.getContentText()!= null && post.getContentText().contains(dto.getSearchText())) {
-              f.add(post.getContentText().substring(post.getContentText().indexOf(dto.getSearchText(),5)));
+                int startIndex = post.getContentText().indexOf(dto.getSearchText());
+                int endIndex = Math.min(startIndex+3, post.getContentText().length());
+              f.add(post.getContentText().substring(startIndex, endIndex));
             }
         });
-
-
-
         return f;
     }
 
