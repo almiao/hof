@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.dto.*;
 import com.lee.hof.sys.bean.model.Post;
+import com.lee.hof.sys.bean.model.UserPostAction;
 import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.service.PostService;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,12 @@ public class PostController {
     public BaseResponse<PostVO> addPost(@RequestBody PostAddDto dto){
         return BaseResponse.success(postService.addPost(dto));
     }
+
+    @PostMapping("/vote")
+    public BaseResponse<UserPostAction> addPostVote(@RequestBody PostVoteDto dto){
+        return BaseResponse.success(postService.addOrUpdatePostAction(dto));
+    }
+
 
     @PostMapping("/del")
     public ResponseEntity<Boolean> delPost(@RequestBody  PostDelDto delDto){

@@ -1,6 +1,7 @@
 package com.lee.hof.sys.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.afkbrb.avatar.Avatar;
 import com.lee.hof.auth.JwtUtil;
@@ -9,10 +10,12 @@ import com.lee.hof.common.exception.HofException;
 import com.lee.hof.common.upload.service.local.LocalStorageService;
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.enums.ValidStatusEum;
+import com.lee.hof.sys.bean.enums.VerifyCodeEnum;
 import com.lee.hof.sys.bean.model.FileManager;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.model.UserComponent;
 import com.lee.hof.sys.bean.model.UserToken;
+import com.lee.hof.sys.bean.model.component.VerifyMyCarContent;
 import com.lee.hof.sys.mapper.FileManagerMapper;
 import com.lee.hof.sys.mapper.UserComponentMapper;
 import com.lee.hof.sys.mapper.UserMapper;
@@ -183,8 +186,15 @@ public class UserController {
         }else{
             newComponent.setVersion(1);
         }
-        userComponentMapper.insert(newComponent);
 
+        if(request.getVerifyCode().equals(VerifyCodeEnum.D006.getVerifyCode())){
+            VerifyMyCarContent myCarContent = JSONObject.parseObject(request.getContent(), VerifyMyCarContent.class);
+            User user = userMapper.selectById(UserContext.getUserId());
+            user.setLabel(myCarContent.getBrandName());
+            userMapper.updateById(user);
+        }
+
+        userComponentMapper.insert(newComponent);
         return BaseResponse.success(newComponent);
     }
 

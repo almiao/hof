@@ -1,21 +1,17 @@
 package com.lee.hof.sys.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
-import com.lee.hof.sys.bean.dto.PostAddDto;
-import com.lee.hof.sys.bean.dto.PostListDto;
-import com.lee.hof.sys.bean.dto.PostSearchDto;
-import com.lee.hof.sys.bean.dto.PostUpdateDto;
+import com.lee.hof.common.exception.HofException;
+import com.lee.hof.sys.bean.dto.*;
 import com.lee.hof.sys.bean.enums.CommonStatusEum;
 import com.lee.hof.sys.bean.model.*;
 import com.lee.hof.sys.bean.vo.PostVO;
-import com.lee.hof.sys.mapper.CommentMapper;
-import com.lee.hof.sys.mapper.LikeMapper;
-import com.lee.hof.sys.mapper.PostMapper;
-import com.lee.hof.sys.mapper.SearchHistoryMapper;
+import com.lee.hof.sys.mapper.*;
 import com.lee.hof.sys.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -54,7 +49,6 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public PostVO addPost(PostAddDto dto) {
         Post post = new Post();
         BeanUtils.copyProperties(dto,post);
-        post.setId(UUID.randomUUID().toString());
         User user = UserContext.getUser();
         post.setAuthorId(user.getId());
         post.setCreateTime(LocalDateTime.now());
@@ -90,7 +84,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if(StringUtils.isNotBlank(dto.getSearchText())){
             conditions.and(postQueryWrapper -> postQueryWrapper.like("title", dto.getSearchText()).or().like("content_text", dto.getSearchText()));
             SearchHistory searchHistory = new SearchHistory();
-            searchHistory.setSearch_text(dto.getSearchText());
+            searchHistory.setSearchText(dto.getSearchText());
+            searchHistory.setCreateBy(UserContext.getUserId());
+            searchHistory.setStatus(0);
             searchHistoryMapper.insert(searchHistory);
         }
 
@@ -105,6 +101,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Resource
     private CommentService commentService;
+
+
 
     private PostVO convertPost(Post post,long meUserId){
 
@@ -124,6 +122,18 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                 .last("limit 1"));
 
         postVO.setMostValuedComment(commentService.convert(comment));
+
+
+        if(post.getViewType() == PostType.VOTE){
+            List<PostOption> postOptions = JSONObject.parseArray(post.getVoteContent(), PostOption.class);
+            postOptions.forEach(postOption -> {
+                int cntOption =  userPostActionMapper.selectCount(new QueryWrapper<UserPostAction>().eq("post_id",post.getId()).eq(
+                        "option_text",postOption.getText()
+                ));
+                postOption.setCnt(cntOption);
+            });
+            postVO.setPostOptions(postOptions);
+        }
 
         postVO.setCommentCnt(commentCnt);
         postVO.setAuthor(userService.getUserById(post.getAuthorId()));
@@ -158,7 +168,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         List<SearchHistory> searchHistories = searchHistoryService.list(new QueryWrapper<SearchHistory>()
         .eq("create_by", UserContext.getUserId()).eq("status", 0));
 
-        return searchHistories.stream().map(SearchHistory::getSearch_text).collect(Collectors.toList());
+        return searchHistories.stream().map(SearchHistory::getSearchText).collect(Collectors.toList());
     }
 
     @Override
@@ -219,6 +229,61 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             }
         });
         return f;
+    }
+
+
+    @Resource
+    UserPostActionService userPostActionService;
+
+    @Resource
+    UserPostActionMapper userPostActionMapper;
+
+    @Override
+    public UserPostAction addOrUpdatePostAction(PostVoteDto dto) {
+        Post post = postMapper.selectById(dto.getPostId());
+        if(post == null){
+            throw new HofException("post不存在");
+        }
+        UserPostAction userPostAction = userPostActionService.getOne(new QueryWrapper<UserPostAction>().eq("user_id", UserContext.getUserId()).eq("post_id", dto.getPostId()));
+        if(userPostAction == null){
+            userPostAction = new UserPostAction();
+            userPostAction.setOptionText(dto.getOption());
+            userPostAction.setOptionComment(dto.getOptionComment());
+            userPostAction.setUserId(UserContext.getUserId());
+            userPostAction.setPostId(dto.getPostId());
+            if(dto.isAddLike()) {
+                userPostAction.setIsLike(1);
+            }
+            if(dto.isDelLike()){
+                userPostAction.setIsLike(0);
+            }
+            if(dto.isAddUnlike()){
+                userPostAction.setIsUnlike(1);
+            }
+            if(dto.isDelUnlike()){
+                userPostAction.setIsUnlike(0);
+            }
+            userPostActionMapper.insert(userPostAction);
+        }else{
+            userPostAction.setOptionText(dto.getOption());
+            userPostAction.setOptionComment(dto.getOptionComment());
+            userPostAction.setUserId(UserContext.getUserId());
+            userPostAction.setPostId(dto.getPostId());
+            if(dto.isAddLike()) {
+                userPostAction.setIsLike(1);
+            }
+            if(dto.isDelLike()){
+                userPostAction.setIsLike(0);
+            }
+            if(dto.isAddUnlike()){
+                userPostAction.setIsUnlike(1);
+            }
+            if(dto.isDelUnlike()){
+                userPostAction.setIsUnlike(0);
+            }
+            userPostActionMapper.updateById(userPostAction);
+        }
+        return userPostAction;
     }
 
 

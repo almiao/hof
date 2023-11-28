@@ -25,7 +25,7 @@ public class SearchHistory  extends BaseEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String search_text;
+    private String searchText;
 
 }
 

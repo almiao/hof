@@ -37,7 +37,7 @@ public class UserPostAction extends BaseEntity {
     /**
      * 有一个
      */
-    private String option;
+    private String optionText;
 
     private String optionComment;
 

@@ -58,7 +58,4 @@ public class BaseInput{
     private String endInfo;
 
     private String location;
-
-
-
 }

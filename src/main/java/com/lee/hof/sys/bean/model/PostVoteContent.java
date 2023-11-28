@@ -1,16 +1,12 @@
 package com.lee.hof.sys.bean.model;
 
+import java.util.List;
+
 public class PostVoteContent {
 
     private int voteType;
 
-    private String firstOption;
-
-    private String secondOption;
-
-    private int firstVoteCnt;
-
-    private int secondVoteCnt;
+    private List<PostOption> options;
 
 
     public int getVoteType() {
@@ -21,35 +17,12 @@ public class PostVoteContent {
         this.voteType = voteType;
     }
 
-    public String getFirstOption() {
-        return firstOption;
+
+    public List<PostOption> getOptions() {
+        return options;
     }
 
-    public void setFirstOption(String firstOption) {
-        this.firstOption = firstOption;
-    }
-
-    public String getSecondOption() {
-        return secondOption;
-    }
-
-    public void setSecondOption(String secondOption) {
-        this.secondOption = secondOption;
-    }
-
-    public int getFirstVoteCnt() {
-        return firstVoteCnt;
-    }
-
-    public void setFirstVoteCnt(int firstVoteCnt) {
-        this.firstVoteCnt = firstVoteCnt;
-    }
-
-    public int getSecondVoteCnt() {
-        return secondVoteCnt;
-    }
-
-    public void setSecondVoteCnt(int secondVoteCnt) {
-        this.secondVoteCnt = secondVoteCnt;
+    public void setOptions(List<PostOption> options) {
+        this.options = options;
     }
 }

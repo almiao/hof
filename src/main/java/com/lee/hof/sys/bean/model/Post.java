@@ -33,7 +33,7 @@ public class Post implements Serializable{
     private Integer status;
 
     @Id
-    private String id;
+    private Long id;
 
     private String channelName;
 

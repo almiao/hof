@@ -55,5 +55,7 @@ public class User extends BaseEntity {
 
     private String sex;
 
+    private String label;
+
 
 }
