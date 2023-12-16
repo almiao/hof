@@ -38,7 +38,7 @@ public class SellOrder implements Serializable {
     private Long userId;
 
 
-    private String baseInfoTxt;
+    private String baseInfoText;
 
 
     private String coverFileId;

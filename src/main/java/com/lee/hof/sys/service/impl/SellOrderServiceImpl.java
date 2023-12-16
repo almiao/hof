@@ -133,7 +133,7 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
     public Page<SellOrder> listPublished(SellOrderListDto dto) {
         QueryWrapper<SellOrder> queryWrapper = new QueryWrapper<>();
         if (dto.getSearchTxt() != null) {
-            queryWrapper.like("base_info_text", dto.getSearchTxt());
+            queryWrapper.and(wrapper->wrapper.like("base_info_text", dto.getSearchTxt()).or().like("brand_name",dto.getSearchTxt()));
         }
 
         if (dto.getDistanceRangeLow() != null) {
@@ -152,13 +152,15 @@ public class SellOrderServiceImpl extends ServiceImpl<SellOrderMapper, SellOrder
             queryWrapper.le("price", dto.getPriceRangeHigh());
         }
 
-        if (dto.getOrderByField() != null) {
-            queryWrapper.orderByDesc(dto.getOrderByField());
-        }
+        queryWrapper.like(dto.getBrandName() != null ,"brand_name", dto.getBrandName());
 
         queryWrapper.eq("valid_status", 1);
 
         queryWrapper.eq("status", SellOrderStatus.PUBLISHED.getCode());
+
+        queryWrapper.orderByAsc(StringUtils.isNotBlank(dto.getOrderByFieldAsc()), dto.getOrderByFieldAsc());
+
+        queryWrapper.orderByDesc(StringUtils.isNoneBlank(dto.getOrderByFieldDesc()), dto.getOrderByFieldDesc());
 
         Page<SellOrder> result = sellOrderMapper.selectPage(new Page<>(dto.getPageNum(), dto.getPageSize()), queryWrapper);
 

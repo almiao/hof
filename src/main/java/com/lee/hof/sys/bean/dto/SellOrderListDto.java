@@ -26,11 +26,19 @@ public class SellOrderListDto extends BaseInput implements Serializable {
 
     private Double distanceRangeHigh;
 
-    private String orderByField;
+    private String orderByFieldAsc;
+
+    private String orderByFieldDesc;
 
     private int pageNum;
 
     private int pageSize;
+
+    private String brandName;
+
+    private String brandSeries;
+
+
 
 }
 

@@ -173,7 +173,7 @@ public class UserController {
 
     @PostMapping(value = "/addComponent")
     public BaseResponse<UserComponent> addUserComponent(@RequestBody UserComponent request){
-        UserComponent current = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", UserContext.getUserId()).eq("verify_code", request.getVerifyCode()));
+        UserComponent current = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", UserContext.getUserId()).eq("verify_code", request.getVerifyCode()).orderByDesc("id").last("limit 1"));
         UserComponent newComponent = new UserComponent();
         newComponent.setContent(request.getContent());
         newComponent.setUserId(UserContext.getUserId());
