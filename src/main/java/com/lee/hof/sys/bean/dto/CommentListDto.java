@@ -7,12 +7,16 @@ import lombok.Data;
 @Data
 public class CommentListDto extends BaseInput {
 
-    public String entityId;
+    public Long entityId;
 
-    private String parentCommentId;
+    private Long parentCommentId;
+
+    private int orderBy;
+
+    private Long authorId;
 
     private int pageNum = 0;
 
-    private int pageSize = 10;
+    private int pageSize = 100;
 
 }

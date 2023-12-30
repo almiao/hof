@@ -43,5 +43,11 @@ public class DriverGroup extends BaseEntity {
     @TableField(exist = false)
     private List<DriverGroupUser> driverGroupUsers;
 
+    private String parentCategory;
+
+    private int memberCnt = 1;
+
+    @TableField(exist =  false)
+    private boolean myFollow;
 
 }

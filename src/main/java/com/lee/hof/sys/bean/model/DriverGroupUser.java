@@ -12,7 +12,7 @@ import javax.persistence.Id;
  * 车友会
  */
 @Data
-@TableName("driver_group")
+@TableName("driver_group_user")
 public class DriverGroupUser extends BaseEntity {
 
     @Id

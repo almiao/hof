@@ -22,4 +22,10 @@ public interface DriverGroupService extends IService<DriverGroup> {
 
     List<DriverGroupUser> listDriverGroupUser(Long driverGroupId);
     DriverGroupUser addUser(Long driverGroupId);
+
+
+
+    List<DriverGroup> listMyFollowGroup();
+
+    DriverGroupUser delUser(Long driverGroupId);
 }

@@ -9,10 +9,7 @@ import com.lee.hof.sys.bean.model.UserFollow;
 import com.lee.hof.sys.mapper.UserFollowMapper;
 import com.lee.hof.sys.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -42,7 +39,10 @@ public class UserFollowController {
             userFollow.setStatus(UserFollowStatus.NORMAL.getCode());
             userFollowMapper.insert(userFollow);
         }else{
-            userFollow.setStatus(UserFollowStatus.NORMAL.getCode());
+            if(userFollowRequest.getStatus() == userFollow.getStatus()){
+                return BaseResponse.success(userFollow);
+            }
+            userFollow.setStatus(userFollowRequest.getStatus() == null? UserFollowStatus.NORMAL.getCode():userFollowRequest.getStatus());
             userFollowMapper.updateById(userFollow);
         }
 
@@ -63,14 +63,18 @@ public class UserFollowController {
     @PostMapping(value = "/list")
     public BaseResponse<List<UserFollow>> list(){
         List<UserFollow> userFollow = userFollowMapper.selectList(new QueryWrapper<UserFollow>().eq("user_id", UserContext.getUserId()));
-
         userFollow.stream().forEach(userFollow1 -> {
             userFollow1.setUser(userService.getUserById(userFollow1.getToEntityId()));
         });
-
         return BaseResponse.success(userFollow);
     }
 
+    @GetMapping(value = "/get")
+    public BaseResponse<UserFollow> getUserFollow(@RequestParam Integer userId){
+        UserFollow userFollow = userFollowMapper.selectOne(new QueryWrapper<UserFollow>().eq("user_id", UserContext.getUserId())
+                .eq("to_entity_id", userId));
+        return BaseResponse.success(userFollow);
+    }
 
 
 

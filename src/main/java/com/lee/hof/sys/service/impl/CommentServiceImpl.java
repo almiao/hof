@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -43,13 +44,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private UserService userService;
 
 
-    public static void main(String[] args) {
-        int a =3;
-        int b = 3*100/(a+5);
-        System.out.println(b);
-    }
-
-
     @Override
     public CommentVo addComment(CommentDto commentDto) {
         Comment comment = new Comment();
@@ -64,19 +58,18 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return convert(comment);
     }
 
-
-
-
     @Override
     public List<CommentVo> listComment(CommentListDto dto) {
-
         QueryWrapper<Comment> conditions = new QueryWrapper<>();
-
         conditions.eq("entity_id", dto.getEntityId());
-        if(!StringUtils.isEmpty(dto.getParentCommentId())) {
+        if(Objects.nonNull(dto.getParentCommentId())) {
             conditions.eq("parent_comment_id",dto.getParentCommentId());
         }else {
             conditions.isNull("parent_comment_id");
+        }
+        conditions.eq(dto.getAuthorId() != null, "user_id", dto.getAuthorId());
+        if(dto.getOrderBy() == 1){
+            conditions.orderByDesc("id");
         }
         List<Comment> comments = commentMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions).getRecords();
 
@@ -110,7 +103,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             commentVo1.setUser(userService.getUserById(cm.getUserId()));
             return commentVo1;
         }).collect(Collectors.toList());
-
         List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().eq("target_id", comment.getId().toString()).eq("target_entity_type","comment").eq("is_del",0));
         commentVo.setLikeList(likes);
         commentVo.setReplyList(childs);

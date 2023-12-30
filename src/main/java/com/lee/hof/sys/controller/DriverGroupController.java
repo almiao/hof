@@ -20,10 +20,6 @@ public class DriverGroupController {
 
 
     @Resource
-    UserMapper userMapper;
-
-
-    @Resource
     DriverGroupService driverGroupService;
 
     @PostMapping(value = "/addOrUpdate")
@@ -43,6 +39,11 @@ public class DriverGroupController {
         return BaseResponse.success(result);
     }
 
+    @PostMapping(value = "/listMyFollow")
+    public BaseResponse<List<DriverGroup>> listMyFollowGroup(){
+        return BaseResponse.success(driverGroupService.listMyFollowGroup());
+    }
+
 
     @PostMapping(value = "/listUser")
     public BaseResponse<List<DriverGroupUser>> listUser(@RequestParam Long driverGroupId){
@@ -53,6 +54,11 @@ public class DriverGroupController {
     @PostMapping(value = "/addUser")
     public BaseResponse<DriverGroupUser> addUser(@RequestParam Long driverGroupId){
         return BaseResponse.success(driverGroupService.addUser(driverGroupId));
+    }
+
+    @PostMapping(value = "/delUser")
+    public BaseResponse<DriverGroupUser> delUser(@RequestParam Long driverGroupId){
+        return BaseResponse.success(driverGroupService.delUser(driverGroupId));
     }
 
 }
