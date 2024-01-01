@@ -16,6 +16,10 @@ public class UserChatVO {
 
     private Long toUserId;
 
+    private Long fromUserReadId;
+
+    private Long toUserReadId;
+
     private Timestamp createTime;
 
     private Timestamp updateTime;
@@ -25,8 +29,6 @@ public class UserChatVO {
     private User fromUser;
 
     private Long relatedGood;
-
-
 
     private List<ChatContent> chatContents;
 

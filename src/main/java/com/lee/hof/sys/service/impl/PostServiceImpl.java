@@ -55,7 +55,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         post.setUpdateTime(LocalDateTime.now());
         postMapper.insert(post);
 
-        return convertPost(post, user.getId());
+        return convertPost(post);
     }
 
     @Override
@@ -94,9 +94,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
         Page<Post> result = postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
 
-        Long meUserId = UserContext.getUserId();
 
-        return result.convert(post -> convertPost(post,meUserId));
+        return result.convert(this::convertPost);
     }
 
     @Resource
@@ -104,8 +103,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
 
 
-    private PostVO convertPost(Post post,long meUserId){
-
+    private PostVO convertPost(Post post){
+        Long meUserId = UserContext.getUserId();
         PostVO postVO = new PostVO();
         BeanUtils.copyProperties(post, postVO);
 
@@ -195,14 +194,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    public PostVO getDetail(String postId) {
+    public PostVO getDetail(Long postId) {
         Post post= postMapper.selectById(postId);
-        PostVO postDetailVo = new PostVO();
-        if(Objects.nonNull(post)){
-            BeanUtils.copyProperties(post,postDetailVo);
+        if(post == null){
+            throw new HofException("数据不存在");
         }
-        postDetailVo.setAuthor(userService.getUserById(post.getAuthorId()));
-        return postDetailVo;
+        return convertPost(post);
     }
 
     @Override

@@ -3,7 +3,9 @@ package com.lee.hof.sys.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.hof.sys.bean.dto.CommentDto;
 import com.lee.hof.sys.bean.dto.CommentListDto;
+import com.lee.hof.sys.bean.dto.CommentMineListDto;
 import com.lee.hof.sys.bean.model.Comment;
+import com.lee.hof.sys.bean.vo.CommentMineVO;
 import com.lee.hof.sys.bean.vo.CommentVo;
 
 import java.util.List;
@@ -25,5 +27,6 @@ public interface CommentService extends IService<Comment> {
     List<CommentVo> listComment(CommentListDto dto);
 
     CommentVo convert(Comment comment);
-    
+
+    List<CommentMineVO> listMine(CommentMineListDto dto);
 }

@@ -88,13 +88,14 @@ public class DriverGroupServiceImpl extends ServiceImpl<GroupMapper, DriverGroup
         DriverGroupUser driverGroupUser =
                 driverGroupUserMapper.selectOne(new QueryWrapper<DriverGroupUser>().eq("driver_group_id", driverGroupId).eq("user_id", UserContext.getUserId()));
 
-        if(driverGroupUser == null){
-            driverGroupUser = new DriverGroupUser();
+        if(driverGroupUser != null){
+            driverGroupUser.setStatus(CommonStatusEum.INIT.getCode());
+            driverGroupUserMapper.updateById(driverGroupUser);
+            return driverGroupUser;
         }
+        driverGroupUser = new DriverGroupUser();
         driverGroupUser.setDriverGroupId(driverGroupId);
         driverGroupUser.setUserId(UserContext.getUserId());
-        driverGroupUser.setStatus(CommonStatusEum.INIT.getCode());
-
         driverGroupUserMapper.insert(driverGroupUser);
 
         return driverGroupUser;
@@ -120,7 +121,9 @@ public class DriverGroupServiceImpl extends ServiceImpl<GroupMapper, DriverGroup
     @Override
     public List<DriverGroup> listMyFollowGroup() {
 
-        List<DriverGroupUser>  driverGroupUsers = driverGroupUserMapper.selectList(new QueryWrapper<DriverGroupUser>().eq("user_id", UserContext.getUserId()));
+        List<DriverGroupUser>  driverGroupUsers = driverGroupUserMapper.selectList(new QueryWrapper<DriverGroupUser>()
+                .eq("user_id", UserContext.getUserId())
+                .eq("status", CommonStatusEum.INIT.getCode()));
 
         Set<Long> longs = driverGroupUsers.stream().map(DriverGroupUser::getDriverGroupId).collect(Collectors.toSet());
 

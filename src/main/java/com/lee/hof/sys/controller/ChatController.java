@@ -34,6 +34,12 @@ public class ChatController extends BaseController {
         return BaseResponse.success(userChatService.newChat(toUserId,relateGood)) ;
     }
 
+    @PostMapping("/updateReadId")
+    public BaseResponse<Boolean> updateReadId(@RequestParam( "contentId") Long contentId, @RequestParam("chatId") Long chatId) {
+        return BaseResponse.success(userChatService.updateReadId(contentId,chatId)) ;
+    }
+
+
     @PostMapping("/content/list")
     public BaseResponse<List<ChatContent>> listChatContent(@RequestParam("chatId") Long chatId) {
         return BaseResponse.success(chatContentService.getByChatId(chatId)) ;

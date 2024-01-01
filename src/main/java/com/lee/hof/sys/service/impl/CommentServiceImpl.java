@@ -3,16 +3,22 @@ package com.lee.hof.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.dto.CommentDto;
 import com.lee.hof.sys.bean.dto.CommentListDto;
+import com.lee.hof.sys.bean.dto.CommentMineListDto;
 import com.lee.hof.sys.bean.model.Comment;
 import com.lee.hof.sys.bean.model.Like;
+import com.lee.hof.sys.bean.model.Post;
 import com.lee.hof.sys.bean.vo.CommentVo;
+import com.lee.hof.sys.bean.vo.CommentMineVO;
+import com.lee.hof.sys.bean.vo.PostSimpleVo;
+import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.CommentMapper;
 import com.lee.hof.sys.mapper.LikeMapper;
+import com.lee.hof.sys.mapper.PostMapper;
 import com.lee.hof.sys.service.CommentService;
 import com.lee.hof.sys.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,6 +26,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -54,6 +61,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setEntityId(commentDto.getEntityId());
         comment.setUserId(commentDto.getUserId());
         comment.setReplyToCommentId(commentDto.getReplyToCommentId());
+        comment.setReplyToUserId(commentDto.getReplyToUserId());
         commentMapper.insert(comment);
         return convert(comment);
     }
@@ -81,6 +89,31 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return commentVos;
     }
 
+    @Resource
+    PostMapper postMapper;
+
+    @Override
+    public List<CommentMineVO> listMine(CommentMineListDto dto) {
+        Long me = UserContext.getUserId();
+        List<Post> posts = postMapper.selectList(new QueryWrapper<Post>().eq("author_id",me));
+        Set<Long> postId = posts.stream().map(Post::getId).collect(Collectors.toSet());
+        QueryWrapper<Comment> conditions = new QueryWrapper<>();
+        conditions.eq("reply_to_user_id", me);
+        if(!postId.isEmpty()){
+            conditions.or().in("entity_id", postId);
+        }
+        List<Comment> comments = commentMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions).getRecords();
+
+        List<CommentMineVO> commentVos = new ArrayList<>();
+
+        comments.forEach(comment -> {
+            commentVos.add(convertMine(comment));
+        });
+        return commentVos;
+    }
+
+
+
     @Override
     public CommentVo convert(Comment comment) {
         if(comment == null){
@@ -107,6 +140,31 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         commentVo.setLikeList(likes);
         commentVo.setReplyList(childs);
         commentVo.setReplyCnt(replyCnt);
+        return commentVo;
+    }
+
+
+    public CommentMineVO convertMine(Comment comment) {
+        if(comment == null){
+            return null;
+        }
+        CommentMineVO commentVo = new CommentMineVO(comment);
+        if(comment.getReplyToUserId()!=null) {
+            commentVo.setReplyToUser(userService.getUserById(comment.getReplyToUserId()));
+        }
+        if(comment.getReplyToCommentId() != null){
+            Comment reply = commentMapper.selectById(comment.getReplyToCommentId());
+            commentVo.setReplyToComment(reply);
+        }
+        commentVo.setUser(userService.getUserById(comment.getUserId()));
+        Post post =  postMapper.selectById(comment.getEntityId());
+        PostSimpleVo postSimpleVo = new PostSimpleVo();
+        postSimpleVo.setId(post.getId());
+        postSimpleVo.setAuthor(userService.getUserById(post.getAuthorId()));
+        postSimpleVo.setContentText(post.getContentText());
+        postSimpleVo.setImages(post.getImages());
+        postSimpleVo.setTitle(post.getTitle());
+        commentVo.setPost(postSimpleVo);
         return commentVo;
     }
 

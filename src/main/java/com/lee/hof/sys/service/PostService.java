@@ -35,7 +35,7 @@ public interface PostService extends IService<Post> {
 
     Boolean updatePost(PostUpdateDto postUpdateDto);
 
-    PostVO getDetail(String postId);
+    PostVO getDetail(Long postId);
 
     List<String> searchPostHint(PostSearchDto dto);
 

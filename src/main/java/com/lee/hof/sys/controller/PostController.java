@@ -70,7 +70,7 @@ public class PostController {
     }
 
     @PostMapping("/detail")
-    public BaseResponse<PostVO> getPostDetail(@RequestParam(value = "id") String id){
+    public BaseResponse<PostVO> getPostDetail(@RequestParam(value = "id", required = true) Long id){
         return BaseResponse.success(postService.getDetail(id));
     }
 

@@ -45,5 +45,7 @@ public class UserChat extends BaseEntity {
      */
     private Long relateGood;
 
+    private Long fromUserReadId;
 
+    private Long toUserReadId;
 }

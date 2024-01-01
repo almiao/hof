@@ -18,6 +18,8 @@ public interface UserChatService extends IService<UserChat> {
 
     UserChatVO newChat(Long toUserId,Long relateGood);
 
+    boolean updateReadId(Long contentId, Long chatId);
+
     List<UserChatVO> listUserChat();
 
 }

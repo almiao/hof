@@ -17,6 +17,8 @@ public class CommentDto implements Serializable {
 
     private Long replyToCommentId;
 
+    private Long replyToUserId;
+
     @NonNull
     private Long userId;
 
