@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.enums.CommonStatusEnum;
 import com.lee.hof.sys.bean.enums.EntityTypeEnum;
-import com.lee.hof.sys.bean.model.*;
-import com.lee.hof.sys.bean.vo.CommentVo;
-import com.lee.hof.sys.bean.vo.LikeVO;
-import com.lee.hof.sys.mapper.LikeMapper;
+import com.lee.hof.sys.bean.model.Collect;
+import com.lee.hof.sys.bean.model.Comment;
+import com.lee.hof.sys.bean.model.Post;
+import com.lee.hof.sys.bean.model.UndoLike;
+import com.lee.hof.sys.bean.vo.CollectVO;
+import com.lee.hof.sys.mapper.CollectMapper;
 import com.lee.hof.sys.mapper.PostMapper;
 import com.lee.hof.sys.service.*;
 import org.springframework.beans.BeanUtils;
@@ -30,10 +32,10 @@ import java.util.stream.Collectors;
  * @since 2021-09-11
  */
 @Service
-public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements LikeService {
+public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect> implements CollectService {
 
     @Resource
-    LikeMapper likMapper;
+    CollectMapper collectMapper;
     @Resource
     PostMapper postMapper;
 
@@ -41,8 +43,9 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
     UserStatisticService userStatisticService;
 
     @Override
-    public Long add(Like like) {
-        Like db = likMapper.selectOne(new QueryWrapper<Like>().eq("create_by", UserContext.getUserId()).eq("target_id", like.getTargetId())
+    public Long add(Collect like) {
+        Collect db = collectMapper.selectOne(new QueryWrapper<Collect>().eq("create_by",
+                        UserContext.getUserId()).eq("target_id", like.getTargetId())
                 .eq("status",0).orderByAsc().last("limit 1"));
         if(db != null){
             return db.getId();
@@ -51,37 +54,32 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
         like.setCreateTime(new Timestamp(System.currentTimeMillis()));
         like.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         like.setStatus(CommonStatusEnum.INIT.getCode());
-        likMapper.insert(like);
-        userStatisticService.addLikeCnt();
+        collectMapper.insert(like);
+        userStatisticService.addCollectCnt();
         return like.getId();
     }
 
     @Override
-    public String cnt() {
-        return null;
-    }
-
-    @Override
     public Long undoLike(UndoLike id) {
-        Like like = likMapper.selectOne(new QueryWrapper<Like>().eq("create_by", UserContext.getUserId()).eq("target_id", id.getTargetId())
+        Collect like = collectMapper.selectOne(new QueryWrapper<Collect>().eq("create_by", UserContext.getUserId()).eq("target_id", id.getTargetId())
         .eq("status",0).orderByAsc().last("limit 1"));
         if(like == null){
             return null;
         }
         like.setStatus(CommonStatusEnum.DELETE.getCode());
-        likMapper.updateById(like);
+        collectMapper.updateById(like);
         return like.getId();
     }
 
     @Override
-    public List<LikeVO> listLikeMe() {
+    public List<CollectVO> listLikeMe() {
         List<Post> myPosts = postMapper.selectList(new QueryWrapper<Post>().eq("author_id", UserContext.getUserId()));
         Set<Long> postId = myPosts.stream().map(Post::getId).collect(Collectors.toSet());
 
         List<Comment> myComments = commentService.list(new QueryWrapper<Comment>().eq("create_by", UserContext.getUserId()));
         Set<Long> commentId = myComments.stream().map(Comment::getId).collect(Collectors.toSet());
 
-        List<Like> likes = likMapper.selectList(new QueryWrapper<Like>().eq("status",0)
+        List<Collect> likes = collectMapper.selectList(new QueryWrapper<Collect>().eq("status",0)
                 .and(likeQueryWrapper -> likeQueryWrapper.eq("target_entity_type","post").in("target_id",postId)
                 .or().eq("target_entity_type","comment").in("target_id",commentId)).orderByDesc("id"));
 
@@ -89,11 +87,11 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
     }
 
     @Override
-    public List<LikeVO> listMyLike() {
-        List<Like> likes = likMapper.selectList(new QueryWrapper<Like>().eq("create_by", UserContext.getUserId())
+    public List<CollectVO> listMyLike() {
+        List<Collect> collects = collectMapper.selectList(new QueryWrapper<Collect>().eq("create_by", UserContext.getUserId())
                 .eq("status", 0).orderByDesc());
 
-        return likes.stream().map(this::convert).collect(Collectors.toList());
+        return collects.stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Resource
@@ -106,18 +104,18 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
     @Resource
     UserService userService;
 
-    private LikeVO convert(Like like){
-        if(like == null){
+    private CollectVO convert(Collect collect){
+        if(collect == null){
             return null;
         }
-        LikeVO likeVO = new LikeVO();
-        BeanUtils.copyProperties(like, likeVO);
-        likeVO.setUser(userService.getUserById(like.getCreateBy()));
+        CollectVO likeVO = new CollectVO();
+        BeanUtils.copyProperties(collect, likeVO);
+        likeVO.setUser(userService.getUserById(collect.getCreateBy()));
 
-        if(Objects.equals(like.getTargetEntityType(), EntityTypeEnum.POST.getName())){
-            likeVO.setPost(postService.getSimplePost(like.getTargetId()));
-        }else if(Objects.equals(like.getTargetEntityType(), EntityTypeEnum.COMMENT.getName())){
-            likeVO.setCommentVo(commentService.getSimpleById(like.getTargetId()));
+        if(Objects.equals(collect.getTargetEntityType(), EntityTypeEnum.POST.getName())){
+            likeVO.setPost(postService.getSimplePost(collect.getTargetId()));
+        }else if(Objects.equals(collect.getTargetEntityType(), EntityTypeEnum.COMMENT.getName())){
+            likeVO.setCommentVo(commentService.getSimpleById(collect.getTargetId()));
         }
         return likeVO;
     }

@@ -1,17 +1,19 @@
 package com.lee.hof.sys.bean.enums;
 
-public enum ValidStatusEum {
+public enum PostActionTypeEnum {
 
     init(0, "默认"),
-    VALID(1, "有效"),
-    UNVALID(2, "无效"),
-    FAIL(3, "验证失败");
+    LIKE(1, "点赞"),
+    COLLECT(2, "收藏"),
+    FORWARD(3, "转发"),
+
+    REPORT(4, "举报");
 
     private final int code;
 
     private final String msg;
 
-    ValidStatusEum(int code, String msg) {
+    PostActionTypeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -24,14 +26,12 @@ public enum ValidStatusEum {
         return msg;
     }
 
-    public static ValidStatusEum getByCode(int code){
-
-        for(ValidStatusEum statusEnum: ValidStatusEum.values()){
+    public static PostActionTypeEnum getByCode(int code){
+        for(PostActionTypeEnum statusEnum: PostActionTypeEnum.values()){
             if(statusEnum.getCode() == code){
                 return statusEnum;
             }
         }
-
         return null;
     }
 

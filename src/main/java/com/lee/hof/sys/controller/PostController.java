@@ -32,6 +32,26 @@ public class PostController {
         return BaseResponse.success(postService.addOrUpdatePostAction(dto));
     }
 
+//
+//    @PostMapping("/action/like")
+//    public BaseResponse<UserPostAction> addLike(@RequestBody PostVoteDto dto){
+//        return BaseResponse.success(postService.addOrUpdatePostAction(dto));
+//    }
+//
+//    @PostMapping("/action/undoLike")
+//    public BaseResponse<UserPostAction> undoLike(@RequestBody PostVoteDto dto){
+//        return BaseResponse.success(postService.addOrUpdatePostAction(dto));
+//    }
+//    @PostMapping("/action/collect")
+//    public BaseResponse<UserPostAction> addCollect(@RequestBody PostVoteDto dto){
+//        return BaseResponse.success(postService.addOrUpdatePostAction(dto));
+//    }
+//
+//    @PostMapping("/action/forward")
+//    public BaseResponse<UserPostAction> addForward(@RequestBody PostVoteDto dto){
+//        return BaseResponse.success(postService.addOrUpdatePostAction(dto));
+//    }
+
 
     @PostMapping("/del")
     public ResponseEntity<Boolean> delPost(@RequestBody  PostDelDto delDto){

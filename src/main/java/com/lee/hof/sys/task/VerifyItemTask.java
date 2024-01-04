@@ -2,7 +2,7 @@ package com.lee.hof.sys.task;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lee.hof.sys.bean.enums.ValidStatusEum;
+import com.lee.hof.sys.bean.enums.ValidStatusEnum;
 import com.lee.hof.sys.bean.enums.VerifyStatusEum;
 import com.lee.hof.sys.bean.model.UserComponent;
 import com.lee.hof.sys.bean.model.VerifyComponent;
@@ -41,10 +41,10 @@ public class VerifyItemTask {
                 newComponent.setContent(verifyComponent.getVerifyContent());
                 newComponent.setUserId(verifyComponent.getUserId());
                 newComponent.setVerifyCode(verifyComponent.getVerifyCode());
-                newComponent.setValidStatus(ValidStatusEum.VALID.getCode());
+                newComponent.setValidStatus(ValidStatusEnum.VALID.getCode());
                 if(current != null){
                     newComponent.setVersion(current.getVersion() +1);
-                    current.setValidStatus(ValidStatusEum.UNVALID.getCode());
+                    current.setValidStatus(ValidStatusEnum.UNVALID.getCode());
                     userComponentMapper.updateById(current);
                 }else{
                     newComponent.setVersion(1);

@@ -12,13 +12,13 @@ import com.lee.hof.sys.bean.model.Like;
 import com.lee.hof.sys.bean.model.Post;
 import com.lee.hof.sys.bean.vo.CommentVo;
 import com.lee.hof.sys.bean.vo.CommentMineVO;
-import com.lee.hof.sys.bean.vo.PostSimpleVo;
-import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.CommentMapper;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
 import com.lee.hof.sys.service.CommentService;
+import com.lee.hof.sys.service.PostService;
 import com.lee.hof.sys.service.UserService;
+import com.lee.hof.sys.service.UserStatisticService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,6 +50,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Resource
     private UserService userService;
 
+    @Resource
+    UserStatisticService userStatisticService;
+
 
     @Override
     public CommentVo addComment(CommentDto commentDto) {
@@ -63,6 +66,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setReplyToCommentId(commentDto.getReplyToCommentId());
         comment.setReplyToUserId(commentDto.getReplyToUserId());
         commentMapper.insert(comment);
+        userStatisticService.addCommentCnt();
         return convert(comment);
     }
 
@@ -102,10 +106,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if(!postId.isEmpty()){
             conditions.or().in("entity_id", postId);
         }
+        conditions.orderByDesc("id");
         List<Comment> comments = commentMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions).getRecords();
-
         List<CommentMineVO> commentVos = new ArrayList<>();
-
         comments.forEach(comment -> {
             commentVos.add(convertMine(comment));
         });
@@ -136,14 +139,17 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             commentVo1.setUser(userService.getUserById(cm.getUserId()));
             return commentVo1;
         }).collect(Collectors.toList());
-        List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().eq("target_id", comment.getId().toString()).eq("target_entity_type","comment").eq("is_del",0));
+        List<Like> likes = likeMapper.selectList(new QueryWrapper<Like>().eq("target_id", comment.getId().toString()).eq("target_entity_type","comment"));
         commentVo.setLikeList(likes);
         commentVo.setReplyList(childs);
         commentVo.setReplyCnt(replyCnt);
         return commentVo;
     }
 
+    @Resource
+    PostService postService;
 
+    @Override
     public CommentMineVO convertMine(Comment comment) {
         if(comment == null){
             return null;
@@ -157,15 +163,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             commentVo.setReplyToComment(reply);
         }
         commentVo.setUser(userService.getUserById(comment.getUserId()));
-        Post post =  postMapper.selectById(comment.getEntityId());
-        PostSimpleVo postSimpleVo = new PostSimpleVo();
-        postSimpleVo.setId(post.getId());
-        postSimpleVo.setAuthor(userService.getUserById(post.getAuthorId()));
-        postSimpleVo.setContentText(post.getContentText());
-        postSimpleVo.setImages(post.getImages());
-        postSimpleVo.setTitle(post.getTitle());
-        commentVo.setPost(postSimpleVo);
+        commentVo.setPost(postService.getSimplePost(Long.valueOf(comment.getEntityId())));
         return commentVo;
+    }
+
+
+
+    @Override
+    public CommentMineVO getSimpleById(Long commentId) {
+        return convertMine(commentMapper.selectById(commentId));
     }
 
 

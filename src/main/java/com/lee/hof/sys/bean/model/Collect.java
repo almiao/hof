@@ -9,9 +9,9 @@ import javax.persistence.Table;
 
 @Entity
 @Data
-@TableName("entity_like")
-@Table(name = "entity_like")
-public class Like extends BaseEntity {
+@TableName("entity_collect")
+@Table(name = "entity_collect")
+public class Collect extends BaseEntity {
 
     @Id
     private Long id;
@@ -19,5 +19,6 @@ public class Like extends BaseEntity {
     private String targetEntityType;
 
     private Long targetId;
+
 
 }

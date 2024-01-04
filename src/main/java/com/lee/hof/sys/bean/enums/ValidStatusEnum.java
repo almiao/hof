@@ -1,16 +1,17 @@
 package com.lee.hof.sys.bean.enums;
 
-public enum CommonStatusEum {
+public enum ValidStatusEnum {
 
-    INIT(0, "默认-有效"),
-    DELETE(1, "已删除"),
-    HIDE(2, "隐藏");
+    init(0, "默认"),
+    VALID(1, "有效"),
+    UNVALID(2, "无效"),
+    FAIL(3, "验证失败");
 
     private final int code;
 
     private final String msg;
 
-    CommonStatusEum(int code, String msg) {
+    ValidStatusEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -23,9 +24,9 @@ public enum CommonStatusEum {
         return msg;
     }
 
-    public static CommonStatusEum getByCode(int code){
+    public static ValidStatusEnum getByCode(int code){
 
-        for(CommonStatusEum statusEnum: CommonStatusEum.values()){
+        for(ValidStatusEnum statusEnum: ValidStatusEnum.values()){
             if(statusEnum.getCode() == code){
                 return statusEnum;
             }

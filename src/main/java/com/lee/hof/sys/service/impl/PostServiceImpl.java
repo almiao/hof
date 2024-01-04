@@ -8,8 +8,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.common.exception.HofException;
 import com.lee.hof.sys.bean.dto.*;
-import com.lee.hof.sys.bean.enums.CommonStatusEum;
+import com.lee.hof.sys.bean.enums.CommonStatusEnum;
 import com.lee.hof.sys.bean.model.*;
+import com.lee.hof.sys.bean.vo.PostSimpleVo;
 import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.*;
 import com.lee.hof.sys.service.*;
@@ -45,6 +46,21 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Resource
     CommentMapper commentMapper;
 
+    @Resource
+    UserStatisticService userStatisticService;
+
+    @Override
+    public PostSimpleVo getSimplePost(Long id) {
+        Post post = postMapper.selectById(id);
+        PostSimpleVo postSimpleVo = new PostSimpleVo();
+        postSimpleVo.setId(post.getId());
+        postSimpleVo.setAuthor(userService.getUserById(post.getAuthorId()));
+        postSimpleVo.setContentText(post.getContentText());
+        postSimpleVo.setImages(post.getImages());
+        postSimpleVo.setTitle(post.getTitle());
+        return postSimpleVo;
+    }
+
     @Override
     public PostVO addPost(PostAddDto dto) {
         Post post = new Post();
@@ -54,6 +70,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         post.setCreateTime(LocalDateTime.now());
         post.setUpdateTime(LocalDateTime.now());
         postMapper.insert(post);
+
+        userStatisticService.addPostCnt();
 
         return convertPost(post);
     }
@@ -73,8 +91,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public IPage<PostVO> listPost(PostListDto dto) {
         QueryWrapper<Post> conditions = new QueryWrapper<>();
-        if(dto.getUser()!= null && dto.getUserId()!=null){
-            conditions.eq("create_by", dto.getUserId());
+        if(dto.getCreateBy() != null){
+            conditions.eq("author_id", dto.getCreateBy());
         }
 
         if(StringUtils.isNotBlank(dto.getChannelName())){
@@ -89,12 +107,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             searchHistory.setStatus(0);
             searchHistoryMapper.insert(searchHistory);
         }
-
         conditions.orderByDesc("update_time");
-
         Page<Post> result = postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);
-
-
         return result.convert(this::convertPost);
     }
 
@@ -108,21 +122,18 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         PostVO postVO = new PostVO();
         BeanUtils.copyProperties(post, postVO);
 
-        int cnt = likeMapper.selectCount(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0));
+        int cnt = likeMapper.selectCount(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("status", CommonStatusEnum.INIT.getCode()));
         postVO.setLikeCnt(cnt);
-        Like meLiks = likeMapper.selectOne(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("level",0).eq("is_del", 0).eq("create_by", meUserId).last(" limit 1"));
-        if(meLiks!= null){
+        Like meLike = likeMapper.selectOne(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("status", CommonStatusEnum.INIT.getCode()).eq("create_by", meUserId).last(" limit 1"));
+        if(meLike!= null){
             postVO.setLike(true);
-            postVO.setLikeId(meLiks.getId());
+            postVO.setLikeId(meLike.getId());
         }
         int commentCnt = commentMapper.selectCount(new QueryWrapper<Comment>().eq("entity_id", post.getId()));
 
         Comment comment =  commentMapper.selectOne(new QueryWrapper<Comment>().eq("entity_id", post.getId())
                 .last("limit 1"));
-
         postVO.setMostValuedComment(commentService.convert(comment));
-
-
         if(post.getViewType() == PostType.VOTE){
             List<PostOption> postOptions = JSONObject.parseArray(post.getVoteContent(), PostOption.class);
             postOptions.forEach(postOption -> {
@@ -173,9 +184,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public boolean delSearchHistory() {
         List<SearchHistory> searchHistories = searchHistoryService.list(new QueryWrapper<SearchHistory>()
-                .eq("create_by", UserContext.getUserId()).eq("status", CommonStatusEum.INIT));
+                .eq("create_by", UserContext.getUserId()).eq("status", CommonStatusEnum.INIT));
         searchHistories.forEach(searchHistory -> {
-            searchHistory.setStatus(CommonStatusEum.HIDE.getCode());
+            searchHistory.setStatus(CommonStatusEnum.HIDE.getCode());
         });
         searchHistoryService.updateBatchById(searchHistories);
         return true;

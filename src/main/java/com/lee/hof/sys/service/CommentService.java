@@ -29,4 +29,9 @@ public interface CommentService extends IService<Comment> {
     CommentVo convert(Comment comment);
 
     List<CommentMineVO> listMine(CommentMineListDto dto);
+
+    CommentMineVO convertMine(Comment comment);
+
+
+    CommentMineVO getSimpleById(Long commentId);
 }

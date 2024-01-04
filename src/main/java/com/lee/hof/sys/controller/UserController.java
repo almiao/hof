@@ -9,7 +9,7 @@ import com.lee.hof.auth.UserContext;
 import com.lee.hof.common.exception.HofException;
 import com.lee.hof.common.upload.service.local.LocalStorageService;
 import com.lee.hof.sys.bean.BaseResponse;
-import com.lee.hof.sys.bean.enums.ValidStatusEum;
+import com.lee.hof.sys.bean.enums.ValidStatusEnum;
 import com.lee.hof.sys.bean.enums.VerifyCodeEnum;
 import com.lee.hof.sys.bean.model.FileManager;
 import com.lee.hof.sys.bean.model.User;
@@ -167,7 +167,7 @@ public class UserController {
 
     @PostMapping(value = "/getComponent")
     public BaseResponse<UserComponent> getUserComponent(@RequestParam(required = true) String verifyCode){
-        UserComponent databaseUser = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", UserContext.getUserId()).eq("verify_code",verifyCode).eq("valid_status", ValidStatusEum.VALID.getCode()));
+        UserComponent databaseUser = userComponentMapper.selectOne(new QueryWrapper<UserComponent>().eq("user_id", UserContext.getUserId()).eq("verify_code",verifyCode).eq("valid_status", ValidStatusEnum.VALID.getCode()));
         return BaseResponse.success(databaseUser);
     }
 
@@ -178,10 +178,10 @@ public class UserController {
         newComponent.setContent(request.getContent());
         newComponent.setUserId(UserContext.getUserId());
         newComponent.setVerifyCode(request.getVerifyCode());
-        newComponent.setValidStatus(ValidStatusEum.VALID.getCode());
+        newComponent.setValidStatus(ValidStatusEnum.VALID.getCode());
         if(current != null){
             newComponent.setVersion(current.getVersion() +1);
-            current.setValidStatus(ValidStatusEum.UNVALID.getCode());
+            current.setValidStatus(ValidStatusEnum.UNVALID.getCode());
             userComponentMapper.updateById(current);
         }else{
             newComponent.setVersion(1);
@@ -205,7 +205,7 @@ public class UserController {
         if(current == null){
             throw new HofException("用户组件不存在");
         }
-        current.setValidStatus(ValidStatusEum.UNVALID.getCode());
+        current.setValidStatus(ValidStatusEnum.UNVALID.getCode());
         userComponentMapper.updateById(current);
         return BaseResponse.success(current);
     }

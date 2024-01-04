@@ -35,7 +35,9 @@ spring:
 #      field-strategy: NOT_NULL
 #      # 默认数据库表下划线命名
 #      table-underline: true
-
+logging:
+  level:
+    com.baomidou.mybatisplus: debug
 mybatis-plus:
   # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
   mapper-locations: classpath:**/*Mapper.xml

@@ -6,6 +6,7 @@ import com.lee.hof.sys.bean.dto.*;
 import com.lee.hof.sys.bean.model.Post;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.model.UserPostAction;
+import com.lee.hof.sys.bean.vo.PostSimpleVo;
 import com.lee.hof.sys.bean.vo.PostVO;
 
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.List;
  * @since 2021-09-11
  */
 public interface PostService extends IService<Post> {
+
+    PostSimpleVo getSimplePost(Long id);
 
     PostVO addPost(PostAddDto dto);
 

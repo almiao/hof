@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.common.exception.HofException;
 import com.lee.hof.common.util.Utils;
-import com.lee.hof.sys.bean.enums.CommonStatusEum;
+import com.lee.hof.sys.bean.enums.CommonStatusEnum;
 import com.lee.hof.sys.bean.model.DriverGroup;
 import com.lee.hof.sys.bean.model.DriverGroupUser;
 import com.lee.hof.sys.mapper.DriverGroupUserMapper;
@@ -89,7 +89,7 @@ public class DriverGroupServiceImpl extends ServiceImpl<GroupMapper, DriverGroup
                 driverGroupUserMapper.selectOne(new QueryWrapper<DriverGroupUser>().eq("driver_group_id", driverGroupId).eq("user_id", UserContext.getUserId()));
 
         if(driverGroupUser != null){
-            driverGroupUser.setStatus(CommonStatusEum.INIT.getCode());
+            driverGroupUser.setStatus(CommonStatusEnum.INIT.getCode());
             driverGroupUserMapper.updateById(driverGroupUser);
             return driverGroupUser;
         }
@@ -107,12 +107,12 @@ public class DriverGroupServiceImpl extends ServiceImpl<GroupMapper, DriverGroup
                 driverGroupUserMapper.selectOne(new QueryWrapper<DriverGroupUser>()
                         .eq("driver_group_id", driverGroupId)
                         .eq("user_id", UserContext.getUserId())
-                        .eq("status", CommonStatusEum.INIT)
+                        .eq("status", CommonStatusEnum.INIT)
                         .last("limit 1"));
         if(driverGroupUser == null){
             throw new HofException("数据不存在");
         }
-        driverGroupUser.setStatus(CommonStatusEum.DELETE.getCode());
+        driverGroupUser.setStatus(CommonStatusEnum.DELETE.getCode());
         driverGroupUserMapper.updateById(driverGroupUser);
         return driverGroupUser;
     }
@@ -123,7 +123,7 @@ public class DriverGroupServiceImpl extends ServiceImpl<GroupMapper, DriverGroup
 
         List<DriverGroupUser>  driverGroupUsers = driverGroupUserMapper.selectList(new QueryWrapper<DriverGroupUser>()
                 .eq("user_id", UserContext.getUserId())
-                .eq("status", CommonStatusEum.INIT.getCode()));
+                .eq("status", CommonStatusEnum.INIT.getCode()));
 
         Set<Long> longs = driverGroupUsers.stream().map(DriverGroupUser::getDriverGroupId).collect(Collectors.toSet());
 

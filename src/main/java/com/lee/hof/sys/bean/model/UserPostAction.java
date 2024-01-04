@@ -33,7 +33,6 @@ public class UserPostAction extends BaseEntity {
      * 评分
      */
     private String score;
-
     /**
      * 有一个
      */
@@ -41,6 +40,7 @@ public class UserPostAction extends BaseEntity {
 
     private String optionComment;
 
+    private int postActionType;
 
-
+    private String actionContent;
 }

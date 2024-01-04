@@ -18,7 +18,7 @@ public class PostVO extends Post {
 
     private boolean notLike;
 
-    private String likeId;
+    private Long likeId;
 
     private String notLikeId;
 
