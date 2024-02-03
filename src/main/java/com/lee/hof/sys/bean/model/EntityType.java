@@ -33,19 +33,19 @@ public enum EntityType {
     }
 
 
-    private static final Map<Integer, EntityType> CACHE = new HashMap<Integer, EntityType>();
+    private static final Map<String, EntityType> CACHE = new HashMap<String, EntityType>();
 
     static {
         for (EntityType val : EntityType.values()) {
-            CACHE.put(val.getCode(), val);
+            CACHE.put(val.getName(), val);
         }
     }
 
     /**
      * 根据code值来转换为枚举类型
      */
-    public static EntityType parse(Integer code) {
-        return CACHE.get(code);
+    public static EntityType parse(String c) {
+        return CACHE.get(c);
     }
 
 }

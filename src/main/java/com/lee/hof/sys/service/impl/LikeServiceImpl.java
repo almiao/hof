@@ -3,6 +3,7 @@ package com.lee.hof.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
+import com.lee.hof.sys.bean.dto.LikeListDto;
 import com.lee.hof.sys.bean.enums.CommonStatusEnum;
 import com.lee.hof.sys.bean.enums.EntityTypeEnum;
 import com.lee.hof.sys.bean.model.*;
@@ -11,11 +12,13 @@ import com.lee.hof.sys.bean.vo.LikeVO;
 import com.lee.hof.sys.mapper.LikeMapper;
 import com.lee.hof.sys.mapper.PostMapper;
 import com.lee.hof.sys.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -51,8 +54,10 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
         like.setCreateTime(new Timestamp(System.currentTimeMillis()));
         like.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         like.setStatus(CommonStatusEnum.INIT.getCode());
+        like.setTargetEntityType(like.getTargetEntityType());
         likMapper.insert(like);
         userStatisticService.addLikeCnt();
+        userStatisticService.addLikedCnt(EntityType.parse(like.getTargetEntityType()), like.getTargetId());
         return like.getId();
     }
 
@@ -81,16 +86,31 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
         List<Comment> myComments = commentService.list(new QueryWrapper<Comment>().eq("create_by", UserContext.getUserId()));
         Set<Long> commentId = myComments.stream().map(Comment::getId).collect(Collectors.toSet());
 
-        List<Like> likes = likMapper.selectList(new QueryWrapper<Like>().eq("status",0)
-                .and(likeQueryWrapper -> likeQueryWrapper.eq("target_entity_type","post").in("target_id",postId)
-                .or().eq("target_entity_type","comment").in("target_id",commentId)).orderByDesc("id"));
+        if(postId.isEmpty() && commentId.isEmpty()){
+            return new ArrayList<>();
+        }
+
+        QueryWrapper<Like> queryWrapper =  new QueryWrapper<Like>().eq("status",0);
+
+        if(!postId.isEmpty() && commentId.isEmpty()){
+            queryWrapper.eq("target_entity_type","post").in("target_id",postId);
+        }else if(!commentId.isEmpty() && postId.isEmpty()){
+            queryWrapper.eq("target_entity_type","comment").in("target_id",commentId);
+        }else{
+            queryWrapper.and(likeQueryWrapper2 -> likeQueryWrapper2.and(likeQueryWrapper -> likeQueryWrapper.eq("target_entity_type","post").in("target_id",postId))
+                    .or(likeQueryWrapper1 -> likeQueryWrapper1.eq("target_entity_type","comment").in("target_id",commentId)));
+        }
+
+        queryWrapper.orderByDesc("id");
+
+        List<Like> likes = likMapper.selectList(queryWrapper);
 
         return likes.stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Override
-    public List<LikeVO> listMyLike() {
-        List<Like> likes = likMapper.selectList(new QueryWrapper<Like>().eq("create_by", UserContext.getUserId())
+    public List<LikeVO> listMyLike(LikeListDto like) {
+        List<Like> likes = likMapper.selectList(new QueryWrapper<Like>().eq("create_by", like.getCreateBy())
                 .eq("status", 0).orderByDesc());
 
         return likes.stream().map(this::convert).collect(Collectors.toList());

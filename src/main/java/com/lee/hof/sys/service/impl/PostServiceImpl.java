@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.common.exception.HofException;
+import com.lee.hof.sys.bean.UserFollowStatus;
 import com.lee.hof.sys.bean.dto.*;
 import com.lee.hof.sys.bean.enums.CommonStatusEnum;
 import com.lee.hof.sys.bean.model.*;
@@ -15,6 +16,7 @@ import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.*;
 import com.lee.hof.sys.service.*;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -88,6 +91,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return true;
     }
 
+    @Resource
+    UserFollowMapper userFollowMapper;
+
     @Override
     public IPage<PostVO> listPost(PostListDto dto) {
         QueryWrapper<Post> conditions = new QueryWrapper<>();
@@ -106,6 +112,18 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             searchHistory.setCreateBy(UserContext.getUserId());
             searchHistory.setStatus(0);
             searchHistoryMapper.insert(searchHistory);
+        }
+        if(dto.isListMyFollow()){
+            List<UserFollow> userFollow = userFollowMapper.selectList(new QueryWrapper<UserFollow>()
+                    .eq("user_id", UserContext.getUserId())
+                    .eq("status", UserFollowStatus.NORMAL.getCode()));
+            if(userFollow.isEmpty()){
+                return new Page<>();
+            }
+            Set<Long> userIds = userFollow.stream().map(UserFollow::getToEntityId).collect(Collectors.toSet());
+            if(!userIds.isEmpty()) {
+                conditions.in("author_id", userIds);
+            }
         }
         conditions.orderByDesc("update_time");
         Page<Post> result = postMapper.selectPage(new Page<>(dto.getPageNum(),dto.getPageSize()),conditions);

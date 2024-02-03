@@ -1,6 +1,7 @@
 package com.lee.hof.sys.controller;
 
 
+import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.model.UndoLike;
 import com.lee.hof.sys.bean.model.UserStatistic;
@@ -28,7 +29,7 @@ public class UserStatisticController {
 
     @PostMapping("/getMine")
     public BaseResponse<UserStatisticVO> getMine(){
-        return BaseResponse.success(userStatisticService.getMine());
+        return BaseResponse.success(userStatisticService.getMine(UserContext.getUserId()));
     }
 
 

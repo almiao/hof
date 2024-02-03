@@ -77,10 +77,11 @@ public class ControllerAOP {
 
         Object result;
         try {
-            result= pjp.proceed();
             String declaringTypeName = pjp.getSignature().getDeclaringTypeName();
             String methodName = pjp.getSignature().getName();
-            logger.info("方法：" + declaringTypeName + "."+ methodName +"，耗时：" + (System.currentTimeMillis() - startTime));
+            logger.info("方法：" + declaringTypeName + "."+ methodName);
+            result= pjp.proceed();
+            logger.info("耗时：" + (System.currentTimeMillis() - startTime));
             logger.info(JSONObject.toJSONString(result));
         }catch (HofException throwable){
             logger.error("报错："+throwable.getMsg());

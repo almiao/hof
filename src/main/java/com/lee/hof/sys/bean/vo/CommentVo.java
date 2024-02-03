@@ -59,7 +59,7 @@ public class CommentVo implements Serializable {
         this.toCommentId = comment.getReplyToCommentId();
         this.updateTime = comment.getUpdateTime();
         this.updateTimeStr = Utils.formatTime(comment.getUpdateTime().getTime());
-        this.userId = comment.getUserId();
+        this.userId = comment.getCreateBy();
     }
 
 

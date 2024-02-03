@@ -2,6 +2,7 @@ package com.lee.hof.sys.controller;
 
 
 import com.lee.hof.sys.bean.BaseResponse;
+import com.lee.hof.sys.bean.dto.LikeListDto;
 import com.lee.hof.sys.bean.model.Like;
 import com.lee.hof.sys.bean.model.UndoLike;
 import com.lee.hof.sys.bean.vo.LikeVO;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +25,7 @@ public class LikeController {
     LikeService likeService;
 
     @PostMapping("/add")
-    public BaseResponse<Long> addLike(@RequestBody Like like){
+    public BaseResponse<Long> addLike(@RequestBody @Valid Like like){
         return BaseResponse.success(likeService.add(like));
     }
 
@@ -37,8 +39,8 @@ public class LikeController {
         return BaseResponse.success(likeService.listLikeMe());
     }
     @PostMapping("/listMyLike")
-    public BaseResponse<List<LikeVO>> listMyLike(){
-        return BaseResponse.success(likeService.listMyLike());
+    public BaseResponse<List<LikeVO>> listMyLike(@RequestBody LikeListDto like){
+        return BaseResponse.success(likeService.listMyLike(like));
     }
 
 }

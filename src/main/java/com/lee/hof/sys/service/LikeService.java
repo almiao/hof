@@ -1,6 +1,7 @@
 package com.lee.hof.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lee.hof.sys.bean.dto.LikeListDto;
 import com.lee.hof.sys.bean.model.Like;
 import com.lee.hof.sys.bean.model.UndoLike;
 import com.lee.hof.sys.bean.vo.LikeVO;
@@ -26,5 +27,5 @@ public interface LikeService extends IService<Like> {
 
     List<LikeVO> listLikeMe();
 
-    List<LikeVO> listMyLike();
+    List<LikeVO> listMyLike(LikeListDto like);
 }

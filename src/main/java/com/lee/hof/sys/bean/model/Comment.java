@@ -28,7 +28,7 @@ public class Comment implements Serializable {
 
     private Long replyToCommentId;
 
-    private Long userId;
+    private Long createBy;
 
     private String commentTxt;
 

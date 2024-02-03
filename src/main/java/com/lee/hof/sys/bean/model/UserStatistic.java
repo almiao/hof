@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.Getter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 import java.util.Date;
 
 //用户活动表
@@ -37,6 +35,14 @@ public class UserStatistic{
     private int likeCnt;
 
     private int collectCnt;
+
+    private int likedCnt;
+
+    private int followCnt;
+
+    private int followedCnt;
+
+    private int collectedCnt;
 
     @TableField(fill = FieldFill.INSERT)
     private Long createBy;

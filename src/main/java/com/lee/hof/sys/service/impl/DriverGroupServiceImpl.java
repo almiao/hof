@@ -96,6 +96,7 @@ public class DriverGroupServiceImpl extends ServiceImpl<GroupMapper, DriverGroup
         driverGroupUser = new DriverGroupUser();
         driverGroupUser.setDriverGroupId(driverGroupId);
         driverGroupUser.setUserId(UserContext.getUserId());
+        driverGroupUser.setStatus(CommonStatusEnum.INIT.getCode());
         driverGroupUserMapper.insert(driverGroupUser);
 
         return driverGroupUser;
@@ -128,11 +129,17 @@ public class DriverGroupServiceImpl extends ServiceImpl<GroupMapper, DriverGroup
         Set<Long> longs = driverGroupUsers.stream().map(DriverGroupUser::getDriverGroupId).collect(Collectors.toSet());
 
         if(longs.isEmpty()){
-            return new ArrayList<>();
+            return groupMapper.selectList(new QueryWrapper<DriverGroup>().last("limit 10"));
         }
+        List<DriverGroup> result = groupMapper.selectBatchIds(longs);
+        result.forEach(driverGroup -> driverGroup.setMyFollow(true));
 
-        return groupMapper.selectBatchIds(longs);
+
+        if(result.size()< 10){
+            List<DriverGroup> recommend = groupMapper.selectList(new QueryWrapper<DriverGroup>().notIn("id", longs).last("limit "+ (10-result.size())));
+            result.addAll(recommend);
+        }
+        return result;
     }
-
 
 }

@@ -4,6 +4,8 @@ public enum UserFollowStatus {
 
     NORMAL(1, "正常"),
     DELETED(2, "删除"),
+
+    HIDE(3, "屏蔽"),
     ;
 
 

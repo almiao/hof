@@ -11,17 +11,17 @@ import com.lee.hof.common.upload.service.local.LocalStorageService;
 import com.lee.hof.sys.bean.BaseResponse;
 import com.lee.hof.sys.bean.enums.ValidStatusEnum;
 import com.lee.hof.sys.bean.enums.VerifyCodeEnum;
-import com.lee.hof.sys.bean.model.FileManager;
-import com.lee.hof.sys.bean.model.User;
-import com.lee.hof.sys.bean.model.UserComponent;
-import com.lee.hof.sys.bean.model.UserToken;
+import com.lee.hof.sys.bean.model.*;
 import com.lee.hof.sys.bean.model.component.VerifyMyCarContent;
+import com.lee.hof.sys.bean.vo.UserDetailVO;
 import com.lee.hof.sys.mapper.FileManagerMapper;
 import com.lee.hof.sys.mapper.UserComponentMapper;
 import com.lee.hof.sys.mapper.UserMapper;
+import com.lee.hof.sys.service.UserStatisticService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -130,18 +130,25 @@ public class UserController {
         return BaseResponse.success(false);
     }
 
+    @Resource
+    UserStatisticService userStatisticService;
+
 
     @PostMapping(value = "/detail")
-    public BaseResponse<User> getDetail(@RequestParam Long id){
+    public BaseResponse<UserDetailVO> getDetail(@RequestParam Long id){
         User databaseUser = userMapper.selectById(id);
         if(databaseUser == null){
             return BaseResponse.badrequest();
         }
-        return BaseResponse.success(databaseUser);
+        UserDetailVO userDetailVO = new UserDetailVO();
+        BeanUtils.copyProperties(databaseUser, userDetailVO);
+        UserStatistic userStatistic = userStatisticService.getBaseMapper().selectOne(new QueryWrapper<UserStatistic>().eq("create_by", id));
+        userDetailVO.setUserStatistic(userStatistic);
+        return BaseResponse.success(userDetailVO);
     }
 
     @PostMapping(value = "/update")
-    public BaseResponse<User> getDetail(@RequestBody User user){
+    public BaseResponse<UserDetailVO> getDetail(@RequestBody User user){
         User databaseUser = userMapper.selectById(user.getId());
         if(databaseUser == null){
             return BaseResponse.badrequest();
@@ -152,7 +159,7 @@ public class UserController {
         databaseUser.setLocation(user.getLocation());
         databaseUser.setSex(user.getSex());
         userMapper.updateById(databaseUser);
-        return BaseResponse.success(databaseUser);
+        return getDetail(user.getId());
     }
 
 

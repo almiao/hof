@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -16,8 +17,10 @@ public class Like extends BaseEntity {
     @Id
     private Long id;
 
+    @NotNull
     private String targetEntityType;
 
+    @NotNull
     private Long targetId;
 
 }

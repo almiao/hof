@@ -1,9 +1,7 @@
 package com.lee.hof.sys.bean.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lee.hof.common.util.Utils;
 import com.lee.hof.sys.bean.model.Comment;
-import com.lee.hof.sys.bean.model.Post;
 import com.lee.hof.sys.bean.model.User;
 import lombok.Data;
 
@@ -56,7 +54,7 @@ public class CommentMineVO implements Serializable {
         this.createTime = comment.getCreateTime();
         this.replyToCommentId = comment.getReplyToCommentId();
         this.updateTime = comment.getUpdateTime();
-        this.userId = comment.getUserId();
+        this.userId = comment.getCreateBy();
     }
 
 }

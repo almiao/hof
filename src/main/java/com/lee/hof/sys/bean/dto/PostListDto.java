@@ -29,4 +29,7 @@ public class PostListDto extends BaseInput {
     private String sortBy;
 
     private Long createBy;
+
+
+    private boolean listMyFollow;
 }

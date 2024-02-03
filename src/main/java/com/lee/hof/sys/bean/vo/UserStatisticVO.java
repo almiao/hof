@@ -10,15 +10,13 @@ public class UserStatisticVO {
 
     private Long userId;
 
-    private Long likeReadId;
+    private long likeReadId;
 
-    private Long collectReadId;
+    private long collectReadId;
 
-    private Long commentReadId;
+    private long commentReadId;
 
     private int needReadLikeCnt;
-
-
 
     private int needReadCollectCnt;
 
