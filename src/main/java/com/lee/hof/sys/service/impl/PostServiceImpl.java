@@ -153,14 +153,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                 .last("limit 1"));
         postVO.setMostValuedComment(commentService.convert(comment));
         if(post.getViewType() == PostType.VOTE){
-            List<PostOption> postOptions = JSONObject.parseArray(post.getVoteContent(), PostOption.class);
-            postOptions.forEach(postOption -> {
+            PostVoteContent postVoteContent = JSONObject.parseObject(post.getVoteContent(), PostVoteContent.class);
+            postVoteContent.getPostOptions().forEach(postOption -> {
                 int cntOption =  userPostActionMapper.selectCount(new QueryWrapper<UserPostAction>().eq("post_id",post.getId()).eq(
                         "option_text",postOption.getText()
                 ));
                 postOption.setCnt(cntOption);
             });
-            postVO.setPostOptions(postOptions);
+            postVO.setPostVoteContent(postVoteContent);
         }
 
         postVO.setCommentCnt(commentCnt);

@@ -1,28 +1,59 @@
 package com.lee.hof.sys.bean.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PostVoteContent {
 
-    private int voteType;
+public class PostVoteContent implements Serializable {
 
-    private List<PostOption> options;
+    private String totalBudget;
+
+    private String sex;
+
+    private List<String> prefers;
+
+    private List<PostOption> postOptions;
+
+    private String description;
 
 
-    public int getVoteType() {
-        return voteType;
+    public String getTotalBudget() {
+        return totalBudget;
     }
 
-    public void setVoteType(int voteType) {
-        this.voteType = voteType;
+    public void setTotalBudget(String totalBudget) {
+        this.totalBudget = totalBudget;
     }
 
-
-    public List<PostOption> getOptions() {
-        return options;
+    public String getSex() {
+        return sex;
     }
 
-    public void setOptions(List<PostOption> options) {
-        this.options = options;
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public List<String> getPrefers() {
+        return prefers;
+    }
+
+    public void setPrefers(List<String> prefers) {
+        this.prefers = prefers;
+    }
+
+    public List<PostOption> getPostOptions() {
+        return postOptions;
+    }
+
+    public void setPostOptions(List<PostOption> postOptions) {
+        this.postOptions = postOptions;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

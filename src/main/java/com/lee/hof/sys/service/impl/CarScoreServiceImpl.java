@@ -1,27 +1,10 @@
 package com.lee.hof.sys.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lee.hof.auth.UserContext;
-import com.lee.hof.sys.bean.dto.LikeListDto;
-import com.lee.hof.sys.bean.enums.CommonStatusEnum;
-import com.lee.hof.sys.bean.enums.EntityTypeEnum;
-import com.lee.hof.sys.bean.model.*;
-import com.lee.hof.sys.bean.vo.LikeVO;
+import com.lee.hof.sys.bean.model.CarScore;
 import com.lee.hof.sys.mapper.CarScoreMapper;
-import com.lee.hof.sys.mapper.LikeMapper;
-import com.lee.hof.sys.mapper.PostMapper;
-import com.lee.hof.sys.service.*;
-import org.springframework.beans.BeanUtils;
+import com.lee.hof.sys.service.CarScoreService;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * <p>

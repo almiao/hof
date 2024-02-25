@@ -1,9 +1,6 @@
 package com.lee.hof.sys.bean.vo;
 
-import com.lee.hof.sys.bean.model.Post;
-import com.lee.hof.sys.bean.model.PostOption;
-import com.lee.hof.sys.bean.model.Topic;
-import com.lee.hof.sys.bean.model.User;
+import com.lee.hof.sys.bean.model.*;
 import lombok.Data;
 
 import java.util.List;
@@ -30,6 +27,6 @@ public class PostVO extends Post {
 
     private CommentVo mostValuedComment;
 
-    private List<PostOption> postOptions;
+    private PostVoteContent postVoteContent;
 
 }

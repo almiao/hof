@@ -2,13 +2,25 @@ package com.lee.hof.sys.bean.model;
 
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
+@Entity
+@Data
+@TableName("car_score")
+@Table(name = "car_score")
 public class CarScore implements Serializable {
 
     private static final long serialVersionUID = 1876655654053364580L;
 
+    @Id
     private Long id;
 
     private Long authorId;
@@ -23,6 +35,7 @@ public class CarScore implements Serializable {
     /**
      * 购车信息
      */
+    @TableField(exist = false)
     private CarPrice carPrice = new CarPrice();
 
     /**
