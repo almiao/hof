@@ -62,7 +62,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         comment.setCommentTxt(commentDto.getCommentText());
         comment.setEntityId(commentDto.getEntityId());
-        comment.setCreateBy(commentDto.getUserId());
+        comment.setCreateBy(UserContext.getUserId());
         comment.setReplyToCommentId(commentDto.getReplyToCommentId());
         comment.setReplyToUserId(commentDto.getReplyToUserId());
         commentMapper.insert(comment);
@@ -163,7 +163,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             commentVo.setReplyToComment(reply);
         }
         commentVo.setUser(userService.getUserById(comment.getCreateBy()));
-        commentVo.setPost(postService.getSimplePost(Long.valueOf(comment.getEntityId())));
+        commentVo.setPost(postService.getSimplePost(comment.getEntityId()));
         return commentVo;
     }
 

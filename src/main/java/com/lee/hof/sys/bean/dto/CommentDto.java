@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class CommentDto implements Serializable {
 
     @NonNull
-    private String entityId;
+    private Long entityId;
 
     private Long parentCommentId;
 
@@ -19,11 +19,11 @@ public class CommentDto implements Serializable {
 
     private Long replyToUserId;
 
-    @NonNull
-    private Long userId;
 
     @NotBlank(message = "评论信息不能为空")
     private String commentText;
+
+    private String extension;
 
 
 }

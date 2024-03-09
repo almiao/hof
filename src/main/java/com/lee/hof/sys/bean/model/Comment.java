@@ -20,7 +20,7 @@ public class Comment implements Serializable {
     @Id
     private Long id;
 
-    private String entityId;
+    private Long entityId;
 
     private Long parentCommentId;
 
@@ -39,6 +39,7 @@ public class Comment implements Serializable {
     private Timestamp updateTime;
 
 
+    private String extensions;
     /**
      * 回复
      */

@@ -1,6 +1,8 @@
 package com.lee.hof.sys.bean.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,6 +18,16 @@ public class PostVoteContent implements Serializable {
 
     private String description;
 
+
+    private LocalDateTime validTime;
+
+    public LocalDateTime getValidTime() {
+        return validTime;
+    }
+
+    public void setValidTime(LocalDateTime validTime) {
+        this.validTime = validTime;
+    }
 
     public String getTotalBudget() {
         return totalBudget;

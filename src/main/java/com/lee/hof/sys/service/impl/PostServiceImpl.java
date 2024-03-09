@@ -105,6 +105,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             conditions.eq("channel_name", dto.getChannelName());
         }
 
+        conditions.eq(dto.getPostType()!=null, "view_type",PostType.VOTE);
+
+
         if(StringUtils.isNotBlank(dto.getSearchText())){
             conditions.and(postQueryWrapper -> postQueryWrapper.like("title", dto.getSearchText()).or().like("content_text", dto.getSearchText()));
             SearchHistory searchHistory = new SearchHistory();
@@ -136,8 +139,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
 
     private PostVO convertPost(Post post){
+
         Long meUserId = UserContext.getUserId();
         PostVO postVO = new PostVO();
+
+        if(post == null){
+            return null;
+        }
+
         BeanUtils.copyProperties(post, postVO);
 
         int cnt = likeMapper.selectCount(new QueryWrapper<Like>().eq("target_id", post.getId()).eq("status", CommonStatusEnum.INIT.getCode()));
@@ -310,6 +319,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             userPostActionMapper.updateById(userPostAction);
         }
         return userPostAction;
+    }
+
+    @Override
+    public PostVO getOneTodo(Long startId) {
+        Post post =  postMapper.selectOne(new QueryWrapper<Post>().eq("view_type", PostType.VOTE)
+                        .gt("id", startId)
+                .last("limit 1"));
+        return convertPost(post);
     }
 
 

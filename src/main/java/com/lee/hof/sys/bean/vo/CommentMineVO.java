@@ -26,7 +26,7 @@ public class CommentMineVO implements Serializable {
 
     private Long id;
 
-    private String entityId;
+    private Long entityId;
 
     private Long parentCommentId;
 

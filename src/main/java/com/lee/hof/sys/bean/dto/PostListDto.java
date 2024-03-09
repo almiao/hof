@@ -32,4 +32,6 @@ public class PostListDto extends BaseInput {
 
 
     private boolean listMyFollow;
+
+    private Integer postType;
 }

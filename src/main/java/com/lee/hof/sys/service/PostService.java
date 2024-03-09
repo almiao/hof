@@ -43,4 +43,6 @@ public interface PostService extends IService<Post> {
     List<String> searchPostHint(PostSearchDto dto);
 
     UserPostAction addOrUpdatePostAction(PostVoteDto dto);
+
+    PostVO getOneTodo(Long startId);
 }
