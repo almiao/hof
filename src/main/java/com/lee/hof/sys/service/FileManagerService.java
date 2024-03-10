@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * <p>
@@ -22,7 +23,7 @@ public interface FileManagerService extends IService<FileManager> {
 
 //    void download(String fileId, HttpServletResponse response) throws FileNotFoundException;
 
-    void downloadNew(String fileId, HttpServletResponse response) throws FileNotFoundException;
+    void downloadNew(String fileId, HttpServletResponse response) throws IOException;
 
     void clean();
 }

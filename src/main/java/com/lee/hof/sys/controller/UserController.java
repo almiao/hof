@@ -87,7 +87,6 @@ public class UserController {
                 fileManager.setUuid(fileId);
                 fileManager.setFileId(fileManager.getUuid());
                 fileManager.setProvider("local");
-//        // 参数列表
                 fileManagerMapper.insert(fileManager);
                 databaseUser.setImgId(fileManager.getFileId());
                 userMapper.insert(databaseUser);
@@ -119,6 +118,9 @@ public class UserController {
         }
         return BaseResponse.badrequest();
     }
+
+
+
 
     @PostMapping(value = "/auth")
     public BaseResponse<Boolean> auth(HttpServletRequest request){

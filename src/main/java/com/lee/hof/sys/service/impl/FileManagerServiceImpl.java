@@ -3,6 +3,7 @@ package com.lee.hof.sys.service.impl;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.afkbrb.avatar.Avatar;
 import com.lee.hof.common.exception.HofException;
 import com.lee.hof.common.upload.UploadedFileBean;
 import com.lee.hof.common.upload.service.local.LocalStorageService;
@@ -10,6 +11,7 @@ import com.lee.hof.sys.bean.model.FileManager;
 import com.lee.hof.sys.bean.vo.FileUploadBean;
 import com.lee.hof.sys.mapper.FileManagerMapper;
 import com.lee.hof.sys.service.FileManagerService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
@@ -133,12 +134,29 @@ public class FileManagerServiceImpl extends ServiceImpl<FileManagerMapper, FileM
 //        }
 //    }
 
+    @Resource
+    FileManagerMapper fileManagerMapper;
 
-    public void downloadNew(String uuid, HttpServletResponse response) {
+    public void downloadNew(String uuid, HttpServletResponse response) throws IOException {
         FileManager fileManager = this.baseMapper.getByUuid(uuid);
         if (fileManager == null ) {
-            throw new HofException("未找到文件");
+            String fileId = uuid;
+            Avatar avatar = new Avatar();
+            BufferedImage bufferedImage =  avatar.generateAndGetAvatar();
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "jpg", os);
+            String localFilename = localStorageService.getLocalStoragePath() + "/"+uuid +".png";
+            FileUtils.forceMkdir(new File(localFilename).getParentFile());
+            org.apache.commons.io.IOUtils.copy(new ByteArrayInputStream(os.toByteArray()), new FileOutputStream(localFilename));
+            fileManager = new FileManager();
+            fileManager.setName(uuid +".png");
+            fileManager.setFullPath(uuid +".png");
+            fileManager.setUuid(fileId);
+            fileManager.setFileId(uuid);
+            fileManager.setProvider("local");
+            fileManagerMapper.insert(fileManager);
         }
+
         // 参数列表
         try {
             InputStream inputStream = null;

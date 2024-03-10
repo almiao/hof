@@ -18,4 +18,9 @@ public class PostOption {
     private int isText;
 
     private int cnt;
+
+    /**
+     * 入选理由
+     */
+    private String reason;
 }
