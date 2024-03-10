@@ -39,7 +39,7 @@ public class Comment implements Serializable {
     private Timestamp updateTime;
 
 
-    private String extensions;
+    private String extension;
     /**
      * 回复
      */

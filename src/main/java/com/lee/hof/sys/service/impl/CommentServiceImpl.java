@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
-import com.lee.hof.sys.bean.dto.CommentDto;
+import com.lee.hof.sys.bean.dto.CommentAddDto;
 import com.lee.hof.sys.bean.dto.CommentListDto;
 import com.lee.hof.sys.bean.dto.CommentMineListDto;
 import com.lee.hof.sys.bean.model.Comment;
@@ -55,7 +55,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
 
     @Override
-    public CommentVo addComment(CommentDto commentDto) {
+    public CommentVo addComment(CommentAddDto commentDto) {
         Comment comment = new Comment();
         comment.setParentCommentId(commentDto.getParentCommentId());
         comment.setCreateTime(new Timestamp(System.currentTimeMillis()));
@@ -65,6 +65,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setCreateBy(UserContext.getUserId());
         comment.setReplyToCommentId(commentDto.getReplyToCommentId());
         comment.setReplyToUserId(commentDto.getReplyToUserId());
+        comment.setExtension(commentDto.getExtension());
         commentMapper.insert(comment);
         userStatisticService.addCommentCnt();
         return convert(comment);

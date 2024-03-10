@@ -42,6 +42,8 @@ public class CommentVo implements Serializable {
 
     private int replyCnt;
 
+    private String extension;
+
     private List<CommentVo> replyList = new ArrayList<>();
 
     private List<Like> likeList = new ArrayList<>();
@@ -60,6 +62,7 @@ public class CommentVo implements Serializable {
         this.updateTime = comment.getUpdateTime();
         this.updateTimeStr = Utils.formatTime(comment.getUpdateTime().getTime());
         this.userId = comment.getCreateBy();
+        this.extension = comment.getExtension();
     }
 
 

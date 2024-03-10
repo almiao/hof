@@ -2,10 +2,9 @@ package com.lee.hof.sys.controller;
 
 
 import com.lee.hof.sys.bean.BaseResponse;
-import com.lee.hof.sys.bean.dto.CommentDto;
+import com.lee.hof.sys.bean.dto.CommentAddDto;
 import com.lee.hof.sys.bean.dto.CommentListDto;
 import com.lee.hof.sys.bean.dto.CommentMineListDto;
-import com.lee.hof.sys.bean.model.Comment;
 import com.lee.hof.sys.bean.vo.CommentMineVO;
 import com.lee.hof.sys.bean.vo.CommentVo;
 import com.lee.hof.sys.service.CommentService;
@@ -27,7 +26,7 @@ public class CommentController {
     CommentService commentService;
 
     @PostMapping("/add")
-    public BaseResponse<CommentVo> addComment(@Valid @RequestBody CommentDto dto){
+    public BaseResponse<CommentVo> addComment(@Valid @RequestBody CommentAddDto dto){
         return BaseResponse.success(commentService.addComment(dto));
     }
 
