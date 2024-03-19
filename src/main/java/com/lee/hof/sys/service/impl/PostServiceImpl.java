@@ -16,7 +16,6 @@ import com.lee.hof.sys.bean.vo.PostVO;
 import com.lee.hof.sys.mapper.*;
 import com.lee.hof.sys.service.*;
 import org.apache.commons.lang3.StringUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -163,12 +162,21 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         postVO.setMostValuedComment(commentService.convert(comment));
         if(post.getViewType() == PostType.VOTE){
             PostVoteContent postVoteContent = JSONObject.parseObject(post.getVoteContent(), PostVoteContent.class);
+
+            UserPostAction userPostAction = userPostActionService.getOne(new QueryWrapper<UserPostAction>().eq("user_id", UserContext.getUserId()).eq("post_id", post.getId()));
+            if(userPostAction!=null && userPostAction.getOptionPosition()!=null && userPostAction.getOptionText()!=null){
+                PostOption postOption = postVoteContent.getPostOptions().get(userPostAction.getOptionPosition());
+                postOption.setMyVote(true);
+                postOption.setMyVoteReason(userPostAction.getOptionComment());
+            }
             postVoteContent.getPostOptions().forEach(postOption -> {
                 int cntOption =  userPostActionMapper.selectCount(new QueryWrapper<UserPostAction>().eq("post_id",post.getId()).eq(
                         "option_text",postOption.getText()
                 ));
                 postOption.setCnt(cntOption);
             });
+
+
             postVO.setPostVoteContent(postVoteContent);
         }
 
@@ -327,6 +335,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                         .gt("id", startId)
                 .last("limit 1"));
         return convertPost(post);
+    }
+
+    @Override
+    public List<UserPostAction> listAction() {
+
+        List<UserPostAction> userPostAction = userPostActionService.list(new QueryWrapper<UserPostAction>().eq("user_id", UserContext.getUserId()));
+
+        return userPostAction;
     }
 
 

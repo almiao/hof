@@ -38,6 +38,8 @@ public class UserPostAction extends BaseEntity {
      */
     private String optionText;
 
+    private Integer optionPosition;
+
     private String optionComment;
 
     private int postActionType;

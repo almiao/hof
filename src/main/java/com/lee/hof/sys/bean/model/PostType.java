@@ -11,4 +11,7 @@ public  class PostType {
         public final static int ARTICLE = 3;
         // 选车投票1v1
         public final static int VOTE = 4;
+
+
+        public final static int CarScore = 5;
     }

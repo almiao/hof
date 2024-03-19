@@ -45,4 +45,6 @@ public interface PostService extends IService<Post> {
     UserPostAction addOrUpdatePostAction(PostVoteDto dto);
 
     PostVO getOneTodo(Long startId);
+
+    List<UserPostAction> listAction();
 }

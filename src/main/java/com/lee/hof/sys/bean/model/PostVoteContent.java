@@ -2,7 +2,6 @@ package com.lee.hof.sys.bean.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 
@@ -20,6 +19,30 @@ public class PostVoteContent implements Serializable {
 
 
     private LocalDateTime validTime;
+
+
+
+    private Integer meOptionPosition;
+
+
+    private String meOptionComment;
+
+    public String getMeOptionComment() {
+        return meOptionComment;
+    }
+
+    public void setMeOptionComment(String meOptionComment) {
+        this.meOptionComment = meOptionComment;
+    }
+
+    public Integer getMeOptionPosition() {
+        return meOptionPosition;
+    }
+
+    public void setMeOptionPosition(Integer meOptionPosition) {
+        this.meOptionPosition = meOptionPosition;
+    }
+
 
     public LocalDateTime getValidTime() {
         return validTime;

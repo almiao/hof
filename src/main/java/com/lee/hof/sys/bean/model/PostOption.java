@@ -23,4 +23,9 @@ public class PostOption {
      * 入选理由
      */
     private String reason;
+
+    private boolean isMyVote;
+
+    private String myVoteReason;
+
 }

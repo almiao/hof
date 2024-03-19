@@ -68,6 +68,12 @@ public class PostController {
         return BaseResponse.success(postService.listPost(dto));
     }
 
+    @PostMapping("/listAction")
+    public BaseResponse<List<UserPostAction>> listAction(){
+        return BaseResponse.success(postService.listAction());
+    }
+
+
 
     @PostMapping("/update")
     public ResponseEntity<Boolean> updatePost(@RequestBody PostUpdateDto dto){

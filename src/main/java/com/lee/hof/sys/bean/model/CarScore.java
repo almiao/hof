@@ -64,9 +64,15 @@ public class CarScore implements Serializable {
     private Float spaceScore;
 
     /**
-     * 综合评价
+     * 综合评价-优势
      */
-    private String overallEvaluation;
+    private String advantage;
+
+
+    /**
+     * 综合评价-劣势
+     */
+    private String disadvantage;
 
 
     private Date createTime;
@@ -170,11 +176,11 @@ public class CarScore implements Serializable {
         this.spaceScore = spaceScore;
     }
 
-    public String getOverallEvaluation() {
-        return overallEvaluation;
+    public String getAdvantage() {
+        return advantage;
     }
 
-    public void setOverallEvaluation(String overallEvaluation) {
-        this.overallEvaluation = overallEvaluation;
+    public void setAdvantage(String overallEvaluation) {
+        this.advantage = overallEvaluation;
     }
 }
