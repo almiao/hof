@@ -1,4 +1,4 @@
-package com.lee.hof.sys.bean;
+package com.lee.hof.sys.bean.enums;
 
 public enum UserFollowStatus {
 

@@ -4,7 +4,9 @@ package com.lee.hof.sys.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.sys.bean.BaseResponse;
-import com.lee.hof.sys.bean.UserFollowStatus;
+import com.lee.hof.sys.bean.enums.UserFollowStatus;
+import com.lee.hof.sys.bean.dto.UserFollowListDto;
+import com.lee.hof.sys.bean.enums.UserFollowType;
 import com.lee.hof.sys.bean.model.User;
 import com.lee.hof.sys.bean.model.UserFollow;
 import com.lee.hof.sys.mapper.UserFollowMapper;
@@ -15,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -99,14 +100,32 @@ public class UserFollowController {
      * @return
      */
     @PostMapping(value = "/list")
-    public BaseResponse<List<UserFollow>> list(){
-        List<UserFollow> userFollow = userFollowMapper.selectList(new QueryWrapper<UserFollow>()
-                .eq("user_id", UserContext.getUserId())
-                .eq("status", UserFollowStatus.NORMAL.getCode()));
-        userFollow.stream().forEach(userFollow1 -> {
-            userFollow1.setUser(userService.getUserById(userFollow1.getToEntityId()));
-        });
-        return BaseResponse.success(userFollow);
+    public BaseResponse<List<UserFollow>> list(@RequestBody UserFollowListDto userFollowListDto){
+
+        if(userFollowListDto.isShowFollow()){
+            List<UserFollow> userFollow = userFollowMapper.selectList(new QueryWrapper<UserFollow>()
+                    .eq("user_id", userFollowListDto.getUserId())
+                    .eq("status", UserFollowStatus.NORMAL.getCode()));
+
+            userFollow.stream().forEach(userFollow1 -> {
+                userFollow1.setUser(userService.getUserById(userFollow1.getToEntityId()));
+            });
+            return BaseResponse.success(userFollow);
+
+        }else{
+            List<UserFollow> userFollow = userFollowMapper.selectList(new QueryWrapper<UserFollow>()
+                    .eq("to_entity_id", userFollowListDto.getUserId())
+                    .eq("status", UserFollowStatus.NORMAL.getCode())
+                    .eq("follow_type", UserFollowType.USER.getCode())
+            );
+
+            userFollow.stream().forEach(userFollow1 -> {
+                userFollow1.setUser(userService.getUserById(userFollow1.getToEntityId()));
+            });
+            return BaseResponse.success(userFollow);
+        }
+
+
     }
 
     /**

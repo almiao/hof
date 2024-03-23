@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.hof.auth.UserContext;
 import com.lee.hof.common.exception.HofException;
-import com.lee.hof.sys.bean.UserFollowStatus;
+import com.lee.hof.sys.bean.enums.UserFollowStatus;
 import com.lee.hof.sys.bean.dto.*;
 import com.lee.hof.sys.bean.enums.CommonStatusEnum;
 import com.lee.hof.sys.bean.model.*;
